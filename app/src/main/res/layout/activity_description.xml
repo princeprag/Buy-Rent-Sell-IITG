@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".description"
+    android:padding="10dp">
+
+
+    <ImageView
+        android:id="@+id/image_pic"
+        android:layout_width="370dp"
+        android:layout_height="300dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/noimage" />
+
+    <TextView
+        android:id="@+id/text_name"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_below="@+id/image_pic"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="8dp"
+        android:ellipsize="end"
+        android:hint="Apple Mac BOOK Air"
+        android:maxLines="1"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+    <ImageView
+        android:id="@+id/rupeeimage"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/text_name"
+        android:background="@drawable/rupeen"
+        />
+
+    <TextView
+        android:id="@+id/Price"
+        android:layout_below="@id/text_name"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="8dp"
+        android:text="10000"
+        android:textSize="20dp"
+        android:layout_toRightOf="@+id/rupeeimage"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/text_desc"
+        android:layout_below="@+id/Price"
+        android:layout_width="370dp"
+        android:layout_height="150dp"
+        android:layout_weight="60"
+        android:text="The 13-inch MacBook Pro has a 2.5- or 2.9-GHz chip, while the one on the 15-inch MacBook Pro is a more powerful but slower 2.3 GHz quad-core Intel Core i7. Peak installed memory on the MacBook Air is 8GB, with 1600MHz DDR3 architecture."
+        android:textSize="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/call_seller"
+        android:layout_below="@+id/text_desc"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:clickable="true"
+        android:text="Call to Seller"
+        />
+
+
+    <TextView
+        android:id="@+id/ReportA"
+        android:layout_below="@+id/text_desc"
+        android:layout_marginTop="130dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Report to Admin"
+        />
+
+
+
+</RelativeLayout>
