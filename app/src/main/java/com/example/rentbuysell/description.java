@@ -89,7 +89,7 @@ public class description extends AppCompatActivity {
         if(requestCode==Request_Call)
         {    String Mobile_No=getIntent().getStringExtra("Mobile_no");
 
-            if(grantResults.length >0 &&  grantResults[1]==PackageManager.PERMISSION_GRANTED)
+            if(grantResults.length >0 &&  grantResults[0]==PackageManager.PERMISSION_GRANTED)
                 makephonecall(Mobile_No);
             else
                 Toast.makeText(this,"Permission Denied",Toast.LENGTH_SHORT).show();

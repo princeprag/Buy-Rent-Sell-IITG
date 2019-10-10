@@ -1,9 +1,19 @@
 package com.example.rentbuysell;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -19,9 +29,12 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.squareup.picasso.Picasso;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -31,7 +44,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Drawer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
@@ -40,13 +59,29 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
     private NavigationView navigationView;
     private Toolbar toolbar;
     private FirebaseFirestore db= FirebaseFirestore.getInstance();
-    private CollectionReference productref= db.collection("Product");
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseUser currentuser=mAuth.getCurrentUser();
+    private GoogleSignInClient mGoogleSignInClient;
+    ImageView pro_pic;
+    TextView name,Email;
     private productAdapter adapter;
+   // Button signout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
+
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        put_userdata(acct);
+
+
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -82,7 +117,19 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
 
 
 
+
     }
+    private CollectionReference userref= db.collection("users");
+
+    private void put_profiledata(String name,String Email,ImageView pro_pic)
+    {
+
+
+
+
+    }
+
+
 
    /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -134,9 +181,13 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                 break;
 
 
+
             case R.id.nav_giveAway:
                 Intent s5 = new Intent(Drawer.this,GiveAway.class);
                 startActivity(s5);
+                break;
+            case R.id.signOut:
+               signout();
                 break;
         }
 
@@ -153,8 +204,10 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
             super.onBackPressed();
         }
     }
+    /*Recycler View showing Data From the data Base*/
+    private CollectionReference productref= db.collection("Product");
     private void setUpRecyclerview(){
-        Query query=productref;//.orderBy("price",Query.Direction.DESCENDING);
+        Query query=productref;
         FirestoreRecyclerOptions<product_part> options=new FirestoreRecyclerOptions.Builder<product_part>().setQuery(query,product_part.class).build();
         adapter=new productAdapter(options,this);
         RecyclerView recyclerView=findViewById(R.id.recyclerView);
@@ -163,16 +216,53 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
         recyclerView.setAdapter(adapter);
 
     }
-
     @Override
     protected void onStart() {
         super.onStart();
         adapter.startListening();
     }
 
+
     @Override
     protected void onStop() {
         super.onStop();
         adapter.stopListening();
     }
+    private void signout() {
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                       Intent intent = new Intent(Drawer.this,MainActivity.class);
+                       startActivity(intent);
+                        finish();
+                        Toast.makeText(Drawer.this, "SignOut Succesfully", Toast.LENGTH_LONG).show();
+
+                    }
+                });
+    }
+    private void put_userdata(GoogleSignInAccount acct)
+    { navigationView = findViewById(R.id.nav_view);
+      View headerview=navigationView.getHeaderView(0);
+        pro_pic=headerview.findViewById(R.id.pic);
+        name=headerview.findViewById(R.id.name_user);
+        Email=headerview.findViewById(R.id.email_user);
+
+       if (acct != null) {
+            String personName = acct.getDisplayName();
+            String personEmail = acct.getEmail();
+            Uri personPhoto = acct.getPhotoUrl();
+           // String Url=personPhoto.toString();
+            name.setText(personName);
+            Email.setText(personEmail);
+           // Picasso.get().load(String.valueOf(personPhoto)).fit().into(pro_pic);
+            Glide.with(this).load(String.valueOf(personPhoto)).into(pro_pic);
+        }
+//       name.setText(currentuser.getDisplayName());
+//       Email.setText(currentuser.getEmail());
+//       Glide.with(this).load(currentuser.getPhotoUrl()).into(pro_pic);
+
+    }
+
+
 }

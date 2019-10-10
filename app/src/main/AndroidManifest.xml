@@ -3,7 +3,7 @@
     package="com.example.rentbuysell">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".description"></activity>
+        <activity android:name=".signIn"></activity>
+        <activity android:name=".description" />
         <activity android:name=".Swap_Item_List" />
         <activity android:name=".ListGiveAwayItems" />
         <activity android:name=".GiveAway" />

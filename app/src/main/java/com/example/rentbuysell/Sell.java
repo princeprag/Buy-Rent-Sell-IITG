@@ -186,7 +186,7 @@ public class Sell extends AppCompatActivity {
                 }
             });}
         else{
-            Toast.makeText(this,"Image not selected or Field left Empty!!!!!!!!!",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Image not selected or any field left Empty!!!!!!!!!",Toast.LENGTH_LONG).show();
         }
         Log.d("Str",s);
         return s;
