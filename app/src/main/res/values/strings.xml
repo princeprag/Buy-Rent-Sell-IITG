@@ -22,4 +22,31 @@
         <item> Home and Furniture</item>
         <item> Fashion and Wearings</item>
     </string-array>
+
+
+    <string-array name="cat">
+    <item> E</item>
+    <item> B</item>
+    <item> S</item>
+    <item> H</item>
+    <item> F</item>
+    </string-array>
+
+    <string-array name="Hostel">
+        <item> Barak </item>
+        <item> Brahmaputra </item>
+        <item> Dhansiri </item>
+        <item> Dibang </item>
+        <item> Dihing </item>
+        <item> Disang</item>
+        <item> Kameng </item>
+        <item> Kapili </item>
+        <item> Lohit</item>
+        <item> Manas</item>
+        <item> MHS </item>
+        <item> Siang </item>
+        <item> Staff/Faculty</item>
+        <item> Subansiri</item>
+        <item> Umiam </item>
+    </string-array>
 </resources>

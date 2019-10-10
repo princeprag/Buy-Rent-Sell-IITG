@@ -5,26 +5,23 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+
         <item
             android:id="@+id/nav_sell"
-            android:icon="@drawable/ic_menu_gallery"
+
             android:title="SELL" />
         <item
             android:id="@+id/nav_rent"
-            android:icon="@drawable/ic_menu_slideshow"
+
             android:title="RENT" />
         <item
             android:id="@+id/nav_giveAway"
-            android:icon="@drawable/ic_menu_manage"
+
             android:title="Give Away" />
 
         <item
             android:id="@+id/nav_swap"
-            android:icon="@drawable/ic_menu_manage"
+
             android:title="Swap" />
 
 
@@ -34,19 +31,19 @@
         <menu>
             <item
                 android:id="@+id/nav_aboutUs"
-                android:icon="@drawable/ic_menu_manage"
+
                 android:title="AboutUs" />
             <item
                 android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
+
                 android:title="@string/menu_share" />
             <item
                 android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
+
                 android:title="@string/menu_send" />
             <item
                 android:id="@+id/signOut"
-                android:icon="@drawable/ic_menu_camera"
+
                 android:title="Sign Out"/>
 
         </menu>

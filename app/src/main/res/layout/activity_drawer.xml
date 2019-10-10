@@ -1,53 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:openDrawer="start">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!--    <com.google.android.material.appbar.AppBarLayout-->
+    <!--        android:id="@+id/appbarlayout2"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:elevation="10dp"-->
+    <!--        android:layout_marginTop="10dp"-->
+    <!--        android:theme="@style/AppTheme.AppBarOverlay">-->
+
+    <!--       -->
+
+    <!--</com.google.android.material.appbar.AppBarLayout>-->
 
 
 
-    <LinearLayout
+    <!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--        android:layout_below="@id/appbarlayout2"-->
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+
+    <androidx.drawerlayout.widget.DrawerLayout
+
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-        <FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="8dp">
-
-
-        </androidx.recyclerview.widget.RecyclerView>/>
-        </FrameLayout>
-
-    </LinearLayout>
-<com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_drawer"
-        app:menu="@menu/activity_drawer_drawer" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:openDrawer="start">
 
 
-</androidx.drawerlayout.widget.DrawerLayout>
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            </androidx.appcompat.widget.Toolbar>
+
+            <com.gigamole.navigationtabstrip.NavigationTabStrip
+
+
+
+
+                android:id="@+id/nts"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:background="@color/colorPrimary"
+
+                app:nts_titles="@array/cat"
+                app:nts_color="#ffd000"
+                app:nts_size="15sp"
+
+                app:nts_weight="10dp"
+                app:nts_factor="2.5"
+                app:nts_type="point"
+                app:nts_gravity="bottom"
+                app:nts_typeface="fonts/typeface.otf"
+                app:nts_corners_radius="5dp"
+                app:nts_animation_duration="300"
+                app:nts_active_color="#ffffffff"
+                app:nts_inactive_color="#80ffffff"
+                android:elevation="1dp"/>
+
+            <androidx.viewpager.widget.ViewPager
+                android:layout_below="@+id/nts"
+                android:id="@+id/pager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="8dp">
+
+                </androidx.recyclerview.widget.RecyclerView>
+            </androidx.viewpager.widget.ViewPager>
+            />
+            />
+
+        </LinearLayout>
+
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:headerLayout="@layout/nav_header_drawer"
+            app:menu="@menu/activity_drawer_drawer" />
+
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+    <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
+</RelativeLayout>

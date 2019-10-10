@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.gigamole.navigationtabstrip.NavigationTabStrip;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -17,12 +18,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -42,8 +47,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.view.Menu;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -64,6 +71,9 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
     private GoogleSignInClient mGoogleSignInClient;
     ImageView pro_pic;
     TextView name,Email;
+    private ViewPager mViewPager;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+
     private productAdapter adapter;
    // Button signout;
 
@@ -83,7 +93,17 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
 
 
         toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
+
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setCurrentItem(0);
+
+
+        final NavigationTabStrip navigationTabStrip = (NavigationTabStrip) findViewById(R.id.nts);
+        navigationTabStrip.setViewPager(mViewPager);
+
 
 
 
@@ -97,7 +117,7 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         //setContentView(R.layout.fragment_home);
-        setUpRecyclerview();
+//        setUpRecyclerview();
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         /*mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -110,9 +130,7 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
         NavigationUI.setupWithNavController(navigationView, navController);
     }*/
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new HomeFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_home);
+
         }
 
 
@@ -201,12 +219,13 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            //super.onBackPressed();
+            moveTaskToBack(true);
         }
     }
     /*Recycler View showing Data From the data Base*/
     private CollectionReference productref= db.collection("Product");
-    private void setUpRecyclerview(){
+   /* private void setUpRecyclerview(){
         Query query=productref;
         FirestoreRecyclerOptions<product_part> options=new FirestoreRecyclerOptions.Builder<product_part>().setQuery(query,product_part.class).build();
         adapter=new productAdapter(options,this);
@@ -227,7 +246,7 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
     protected void onStop() {
         super.onStop();
         adapter.stopListening();
-    }
+    }*/
     private void signout() {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
@@ -263,6 +282,127 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
 //       Glide.with(this).load(currentuser.getPhotoUrl()).into(pro_pic);
 
     }
+
+
+
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            // getItem is called to instantiate the fragment for the given page.
+            // Return a PlaceholderFragment (defined as a static inner class below).
+            return PlaceholderFragment.newInstance(position + 1);
+        }
+
+        @Override
+        public int getCount() {
+            // Show 3 total pages.
+            return 5;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "ELECTRONICS";
+                case 1:
+                    return "BOOKS";
+                case 2:
+                    return "Sports";
+                case 3:
+                    return "Furniture";
+                case 4:
+                    return "Fashion";
+
+            }
+            return null;
+        }
+    }
+
+
+
+
+
+
+
+
+    public static class PlaceholderFragment extends Fragment {
+        /**
+         * The fragment argument representing the section number for this
+         * fragment.
+         */
+        private static final String ARG_SECTION_NUMBER = "section_number";
+
+        public PlaceholderFragment() {
+        }
+
+        /**
+         * Returns a new instance of this fragment for the given section
+         * number.
+         */
+        public static PlaceholderFragment newInstance(int sectionNumber) {
+            PlaceholderFragment fragment = new PlaceholderFragment();
+            Bundle args = new Bundle();
+            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+
+            View xyz = null;
+            View z=null;
+            View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+
+
+            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+
+
+
+            if (getArguments().getInt(ARG_SECTION_NUMBER) == 1) {
+                xyz = inflater.inflate(R.layout.activity_electronics, container, false);
+
+
+
+            }
+
+            if (getArguments().getInt(ARG_SECTION_NUMBER) == 2) {
+                xyz = inflater.inflate(R.layout.activity_books, container, false);
+
+
+
+            }
+
+            if (getArguments().getInt(ARG_SECTION_NUMBER) == 3) {
+                xyz = inflater.inflate(R.layout.activity_sports, container, false);
+
+
+
+            }
+            if (getArguments().getInt(ARG_SECTION_NUMBER) == 4) {
+                xyz = inflater.inflate(R.layout.activity_furniture, container, false);
+
+
+
+            }
+            if (getArguments().getInt(ARG_SECTION_NUMBER) == 5) {
+                xyz = inflater.inflate(R.layout.activity_wearing, container, false);
+
+
+
+            }
+
+
+//            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            return xyz;
+        }}
+
 
 
 }
