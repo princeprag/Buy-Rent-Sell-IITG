@@ -37,6 +37,8 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.squareup.picasso.Picasso;
@@ -76,6 +78,7 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
     TextView name, Email;
     private ViewPager mViewPager;
     private ViewPagerAdapter mSectionsPagerAdapter;
+    public static users myuser = new users();
 
     private productAdapter adapter;
     // Button signout;
@@ -92,7 +95,7 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-        put_userdata(acct);
+        put_userdata_header(acct);
 
 
         toolbar = findViewById(R.id.toolbar);
@@ -148,14 +151,12 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
         }
 
 
+
+
     }
 
     private CollectionReference userref = db.collection("users");
-
-    private void put_profiledata(String name, String Email, ImageView pro_pic) {
-
-
-    }
+/////////////////
 
 
 
@@ -202,8 +203,8 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                 break;
 
             case R.id.nav_aboutUs:
-                Intent s4 = new Intent(Drawer.this, sample.class);
-                startActivity(s4);
+                /*Toast.makeText(this, mAuth.getCurrentUser().getUid().toString(), Toast.LENGTH_SHORT).show();*/
+
                 break;
 
 
@@ -247,7 +248,8 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
      @Override
      protected void onStart() {
          super.onStart();
-         //adapter.startListening();
+         getUserDetails();
+
      }
 
 
@@ -270,7 +272,7 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                 });
     }
 
-    private void put_userdata(GoogleSignInAccount acct) {
+    private void put_userdata_header(GoogleSignInAccount acct) {
         navigationView = findViewById(R.id.nav_view);
         View headerview = navigationView.getHeaderView(0);
         pro_pic = headerview.findViewById(R.id.pic);
@@ -294,8 +296,61 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
     }
 
 
+    private void getUserDetails(){
+         String uid= mAuth.getCurrentUser().getUid();
+       DocumentReference docref= db.collection("users").document(uid);
+       docref.get().addOnCompleteListener(
+               new OnCompleteListener<DocumentSnapshot>() {
+                   @Override
+                   public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                       if (task.isSuccessful()) {
+                           DocumentSnapshot documentSnapshot = task.getResult();
 
+                           if (documentSnapshot != null) {
+
+                               myuser.setHOSTEL(documentSnapshot.getString("Hostel"));
+                               myuser.setNAME(documentSnapshot.getString("Name"));
+                               myuser.setEMAIL(documentSnapshot.getString("Email"));
+                               myuser.setMOILE_NUMBER(documentSnapshot.getString("Mobile Number"));
+                               myuser.setROLL_NUMBER(documentSnapshot.getString("Roll Number"));
+                               myuser.setIMAGE_URL(documentSnapshot.getString("Image Url"));
+                               put_userdata_header();
+                              // Toast.makeText(Drawer.this,documentSnapshot.getString("Hostel")+documentSnapshot.getString("Name")+documentSnapshot.getString("Email"), Toast.LENGTH_SHORT).show();
+                           } else {
+                               Toast.makeText(Drawer.this, "Document snapshot null", Toast.LENGTH_SHORT).show();
+                           }
+                       }else{
+
+                           Toast.makeText(Drawer.this, "Task is unsuccessfull because"+task.getException(), Toast.LENGTH_SHORT).show();
+                       }
+                   }
+               });
     }
+
+    private void put_userdata_header() {
+        navigationView = findViewById(R.id.nav_view);
+        View headerview = navigationView.getHeaderView(0);
+        pro_pic = headerview.findViewById(R.id.pic);
+        name = headerview.findViewById(R.id.name_user);
+        Email = headerview.findViewById(R.id.email_user);
+        name.setText(myuser.getNAME());
+        Toast.makeText(this, myuser.getNAME(), Toast.LENGTH_SHORT).show();
+        Email.setText(myuser.getEMAIL());
+        //Toast.makeText(this, myuser.getEMAIL(), Toast.LENGTH_SHORT).show();
+        String url_string = myuser.getIMAGE_URL();
+        Uri url_uri = Uri.parse(url_string);
+        Glide.with(this).load(String.valueOf(url_uri)).into(pro_pic);
+
+
+       /* Emails = mAuth.getCurrentUser().getEmail();
+        picUrl= mAuth.getCurrentUser().getPhotoUrl();*/
+    }
+
+
+
+
+
+}
 
 
 

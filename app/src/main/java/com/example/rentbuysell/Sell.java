@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -43,6 +45,9 @@ public class Sell extends AppCompatActivity {
     private static final String KEY_MODE="MODE";
     private static final String KEY_CONTACT="MOBILENO";
     private static final String KEY_CATOGARY="CATOGARY";
+    private static final String KEY_UID="UID";
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private  String uid = mAuth.getCurrentUser().getUid();
 
     Spinner category;
     public String s="null",t="null1";
@@ -50,9 +55,11 @@ public class Sell extends AppCompatActivity {
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef= storage.getReference();
+
     private final int PICK_IMAGE_REQUEST = 71;
     private Uri filePath;
     ImageView imageView;
+    TextView welcome;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
@@ -70,7 +77,10 @@ public class Sell extends AppCompatActivity {
         category=(Spinner)findViewById(R.id.category);
         txt_number=(EditText)findViewById(R.id.edt_number);
         txt_path=(TextView) findViewById(R.id.filepath);
+        welcome=(TextView) findViewById(R.id.welcome);
+        Toast.makeText(this, uid, Toast.LENGTH_SHORT).show();
         String url_string;
+
 
 
         Upload.setOnClickListener(
@@ -206,20 +216,24 @@ public class Sell extends AppCompatActivity {
         data.put(KEY_DESCRIPTION,description);
         data.put(KEY_PRICE,price);
         data.put(KEY_URL,s1);
-        data.put(KEY_MODE,"SELL");
+        data.put(KEY_MODE,"ON SALE");
         data.put(KEY_CONTACT,number);
         data.put(KEY_CATOGARY,cat);
-        db.collection(cat).document().set(data)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+        data.put(KEY_UID,uid);
+        DocumentReference ref= db.collection(cat).document();
+                ref.set(data)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(Sell.this,"Successful",Toast.LENGTH_LONG).show();
+                                     Toast.makeText(Sell.this,"Successful",Toast.LENGTH_LONG).show();
+                                      text_name.setText("");
+                                      text_description.setText("");
+                                      text_price.setText("");
+                                      txt_number.setText("");
+                                      txt_path.setText("");
 
-                        text_name.setText("");
-                        text_description.setText("");
-                        text_price.setText("");
-                        txt_number.setText("");
-                        txt_path.setText("");
+
+
 
 
                     }
@@ -231,6 +245,8 @@ public class Sell extends AppCompatActivity {
 
                     }
                 });
+
+        Toast.makeText(this, ref.getId(), Toast.LENGTH_SHORT).show();
 
 
     }

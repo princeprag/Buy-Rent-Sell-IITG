@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -38,6 +39,9 @@ public class GiveAway extends AppCompatActivity {
     private static final String KEY_URL="URL TO IMAGE:";
     private static final String KEY_MODE="MODE:";
     private static final String KEY_CONTACT="CONTACT NO:";
+    private static final String KEY_UID="UID";
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private  String uid = mAuth.getCurrentUser().getUid();
 
 
     Spinner category;
@@ -235,6 +239,7 @@ public class GiveAway extends AppCompatActivity {
         data.put(KEY_URL,s1);
         data.put(KEY_MODE,"GIVE AWAY");
         data.put(KEY_CONTACT,number);
+        data.put(KEY_UID,uid);
 
 
 

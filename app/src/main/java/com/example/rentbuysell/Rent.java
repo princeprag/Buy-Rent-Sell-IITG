@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -41,6 +43,9 @@ public class Rent extends AppCompatActivity {
     private static final String KEY_MODE="MODE:";
     private static final String KEY_CONTACT="CONTACT NO:";
     private static final String KEY_PERIOD="DURATION OF RENT:";
+    private static final String KEY_UID="UID";
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private  String uid = mAuth.getCurrentUser().getUid();
 
     Spinner category;
     public String s="null",t="null1";
@@ -241,13 +246,15 @@ public class Rent extends AppCompatActivity {
         data.put(KEY_DESCRIPTION,description);
         data.put(KEY_PRICE,price);
         data.put(KEY_URL,s1);
-        data.put(KEY_MODE,"RENT");
+        data.put(KEY_MODE,"ON RENT");
         data.put(KEY_CONTACT,number);
         data.put(KEY_PERIOD,period);
+        data.put(KEY_UID,uid);
 
 
 
-        db.collection(cat).document().set(data)
+       DocumentReference dref= db.collection(cat).document();
+       dref.set(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -270,12 +277,37 @@ public class Rent extends AppCompatActivity {
 
                     }
                 });
+        String id= dref.getId();
+        Toast.makeText(this, id, Toast.LENGTH_SHORT).show();
 
 
 
 
 
+/* db.collection(cat).document().set(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(Rent.this,"Successful",Toast.LENGTH_LONG).show();
 
+                        text_name.setText("");
+                        text_description.setText("");
+                        text_price.setText("");
+                        txt_number.setText("");
+                        txt_period.setText("");
+                        txt_path.setText("");
+                        //   progressDialog.dismiss();
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(Rent.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+/////////////
 
 
 

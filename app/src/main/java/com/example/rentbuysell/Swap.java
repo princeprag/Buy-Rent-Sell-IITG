@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -40,6 +41,9 @@ public class Swap extends AppCompatActivity {
     private static final String KEY_MODE="MODE:";
     private static final String KEY_CONTACT="CONTACT NO:";
     private static final String KEY_DESCRIPTION_RETURN_ITEM="DESCRIPTION OF ITEM YOU WISH:";
+    private static final String KEY_UID="UID";
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private  String uid = mAuth.getCurrentUser().getUid();
 
     Spinner category;
     public String s="null",t="null1";
@@ -238,6 +242,7 @@ public class Swap extends AppCompatActivity {
         data.put(KEY_MODE,"SWAP");
         data.put(KEY_CONTACT,number);
         data.put(KEY_DESCRIPTION_RETURN_ITEM,dback);
+        data.put(KEY_UID,uid);
 
 
 
