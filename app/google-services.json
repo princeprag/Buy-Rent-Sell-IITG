@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "450367870426",
+    "firebase_url": "https://rentbuysell-4d576.firebaseio.com",
+    "project_id": "rentbuysell-4d576",
+    "storage_bucket": "rentbuysell-4d576.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:450367870426:android:c83ccdd2b900cfd4719ce3",
+        "android_client_info": {
+          "package_name": "com.example.rentbuysell"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "450367870426-fe9f6ljtghq2fvgj7bt0rudpb914ja4f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.rentbuysell",
+            "certificate_hash": "c6a5e7adddc26c488fa846acf90817adeba172f8"
+          }
+        },
+        {
+          "client_id": "450367870426-lhefahokjsmucde9av3sgd0r4in002bf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvUZ2DXS-F67O0znszzaEDvOfyJlWY7Xs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "450367870426-lhefahokjsmucde9av3sgd0r4in002bf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

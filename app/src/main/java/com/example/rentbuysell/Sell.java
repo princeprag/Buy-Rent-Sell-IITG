@@ -209,7 +209,7 @@ public class Sell extends AppCompatActivity {
         data.put(KEY_MODE,"SELL");
         data.put(KEY_CONTACT,number);
         data.put(KEY_CATOGARY,cat);
-        db.collection("Product").document().set(data)
+        db.collection(cat).document().set(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

@@ -4,19 +4,19 @@
     android:layout_height="match_parent">
 
 
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Electronics and Appliances"
+        android:text="Vehicles and Automobiles"
         android:layout_marginTop="10dp"
-
         android:textSize="30dp"
         android:paddingLeft="10dp"
         />
-
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recycler_appliances"/>
+        android:id="@+id/recycler_vehicles"/>
+
 </LinearLayout>

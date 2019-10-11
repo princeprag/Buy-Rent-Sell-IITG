@@ -17,13 +17,17 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 public class productAdapter extends FirestoreRecyclerAdapter<product_part,productAdapter.productHolder> {
     private Context mContext;
+
 
     public productAdapter(@NonNull FirestoreRecyclerOptions<product_part> options, Context mContext) {
         super(options);
         this.mContext = mContext;
-    }
+
+}
 
     //  public productAdapter(@NonNull FirestoreRecyclerOptions<Product_list> options) {
     //      super(options);
@@ -37,6 +41,7 @@ public class productAdapter extends FirestoreRecyclerAdapter<product_part,produc
         productHolder.pPrice.setText(product_list.getPRICE());
         String imURL=product_list.getIMAGEURL();
         Picasso.get().load(imURL).fit().into(productHolder.imageView);
+
         productHolder.listproduct.setOnClickListener(new View.OnClickListener() {
             @Override
 
@@ -63,7 +68,7 @@ public class productAdapter extends FirestoreRecyclerAdapter<product_part,produc
         return new productHolder(v);
     }
 
-    public class productHolder extends RecyclerView.ViewHolder {
+    public  class productHolder extends RecyclerView.ViewHolder {
         TextView Shortdesc;
         TextView Name;
         ImageView imageView;

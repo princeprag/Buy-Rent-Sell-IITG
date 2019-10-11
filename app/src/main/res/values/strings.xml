@@ -16,20 +16,22 @@
     <string name="menu_send">Send</string>
 
     <string-array name="category">
-        <item> Electronics andAppliances</item>
+        <item> Electronics and Appliances</item>
         <item> Books and Stationary</item>
-        <item> Sports</item>
+        <item> Sports and Accesories</item>
         <item> Home and Furniture</item>
         <item> Fashion and Wearings</item>
+        <item> Vehicles and Automobiles</item>
     </string-array>
 
 
     <string-array name="cat">
-    <item> E</item>
-    <item> B</item>
-    <item> S</item>
-    <item> H</item>
-    <item> F</item>
+        <item> E</item>
+        <item> B</item>
+        <item> S</item>
+        <item> H</item>
+        <item> F</item>
+        <item> V</item>
     </string-array>
 
     <string-array name="Hostel">
