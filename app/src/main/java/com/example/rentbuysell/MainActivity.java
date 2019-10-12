@@ -27,6 +27,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseFirestore  db= FirebaseFirestore.getInstance();
     EditText email,password;
     TextView forgot_pass;
+    private users myuser;
     Button login;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         forgot_pass=(TextView)findViewById(R.id.forgot);
         login=(Button)findViewById(R.id.log_in);
         loginnwGmail=(Button)findViewById(R.id.gmail_btn);
+        myuser= new users(this);
         loginnwGmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -210,8 +213,9 @@ public class MainActivity extends AppCompatActivity {
                                 // Sign in success, update UI with the signed-in user's information
 //                                    Log.d(TAG, "signInWithEmail:success");
                                 Toast.makeText(MainActivity.this, "Welcome Back", Toast.LENGTH_SHORT).show();
-                                Intent i= new Intent(MainActivity.this,Drawer.class);
-                                startActivity(i);
+                                //Intent i= new Intent(MainActivity.this,Drawer.class);
+                                //startActivity(i);
+                                onSuccessfulAuthentication();
                                 FirebaseUser user = mAuth.getCurrentUser();
 //
                             } else {
@@ -224,5 +228,45 @@ public class MainActivity extends AppCompatActivity {
                     });
 
         }
+
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
+
+
+
+
+    private void onSuccessfulAuthentication() {
+
+        db.collection("users").document(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        // Toast.makeText(getApplicationContext(),"Hi "+document.getData().get("name").toString(),Toast.LENGTH_LONG).show();
+                        myuser.createSession(document.getString("Name"),
+                                document.getString("Hostel"),
+                                document.getString("Roll Number"),
+                                document.getString("Email"),
+                                document.getString("Mobile Number"),
+                                document.getString("Image Url"),
+                                mAuth.getCurrentUser().getUid());
+                        Intent p = new Intent(MainActivity.this, Drawer.class);
+                        startActivity(p);
+                    } else {
+                        Toast.makeText(MainActivity.this, "Your session created", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
+
+    }
 
 }

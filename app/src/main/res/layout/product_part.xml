@@ -61,5 +61,15 @@
             android:hint="INR 56990"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
             android:textStyle="bold" />
+        <TextView
+            android:id="@+id/mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="On Sale"
+            android:textSize="25dp"
+            android:layout_toRightOf="@+id/textViewPrice"
+            android:layout_below="@+id/textViewShortDesc"
+            android:textStyle="bold"
+            android:layout_marginLeft="8dp"/>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

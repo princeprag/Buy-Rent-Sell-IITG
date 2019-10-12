@@ -204,6 +204,7 @@ public class Sell extends AppCompatActivity {
 
 
     public void Uploadtext(String s1){
+
         String name = text_name.getText().toString();
         String description = text_description.getText().toString();
         String price= text_price.getText().toString();
@@ -247,11 +248,22 @@ public class Sell extends AppCompatActivity {
                 });
 
         Toast.makeText(this, ref.getId(), Toast.LENGTH_SHORT).show();
+        DocumentReference refuser=db.collection("users").document(uid).collection("Product").document();
+        refuser.set(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(Sell.this,"Successful",Toast.LENGTH_LONG).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(Sell.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
 
+                    }
+                });
 
     }
-
-
-
 
 }

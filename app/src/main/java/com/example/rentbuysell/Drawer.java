@@ -78,8 +78,7 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
     TextView name, Email;
     private ViewPager mViewPager;
     private ViewPagerAdapter mSectionsPagerAdapter;
-    public static users myuser = new users();
-
+    public  users myuser ;
     private productAdapter adapter;
     // Button signout;
 
@@ -95,8 +94,10 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        //put_userdata_header(acct);
         put_userdata_header(acct);
 
+        myuser = new users(this);
 
         toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
@@ -212,6 +213,10 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                 Intent s5 = new Intent(Drawer.this, GiveAway.class);
                 startActivity(s5);
                 break;
+            case R.id.nav_myinfo:
+                Intent s6=new Intent(Drawer.this,MyData.class);
+                startActivity(s6);
+                break;
             case R.id.signOut:
                 signout();
                 break;
@@ -245,21 +250,21 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
          recyclerView.setAdapter(adapter);
 */
 
-     @Override
-     protected void onStart() {
-         super.onStart();
-         getUserDetails();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        get_put_userDetails();
 
-     }
-
-
-     @Override
-     protected void onStop() {
-         super.onStop();
-       //  adapter.stopListening();
-     }
+    }
+//
+//
+//     @Override
+//     protected void onStop() {
+//         super.onStop();
+//       //  adapter.stopListening();
+//     }
     private void signout() {
-        mGoogleSignInClient.signOut()
+       /* mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -269,7 +274,13 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                         Toast.makeText(Drawer.this, "SignOut Succesfully", Toast.LENGTH_LONG).show();
 
                     }
-                });
+                });*/
+        myuser.logout();
+        Intent it= new Intent(Drawer.this,MainActivity.class);
+        startActivity(it);
+        it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
     }
 
     private void put_userdata_header(GoogleSignInAccount acct) {
@@ -296,55 +307,48 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
     }
 
 
-    private void getUserDetails(){
-         String uid= mAuth.getCurrentUser().getUid();
-       DocumentReference docref= db.collection("users").document(uid);
-       docref.get().addOnCompleteListener(
-               new OnCompleteListener<DocumentSnapshot>() {
-                   @Override
-                   public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                       if (task.isSuccessful()) {
-                           DocumentSnapshot documentSnapshot = task.getResult();
+    private void get_put_userDetails(){
+        final String uid= mAuth.getCurrentUser().getUid();
+        DocumentReference docref= db.collection("users").document(uid);
+        docref.get().addOnCompleteListener(
+                new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
 
-                           if (documentSnapshot != null) {
+                            if (documentSnapshot != null) {
 
-                               myuser.setHOSTEL(documentSnapshot.getString("Hostel"));
-                               myuser.setNAME(documentSnapshot.getString("Name"));
-                               myuser.setEMAIL(documentSnapshot.getString("Email"));
-                               myuser.setMOILE_NUMBER(documentSnapshot.getString("Mobile Number"));
-                               myuser.setROLL_NUMBER(documentSnapshot.getString("Roll Number"));
-                               myuser.setIMAGE_URL(documentSnapshot.getString("Image Url"));
-                               put_userdata_header();
-                              // Toast.makeText(Drawer.this,documentSnapshot.getString("Hostel")+documentSnapshot.getString("Name")+documentSnapshot.getString("Email"), Toast.LENGTH_SHORT).show();
-                           } else {
-                               Toast.makeText(Drawer.this, "Document snapshot null", Toast.LENGTH_SHORT).show();
-                           }
-                       }else{
+                                String names,email,pic_url;
 
-                           Toast.makeText(Drawer.this, "Task is unsuccessfull because"+task.getException(), Toast.LENGTH_SHORT).show();
-                       }
-                   }
-               });
+
+
+                                navigationView = findViewById(R.id.nav_view);
+                                View headerview = navigationView.getHeaderView(0);
+                                pro_pic = headerview.findViewById(R.id.pic);
+                                name = headerview.findViewById(R.id.name_user);
+                                Email = headerview.findViewById(R.id.email_user);
+                                name.setText(documentSnapshot.getString("Name"));
+                                //Toast.makeText(this, myuser.getNAME(), Toast.LENGTH_SHORT).show();
+                                Email.setText(documentSnapshot.getString("Email"));
+                                //Toast.makeText(this, myuser.getEMAIL(), Toast.LENGTH_SHORT).show();
+                                String url_string = documentSnapshot.getString("Image Url");
+                                Uri url_uri = Uri.parse(url_string);
+
+                                Glide.with(Drawer.this).load(String.valueOf(url_uri)).into(pro_pic);
+                                // Toast.makeText(Drawer.this,documentSnapshot.getString("Hostel")+documentSnapshot.getString("Name")+documentSnapshot.getString("Email"), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(Drawer.this, "Document snapshot null", Toast.LENGTH_SHORT).show();
+                            }
+                        }else{
+
+                            Toast.makeText(Drawer.this, "Task is unsuccessfull because"+task.getException(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
-    private void put_userdata_header() {
-        navigationView = findViewById(R.id.nav_view);
-        View headerview = navigationView.getHeaderView(0);
-        pro_pic = headerview.findViewById(R.id.pic);
-        name = headerview.findViewById(R.id.name_user);
-        Email = headerview.findViewById(R.id.email_user);
-        name.setText(myuser.getNAME());
-        Toast.makeText(this, myuser.getNAME(), Toast.LENGTH_SHORT).show();
-        Email.setText(myuser.getEMAIL());
-        //Toast.makeText(this, myuser.getEMAIL(), Toast.LENGTH_SHORT).show();
-        String url_string = myuser.getIMAGE_URL();
-        Uri url_uri = Uri.parse(url_string);
-        Glide.with(this).load(String.valueOf(url_uri)).into(pro_pic);
 
-
-       /* Emails = mAuth.getCurrentUser().getEmail();
-        picUrl= mAuth.getCurrentUser().getPhotoUrl();*/
-    }
 
 
 

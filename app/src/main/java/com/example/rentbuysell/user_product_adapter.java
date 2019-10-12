@@ -19,15 +19,15 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class productAdapter extends FirestoreRecyclerAdapter<product_part,productAdapter.productHolder> {
+public class user_product_adapter extends FirestoreRecyclerAdapter<product_part,user_product_adapter.productHolder> {
     private Context mContext;
 
 
-    public productAdapter(@NonNull FirestoreRecyclerOptions<product_part> options, Context mContext) {
+    public user_product_adapter(@NonNull FirestoreRecyclerOptions<product_part> options, Context mContext) {
         super(options);
         this.mContext = mContext;
 
-}
+    }
 
     //  public productAdapter(@NonNull FirestoreRecyclerOptions<Product_list> options) {
     //      super(options);
@@ -41,13 +41,12 @@ public class productAdapter extends FirestoreRecyclerAdapter<product_part,produc
         productHolder.pPrice.setText(product_list.getPRICE());
         String imURL=product_list.getIMAGEURL();
         Picasso.get().load(imURL).fit().into(productHolder.imageView);
-
         productHolder.listproduct.setOnClickListener(new View.OnClickListener() {
             @Override
 
             public void onClick(View v) {
                 // Toast.makeText(mContext,product_list.getname(),Toast.LENGTH_SHORT).show();
-                Intent i=new Intent(mContext,description.class);
+                Intent i=new Intent(mContext,User_Description.class);
                 i.putExtra("Name",product_list.getNAME());
                 i.putExtra("Shortdesc",product_list.getDESCRIPTION());
                 i.putExtra("ImageURL",product_list.getIMAGEURL());
@@ -88,4 +87,3 @@ public class productAdapter extends FirestoreRecyclerAdapter<product_part,produc
         }
     }
 }
-

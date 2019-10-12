@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".description"
+    tools:context=".User_Description"
     android:padding="10dp">
 
 
@@ -71,40 +71,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:clickable="true"
-        android:text="Call to Seller"/>
-    <Button
-        android:id="@+id/message_seller"
-        android:layout_below="@+id/call_seller"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:clickable="true"
-        android:text="Message the Seller"
+        android:background="@drawable/reg_btn_style"
+        android:text="  Delete this Product  "
         />
-
-    <Button
-        android:id="@+id/Delete"
-        android:layout_below="@+id/text_desc"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:clickable="true"
-        android:text="Delete Product"
-        android:visibility="invisible"
-        />
-
-
-    <TextView
-        android:id="@+id/ReportA"
-        android:layout_below="@+id/text_desc"
-        android:layout_marginTop="130dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Report to Admin"
-        />
-
-
 
 </RelativeLayout>

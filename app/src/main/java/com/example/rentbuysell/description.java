@@ -18,11 +18,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 public class description extends AppCompatActivity {
-    Button callseller;
+    Button callseller,messageseller;
+    TextView reportAdmin;
     private static final int Request_Call=2;
+    FirebaseAuth mAuth= FirebaseAuth.getInstance();
 
 
     @Override
@@ -30,7 +33,8 @@ public class description extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_description);
         callseller=findViewById(R.id.call_seller);
-
+        messageseller=findViewById(R.id.message_seller);
+        reportAdmin=findViewById(R.id.ReportA);
         callseller.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,11 +54,12 @@ public class description extends AppCompatActivity {
         String desc = i.getStringExtra("Shortdesc");
         String price = i.getStringExtra("Price");
         String imageurl=i.getStringExtra("ImageURL");
-        addData(name,desc,price,imageurl);
+        String uid=i.getStringExtra("UID");
+        addData(name,desc,price,imageurl,uid);
     }
 
     }
-    private void addData(String name,String desc,String price,String imageurl){
+    private void addData(String name,String desc,String price,String imageurl,String uid){
         TextView Name,Desc,Price;
         ImageView pic;
         Name=findViewById(R.id.text_name);
@@ -65,6 +70,9 @@ public class description extends AppCompatActivity {
         Desc.setText(desc);
         Price.setText(price);
         Picasso.get().load(imageurl).fit().into(pic);
+        String useruid=mAuth.getCurrentUser().getUid();
+
+
 
     }
     private void makephonecall(String mobile_No){

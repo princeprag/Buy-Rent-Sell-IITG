@@ -8,13 +8,13 @@ public class product_part {
     String NAME;
     String PRICE;
     String DESCRIPTION;
-    //String ID;
+    String UID;
 
     public product_part() {
 
     }
 
-    public product_part(String MODE, String IMAGEURL, String MOBILENO, String CATAGORY, String NAME, String PRICE, String DESCRIPTION){ //String ID) {
+    public product_part(String MODE, String IMAGEURL, String MOBILENO, String CATAGORY, String NAME, String PRICE, String DESCRIPTION,String ID) {
         this.MODE = MODE;
         this.IMAGEURL = IMAGEURL;
         this.MOBILENO = MOBILENO;
@@ -22,7 +22,7 @@ public class product_part {
         this.NAME = NAME;
         this.PRICE = PRICE;
         this.DESCRIPTION = DESCRIPTION;
-       // this.ID = ID;
+        this.UID = ID;
     }
 
     public String getMODE() {
@@ -53,7 +53,39 @@ public class product_part {
         return DESCRIPTION;
     }
 
-  /*  public String getID() {
-        return ID;
-    }*/
+    public String getUID() {
+        return UID;
+    }
+
+    public void setMODE(String MODE) {
+        this.MODE = MODE;
+    }
+
+    public void setIMAGEURL(String IMAGEURL) {
+        this.IMAGEURL = IMAGEURL;
+    }
+
+    public void setMOBILENO(String MOBILENO) {
+        this.MOBILENO = MOBILENO;
+    }
+
+    public void setCATEGORY(String CATEGORY) {
+        this.CATEGORY = CATEGORY;
+    }
+
+    public void setNAME(String NAME) {
+        this.NAME = NAME;
+    }
+
+    public void setPRICE(String PRICE) {
+        this.PRICE = PRICE;
+    }
+
+    public void setDESCRIPTION(String DESCRIPTION) {
+        this.DESCRIPTION = DESCRIPTION;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
+    }
 }
