@@ -333,9 +333,9 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                                 Email.setText(documentSnapshot.getString("Email"));
                                 //Toast.makeText(this, myuser.getEMAIL(), Toast.LENGTH_SHORT).show();
                                 String url_string = documentSnapshot.getString("Image Url");
-                                Uri url_uri = Uri.parse(url_string);
+                                //Uri url_uri = Uri.parse(url_string);
 
-                                Glide.with(Drawer.this).load(String.valueOf(url_uri)).into(pro_pic);
+                                Glide.with(Drawer.this).load(url_string).into(pro_pic);
                                 // Toast.makeText(Drawer.this,documentSnapshot.getString("Hostel")+documentSnapshot.getString("Name")+documentSnapshot.getString("Email"), Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(Drawer.this, "Document snapshot null", Toast.LENGTH_SHORT).show();

@@ -41,6 +41,8 @@ public class productAdapter extends FirestoreRecyclerAdapter<product_part,produc
         productHolder.pPrice.setText(product_list.getPRICE());
         String imURL=product_list.getIMAGEURL();
         Picasso.get().load(imURL).fit().into(productHolder.imageView);
+        productHolder.Mode.setText(product_list.getMODE());
+
 
         productHolder.listproduct.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +76,7 @@ public class productAdapter extends FirestoreRecyclerAdapter<product_part,produc
         TextView Name;
         ImageView imageView;
         TextView pPrice;
+        TextView Mode;
         RelativeLayout listproduct;
 
         public productHolder(@NonNull View itemView) {
@@ -83,7 +86,7 @@ public class productAdapter extends FirestoreRecyclerAdapter<product_part,produc
             pPrice=itemView.findViewById(R.id.textViewPrice);
             imageView=itemView.findViewById(R.id.imageView);
             listproduct=itemView.findViewById(R.id.list_product);
-
+            Mode=itemView.findViewById(R.id.mode);
 
         }
     }

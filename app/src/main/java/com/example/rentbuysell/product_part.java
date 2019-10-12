@@ -9,12 +9,13 @@ public class product_part {
     String PRICE;
     String DESCRIPTION;
     String UID;
+    String DURATION_OF_RENT;
 
     public product_part() {
 
     }
 
-    public product_part(String MODE, String IMAGEURL, String MOBILENO, String CATAGORY, String NAME, String PRICE, String DESCRIPTION,String ID) {
+    public product_part(String MODE, String IMAGEURL, String MOBILENO, String CATAGORY, String NAME, String PRICE, String DESCRIPTION,String ID,String Rent_Period) {
         this.MODE = MODE;
         this.IMAGEURL = IMAGEURL;
         this.MOBILENO = MOBILENO;
@@ -23,6 +24,7 @@ public class product_part {
         this.PRICE = PRICE;
         this.DESCRIPTION = DESCRIPTION;
         this.UID = ID;
+        this.DURATION_OF_RENT=Rent_Period;
     }
 
     public String getMODE() {
@@ -56,6 +58,9 @@ public class product_part {
     public String getUID() {
         return UID;
     }
+    public String getDURATION_OF_RENT(){
+        return DURATION_OF_RENT;
+    }
 
     public void setMODE(String MODE) {
         this.MODE = MODE;
@@ -87,5 +92,6 @@ public class product_part {
 
     public void setUID(String UID) {
         this.UID = UID;
+
     }
 }

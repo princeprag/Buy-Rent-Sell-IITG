@@ -36,14 +36,15 @@ public class Rent extends AppCompatActivity {
     Button Choose,Upload,Submit;
     EditText text_name,text_description,text_price,txt_number,txt_period;
     TextView txt_path;
-    private static final String KEY_NAME="NAME/BRAND:";
-    private static final String KEY_DESCRIPTION="DESCRIPTION:";
-    private static final String KEY_PRICE="PRICE:";
-    private static final String KEY_URL="URL TO IMAGE:";
-    private static final String KEY_MODE="MODE:";
-    private static final String KEY_CONTACT="CONTACT NO:";
-    private static final String KEY_PERIOD="DURATION OF RENT:";
+    private static final String KEY_NAME="NAME";
+    private static final String KEY_DESCRIPTION="DESCRIPTION";
+    private static final String KEY_PRICE="PRICE";
+    private static final String KEY_URL="IMAGEURL";
+    private static final String KEY_MODE="MODE";
+    private static final String KEY_CONTACT="MOBILENO";
+    private static final String KEY_PERIOD="DURATION_OF_RENT";
     private static final String KEY_UID="UID";
+    private static final String KEY_CATOGARY="CATOGARY";
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private  String uid = mAuth.getCurrentUser().getUid();
 
@@ -242,6 +243,7 @@ public class Rent extends AppCompatActivity {
 
 
         Map<String, Object> data = new HashMap<>();
+        data.put(KEY_CATOGARY,cat);
         data.put(KEY_NAME,name);
         data.put(KEY_DESCRIPTION,description);
         data.put(KEY_PRICE,price);
@@ -279,6 +281,23 @@ public class Rent extends AppCompatActivity {
                 });
         String id= dref.getId();
         Toast.makeText(this, id, Toast.LENGTH_SHORT).show();
+        DocumentReference userdref= db.collection("users").document(uid).collection("Product").document();
+        userdref.set(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(Rent.this,"Successful",Toast.LENGTH_LONG).show();
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(Rent.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
 
 
 
