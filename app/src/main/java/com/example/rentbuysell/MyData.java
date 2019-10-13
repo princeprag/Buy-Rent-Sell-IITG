@@ -1,5 +1,6 @@
 package com.example.rentbuysell;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -51,39 +52,43 @@ public class MyData extends AppCompatActivity {
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+        Intent i=new Intent(MyData.this,Drawer.class);
+        startActivity(i);
+    }
 
     /*private void getUserDetails(){
-        String uid= mAuth.getCurrentUser().getUid();
-        DocumentReference docref= db.collection("users").document(uid);
-        docref.get().addOnCompleteListener(
-                new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot documentSnapshot = task.getResult();
+            String uid= mAuth.getCurrentUser().getUid();
+            DocumentReference docref= db.collection("users").document(uid);
+            docref.get().addOnCompleteListener(
+                    new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot documentSnapshot = task.getResult();
 
-                            if (documentSnapshot != null) {
+                                if (documentSnapshot != null) {
 
-                                myuser.setHOSTEL(documentSnapshot.getString("Hostel"));
-                                myuser.setNAME(documentSnapshot.getString("Name"));
-                                myuser.setEMAIL(documentSnapshot.getString("Email"));
-                                myuser.setMOILE_NUMBER(documentSnapshot.getString("Mobile Number"));
-                                myuser.setROLL_NUMBER(documentSnapshot.getString("Roll Number"));
-                                myuser.setIMAGE_URL(documentSnapshot.getString("Image Url"));
-                                put_userdata_header();
-                                // Toast.makeText(Drawer.this,documentSnapshot.getString("Hostel")+documentSnapshot.getString("Name")+documentSnapshot.getString("Email"), Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(MyData.this, "Document snapshot null", Toast.LENGTH_SHORT).show();
+                                    myuser.setHOSTEL(documentSnapshot.getString("Hostel"));
+                                    myuser.setNAME(documentSnapshot.getString("Name"));
+                                    myuser.setEMAIL(documentSnapshot.getString("Email"));
+                                    myuser.setMOILE_NUMBER(documentSnapshot.getString("Mobile Number"));
+                                    myuser.setROLL_NUMBER(documentSnapshot.getString("Roll Number"));
+                                    myuser.setIMAGE_URL(documentSnapshot.getString("Image Url"));
+                                    put_userdata_header();
+                                    // Toast.makeText(Drawer.this,documentSnapshot.getString("Hostel")+documentSnapshot.getString("Name")+documentSnapshot.getString("Email"), Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(MyData.this, "Document snapshot null", Toast.LENGTH_SHORT).show();
+                                }
+                            }else{
+
+                                Toast.makeText(MyData.this, "Task is unsuccessfull because"+task.getException(), Toast.LENGTH_SHORT).show();
                             }
-                        }else{
-
-                            Toast.makeText(MyData.this, "Task is unsuccessfull because"+task.getException(), Toast.LENGTH_SHORT).show();
                         }
-                    }
-                });
+                    });
 
-    }*/
+        }*/
     private void put_userdata_header() {
 //        myinfoname.setText(myuser.getNAME());
 //        myinfohostel.setText(myuser.getHOSTEL());
