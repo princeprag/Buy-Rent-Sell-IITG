@@ -54,12 +54,13 @@ public class description extends AppCompatActivity {
         String desc = i.getStringExtra("Shortdesc");
         String price = i.getStringExtra("Price");
         String imageurl=i.getStringExtra("ImageURL");
-        String uid=i.getStringExtra("UID");
-        addData(name,desc,price,imageurl,uid);
+        String cat=i.getStringExtra("CATEGORY");
+        Toast.makeText(this,cat, Toast.LENGTH_SHORT).show();
+        addData(name,desc,price,imageurl);
     }
 
     }
-    private void addData(String name,String desc,String price,String imageurl,String uid){
+    private void addData(String name,String desc,String price,String imageurl){
         TextView Name,Desc,Price;
         ImageView pic;
         Name=findViewById(R.id.text_name);
@@ -70,7 +71,6 @@ public class description extends AppCompatActivity {
         Desc.setText(desc);
         Price.setText(price);
         Picasso.get().load(imageurl).fit().into(pic);
-        String useruid=mAuth.getCurrentUser().getUid();
 
 
 

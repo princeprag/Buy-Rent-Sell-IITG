@@ -44,7 +44,8 @@ public class Rent extends AppCompatActivity {
     private static final String KEY_CONTACT="MOBILENO";
     private static final String KEY_PERIOD="DURATION_OF_RENT";
     private static final String KEY_UID="UID";
-    private static final String KEY_CATOGARY="CATOGARY";
+    private static final String KEY_CATEGORY="CATEGORY";
+    private static final String KEY_PARENT_ID="PARENTID";
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private  String uid = mAuth.getCurrentUser().getUid();
 
@@ -228,7 +229,7 @@ public class Rent extends AppCompatActivity {
     }
 
 
-    public void Uploadtext(String s1){
+    public void Uploadtext(final String s1){
 
 
         String name = text_name.getText().toString();
@@ -243,7 +244,7 @@ public class Rent extends AppCompatActivity {
 
 
         Map<String, Object> data = new HashMap<>();
-        data.put(KEY_CATOGARY,cat);
+        data.put(KEY_CATEGORY,cat);
         data.put(KEY_NAME,name);
         data.put(KEY_DESCRIPTION,description);
         data.put(KEY_PRICE,price);
@@ -252,23 +253,12 @@ public class Rent extends AppCompatActivity {
         data.put(KEY_CONTACT,number);
         data.put(KEY_PERIOD,period);
         data.put(KEY_UID,uid);
-
-
-
-       DocumentReference dref= db.collection(cat).document();
-       dref.set(data)
+        DocumentReference dref= db.collection(cat).document();
+        dref.set(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(Rent.this,"Successful",Toast.LENGTH_LONG).show();
-
-                        text_name.setText("");
-                        text_description.setText("");
-                        text_price.setText("");
-                        txt_number.setText("");
-                        txt_period.setText("");
-                        txt_path.setText("");
-                        //   progressDialog.dismiss();
 
                     }
                 })
@@ -281,33 +271,34 @@ public class Rent extends AppCompatActivity {
                 });
         String id= dref.getId();
         Toast.makeText(this, id, Toast.LENGTH_SHORT).show();
-        DocumentReference userdref= db.collection("users").document(uid).collection("Product").document();
+        putuserdata(s1,id);
+    }
+    public void putuserdata(String s1,String id){
+        String name = text_name.getText().toString();
+        String description = text_description.getText().toString();
+        String price= text_price.getText().toString();
+        String cat= category.getSelectedItem().toString();
+        String number=txt_number.getText().toString();
+        String period=txt_period.getText().toString();
+
+        Map<String, Object> data = new HashMap<>();
+        data.put(KEY_CATEGORY,cat);
+        data.put(KEY_NAME,name);
+        data.put(KEY_DESCRIPTION,description);
+        data.put(KEY_PRICE,price);
+        data.put(KEY_URL,s1);
+        data.put(KEY_MODE,"ON RENT");
+        data.put(KEY_CONTACT,number);
+        data.put(KEY_PERIOD,period);
+        data.put(KEY_UID,id);
+        final DocumentReference userdref= db.collection("users").document(uid).collection("Product").document();
+        data.put(KEY_PARENT_ID,userdref.getId());
+        Toast.makeText(Rent.this,userdref.getId()+" Parent id",Toast.LENGTH_LONG).show();
         userdref.set(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(Rent.this,"Successful",Toast.LENGTH_LONG).show();
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(Rent.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-
-
-
-
-
-
-/* db.collection(cat).document().set(data)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(Rent.this,"Successful",Toast.LENGTH_LONG).show();
+                       // Toast.makeText(Rent.this,userdref.getId(),Toast.LENGTH_LONG).show();
 
                         text_name.setText("");
                         text_description.setText("");
@@ -315,7 +306,6 @@ public class Rent extends AppCompatActivity {
                         txt_number.setText("");
                         txt_period.setText("");
                         txt_path.setText("");
-                        //   progressDialog.dismiss();
 
                     }
                 })
@@ -326,22 +316,6 @@ public class Rent extends AppCompatActivity {
 
                     }
                 });
-/////////////
-
-
-
-
-
-
-     /*   else{
-
-            Toast.makeText(Rent.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
-        }*/
-
-
-
-
-
 
 
     }
@@ -355,20 +329,5 @@ public class Rent extends AppCompatActivity {
 
 
 
-  /*  @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sell);
 
-    }
-
-
-
-
-
-
-
-
-
-    //UUID.randomUUID().toString()*/
 

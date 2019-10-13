@@ -55,7 +55,7 @@ public class productAdapter extends FirestoreRecyclerAdapter<product_part,produc
                 i.putExtra("ImageURL",product_list.getIMAGEURL());
                 i.putExtra("Price",product_list.getPRICE());
                 i.putExtra("Mobile_no",product_list.getMOBILENO());
-                i.putExtra("UID",product_list.getUID());
+                i.putExtra("CATEGORY",product_list.getCATEGORY());
                 mContext.startActivity(i);
             }
         });

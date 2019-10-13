@@ -44,8 +44,9 @@ public class Sell extends AppCompatActivity {
     private static final String KEY_URL="IMAGEURL";
     private static final String KEY_MODE="MODE";
     private static final String KEY_CONTACT="MOBILENO";
-    private static final String KEY_CATOGARY="CATOGARY";
+    private static final String KEY_CATEGORY="CATEGORY";
     private static final String KEY_UID="UID";
+    private static final String KEY_PARENT_ID="PARENTID";
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private  String uid = mAuth.getCurrentUser().getUid();
 
@@ -203,7 +204,7 @@ public class Sell extends AppCompatActivity {
     }
 
 
-    public void Uploadtext(String s1){
+    public void Uploadtext(final String s1){
 
         String name = text_name.getText().toString();
         String description = text_description.getText().toString();
@@ -219,7 +220,7 @@ public class Sell extends AppCompatActivity {
         data.put(KEY_URL,s1);
         data.put(KEY_MODE,"ON SALE");
         data.put(KEY_CONTACT,number);
-        data.put(KEY_CATOGARY,cat);
+        data.put(KEY_CATEGORY,cat);
         data.put(KEY_UID,uid);
         DocumentReference ref= db.collection(cat).document();
                 ref.set(data)
@@ -227,15 +228,6 @@ public class Sell extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                                      Toast.makeText(Sell.this,"Successful",Toast.LENGTH_LONG).show();
-                                      text_name.setText("");
-                                      text_description.setText("");
-                                      text_price.setText("");
-                                      txt_number.setText("");
-                                      txt_path.setText("");
-
-
-
-
 
                     }
                 })
@@ -246,14 +238,39 @@ public class Sell extends AppCompatActivity {
 
                     }
                 });
+        String id=ref.getId();
 
         Toast.makeText(this, ref.getId(), Toast.LENGTH_SHORT).show();
+        putuserdtata(s1,id);
+
+    }
+    public void putuserdtata(String s1, String id){
+        String name = text_name.getText().toString();
+        String description = text_description.getText().toString();
+        String price= text_price.getText().toString();
+        String cat= category.getSelectedItem().toString();
+        String number=txt_number.getText().toString();
+        Map<String, Object> data = new HashMap<>();
+        data.put(KEY_NAME,name);
+        data.put(KEY_DESCRIPTION,description);
+        data.put(KEY_PRICE,price);
+        data.put(KEY_URL,s1);
+        data.put(KEY_MODE,"ON SALE");
+        data.put(KEY_CONTACT,number);
+        data.put(KEY_CATEGORY,cat);
+        data.put(KEY_UID,id);
         DocumentReference refuser=db.collection("users").document(uid).collection("Product").document();
+        data.put(KEY_PARENT_ID,refuser.getId());
         refuser.set(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(Sell.this,"Successful",Toast.LENGTH_LONG).show();
+                        text_name.setText("");
+                        text_description.setText("");
+                        text_price.setText("");
+                        txt_number.setText("");
+                        txt_path.setText("");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

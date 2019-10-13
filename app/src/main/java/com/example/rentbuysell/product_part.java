@@ -10,12 +10,13 @@ public class product_part {
     String DESCRIPTION;
     String UID;
     String DURATION_OF_RENT;
+    String PARENTID;
 
     public product_part() {
 
     }
 
-    public product_part(String MODE, String IMAGEURL, String MOBILENO, String CATAGORY, String NAME, String PRICE, String DESCRIPTION,String ID,String Rent_Period) {
+    public product_part(String PARENTID,String MODE, String IMAGEURL, String MOBILENO, String CATAGORY, String NAME, String PRICE, String DESCRIPTION,String ID,String Rent_Period) {
         this.MODE = MODE;
         this.IMAGEURL = IMAGEURL;
         this.MOBILENO = MOBILENO;
@@ -25,6 +26,7 @@ public class product_part {
         this.DESCRIPTION = DESCRIPTION;
         this.UID = ID;
         this.DURATION_OF_RENT=Rent_Period;
+        this.PARENTID=PARENTID;
     }
 
     public String getMODE() {
@@ -39,7 +41,7 @@ public class product_part {
         return MOBILENO;
     }
 
-    public String getCATAGORY() {
+    public String getCATEGORY() {
         return CATEGORY;
     }
 
@@ -57,6 +59,9 @@ public class product_part {
 
     public String getUID() {
         return UID;
+    }
+    public String getPARENTID(){
+        return PARENTID;
     }
     public String getDURATION_OF_RENT(){
         return DURATION_OF_RENT;

@@ -46,7 +46,8 @@ public class user_product_adapter extends FirestoreRecyclerAdapter<product_part,
             @Override
 
             public void onClick(View v) {
-                // Toast.makeText(mContext,product_list.getname(),Toast.LENGTH_SHORT).show();
+
+                 Toast.makeText(mContext,product_list.getCATEGORY(),Toast.LENGTH_SHORT).show();
                 Intent i=new Intent(mContext,User_Description.class);
                 i.putExtra("Name",product_list.getNAME());
                 i.putExtra("Shortdesc",product_list.getDESCRIPTION());
@@ -54,6 +55,8 @@ public class user_product_adapter extends FirestoreRecyclerAdapter<product_part,
                 i.putExtra("Price",product_list.getPRICE());
                 i.putExtra("Mobile_no",product_list.getMOBILENO());
                 i.putExtra("UID",product_list.getUID());
+                i.putExtra("CATEGORY",product_list.getCATEGORY());
+                i.putExtra("PARENTID",product_list.getPARENTID());
                 mContext.startActivity(i);
             }
         });

@@ -83,18 +83,6 @@
         android:text="Message the Seller"
         />
 
-    <Button
-        android:id="@+id/Delete"
-        android:layout_below="@+id/text_desc"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:clickable="true"
-        android:text="Delete Product"
-        android:visibility="invisible"
-        />
-
 
     <TextView
         android:id="@+id/ReportA"
