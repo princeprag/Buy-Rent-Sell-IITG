@@ -23,6 +23,15 @@
         <item> Fashion and Wearings</item>
         <item> Vehicles and Automobiles</item>
     </string-array>
+    <string-array name="categoryS">
+        <item> Select your favourite product category</item>
+        <item> Electronics and Appliances</item>
+        <item> Books and Stationary</item>
+        <item> Sports and Accesories</item>
+        <item> Home and Furniture</item>
+        <item> Fashion and Wearings</item>
+        <item> Vehicles and Automobiles</item>
+    </string-array>
 
 
     <string-array name="cat">

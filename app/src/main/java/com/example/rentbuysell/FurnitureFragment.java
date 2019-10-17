@@ -26,8 +26,8 @@ public class FurnitureFragment extends Fragment {
         FirebaseFirestore db= FirebaseFirestore.getInstance();
         View v= inflater.inflate(R.layout.activity_furniture, container, false);
 
-        CollectionReference productref= db.collection("Home and Furniture");
-        Query query=productref;
+        CollectionReference productref= db.collection("Product");
+        Query query=productref.whereEqualTo("Category","Home and Furniture");
         FirestoreRecyclerOptions<product_part> options=new FirestoreRecyclerOptions.Builder<product_part>().setQuery(query,product_part.class).build();
         productAdapter adapter=new productAdapter(options,getContext());
         RecyclerView recyclerView= v.findViewById(R.id.recycler_furniture);

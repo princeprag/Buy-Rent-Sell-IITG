@@ -5,6 +5,9 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_buy"
+            android:title="BUY"/>
 
         <item
             android:id="@+id/nav_sell"

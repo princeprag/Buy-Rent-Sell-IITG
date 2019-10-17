@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,8 @@ public class User_Description extends AppCompatActivity {
     FirebaseAuth mAuth= FirebaseAuth.getInstance();
     Button Deleteproduct;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    Switch aSwitch;
+    TextView warning;
 
 
     @Override
@@ -29,11 +32,27 @@ public class User_Description extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user__description);
         Deleteproduct=findViewById(R.id.Delete);
-
+        warning=findViewById(R.id.warning_text);
+        aSwitch=findViewById(R.id.switch1);
+        aSwitch.setTextOff("OFF");
+        aSwitch.setTextOn("ON");
         getdata();
         Intent i = getIntent();
         final String uid=i.getStringExtra("UID");
         final String cat=i.getStringExtra("CATEGORY");
+        String parentid=getIntent().getStringExtra("PARENTID");
+        Boolean switchState = aSwitch.isChecked();
+        if(switchState==true)
+        {
+          deleteproductpublicfeed(uid,cat);
+          warning.setVisibility(View.VISIBLE);
+          db.collection("users").document(mAuth.getUid()).collection("Product").document(parentid).get();
+        }
+        else{
+
+        }
+
+
         Toast.makeText(this,cat, Toast.LENGTH_SHORT).show();
       //  Toast.makeText(this,uid, Toast.LENGTH_SHORT).show();
         Deleteproduct.setOnClickListener(new View.OnClickListener() {
@@ -47,6 +66,24 @@ public class User_Description extends AppCompatActivity {
 
 
 
+
+    }
+    public void deleteproductpublicfeed(String cat,String uid)
+    {
+        db.collection(cat).document(uid)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(User_Description.this, "Succesfully removed data from public feed", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(User_Description.this, "Not able to delete data from public feed", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
     public void deleteproductpublic(String cat,String uid)
     {

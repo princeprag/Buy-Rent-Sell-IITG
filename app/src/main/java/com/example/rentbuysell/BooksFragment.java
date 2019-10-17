@@ -26,8 +26,8 @@ public class BooksFragment extends Fragment {
         FirebaseFirestore db= FirebaseFirestore.getInstance();
         View v= inflater.inflate(R.layout.activity_books, container, false);
 
-        CollectionReference productref= db.collection("Books");
-        Query query=productref;
+        CollectionReference productref= db.collection("Books and Stationary");
+        Query query=productref.orderBy("Myid", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<product_part> options=new FirestoreRecyclerOptions.Builder<product_part>().setQuery(query,product_part.class).build();
         productAdapter adapter=new productAdapter(options,getContext());
         RecyclerView recyclerView= v.findViewById(R.id.recycler_books);

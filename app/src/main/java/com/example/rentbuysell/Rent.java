@@ -17,10 +17,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -235,7 +238,7 @@ public class Rent extends AppCompatActivity {
         String name = text_name.getText().toString();
         String description = text_description.getText().toString();
         String price= text_price.getText().toString();
-        String cat= category.getSelectedItem().toString();
+        final String cat= category.getSelectedItem().toString();
         String number=txt_number.getText().toString();
         String period=txt_period.getText().toString();
 
@@ -243,7 +246,7 @@ public class Rent extends AppCompatActivity {
         //  if (!(TextUtils.isEmpty(name) && TextUtils.isEmpty(description) && TextUtils.isEmpty(period) && TextUtils.isEmpty(price) && TextUtils.isEmpty(number))){
 
 
-        Map<String, Object> data = new HashMap<>();
+        final Map<String, Object> data = new HashMap<>();
         data.put(KEY_CATEGORY,cat);
         data.put(KEY_NAME,name);
         data.put(KEY_DESCRIPTION,description);
@@ -253,7 +256,46 @@ public class Rent extends AppCompatActivity {
         data.put(KEY_CONTACT,number);
         data.put(KEY_PERIOD,period);
         data.put(KEY_UID,uid);
-        DocumentReference dref= db.collection(cat).document();
+        db.collection("productid").document("CsRaWRYVoTQF0mNR1fv6").get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document != null) {
+                                final String n = document.getString("productid");
+                                int m=Integer.valueOf(n);
+                                data.put("Myid",String.valueOf(m+1));
+                                DocumentReference ref= db.collection("Product").document(String.valueOf(m+1));
+                                ref.set(data)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Toast.makeText(Rent.this,"Successful",Toast.LENGTH_LONG).show();
+
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(Rent.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                                            }
+                                        });
+                                String id=ref.getId();
+                                putuserdata(s1,id);
+
+
+                            } else {
+                                Toast.makeText(Rent.this, "Getted both choice", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+
+
+                        }
+                    }
+                });
+       /* DocumentReference dref= db.collection(cat).document();
         dref.set(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -271,7 +313,7 @@ public class Rent extends AppCompatActivity {
                 });
         String id= dref.getId();
         Toast.makeText(this, id, Toast.LENGTH_SHORT).show();
-        putuserdata(s1,id);
+        putuserdata(s1,id);*/
     }
     public void putuserdata(String s1,String id){
         String name = text_name.getText().toString();
@@ -291,6 +333,9 @@ public class Rent extends AppCompatActivity {
         data.put(KEY_CONTACT,number);
         data.put(KEY_PERIOD,period);
         data.put(KEY_UID,id);
+        Map<String,Object> upid=new HashMap<>();
+        upid.put("productid",id);
+        db.collection("productid").document("CsRaWRYVoTQF0mNR1fv6").set(upid);
         final DocumentReference userdref= db.collection("users").document(uid).collection("Product").document();
         data.put(KEY_PARENT_ID,userdref.getId());
         Toast.makeText(Rent.this,userdref.getId()+" Parent id",Toast.LENGTH_LONG).show();

@@ -11,7 +11,7 @@
     <ImageView
         android:id="@+id/image_pic"
         android:layout_width="370dp"
-        android:layout_height="300dp"
+        android:layout_height="270dp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/noimage" />
 
@@ -62,17 +62,44 @@
         android:textSize="20dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"/>
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_desc"
+        android:layout_centerHorizontal="true"
+        android:textOff="YES"
+        android:textOn="ON"
+        android:checked="false"
+        android:visibility="visible"
+         />
+    <TextView
+        android:id="@+id/warning_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="This Product is not show in the public feed. To show this product in public feed set switch to off"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:textStyle="bold"
+        android:layout_below="@+id/switch1"
+        android:visibility="visible"
+        />
+
 
     <Button
         android:id="@+id/Delete"
-        android:layout_below="@+id/text_desc"
+        android:layout_below="@+id/warning_text"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:clickable="true"
         android:background="@drawable/reg_btn_style"
         android:text="  Delete this Product  "
         />
+
+
+
 
 </RelativeLayout>

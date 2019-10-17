@@ -5,17 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MyData">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:orientation="vertical">-->
 
         <ImageView
             android:id="@+id/myinfopic"
             android:layout_marginTop="40dp"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:layout_gravity="center"
+           android:layout_centerHorizontal="true"
             android:background="@drawable/noimage"
             android:scaleType="centerCrop"
             />
@@ -23,11 +23,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
             android:textSize="20dp"
             android:textStyle="bold"
             android:id="@+id/myinfoname"
+            android:layout_below="@+id/myinfopic"
             android:text="Pankaj Kumar"/>
         <TextView
             android:id="@+id/myinforollno"
@@ -35,28 +36,25 @@
             android:layout_height="wrap_content"
             android:textSize="20dp"
             android:text="180123031"
-            android:layout_gravity="center"
+            android:layout_below="@+id/myinfoname"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"/>
         <TextView
             android:id="@+id/myinfohostel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+           android:layout_centerHorizontal="true"
             android:text="Dihing"
             android:textSize="20dp"
+            android:layout_below="@+id/myinforollno"
             android:layout_marginTop="10dp"/>
-
-
-
-
     <androidx.recyclerview.widget.RecyclerView
 
         android:id="@+id/Myinfo"
+        android:layout_below="@+id/myinfohostel"
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="8dp"/>
-    </LinearLayout>
-
-
-</RelativeLayout>
+  </RelativeLayout>
+<!--    </LinearLayout>-->

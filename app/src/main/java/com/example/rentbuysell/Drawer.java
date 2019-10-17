@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -76,16 +77,19 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
     private GoogleSignInClient mGoogleSignInClient;
     ImageView pro_pic;
     TextView name, Email;
-    private ViewPager mViewPager;
-    private ViewPagerAdapter mSectionsPagerAdapter;
     public  users myuser ;
-    private productAdapter adapter;
-    // Button signout;
+    static String choice1,choice2;
+    productAdapter adapter;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
+        toolbar = findViewById(R.id.toolbar);
+        putnewsfeed();
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -97,31 +101,6 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
         //put_userdata_header(acct);
         put_userdata_header(acct);
 
-        myuser = new users(this);
-
-        toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-
-        mSectionsPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-
-        mSectionsPagerAdapter.addFragments(new AppliancesFragment(),"A");
-        mSectionsPagerAdapter.addFragments(new BooksFragment(),"b");
-        mSectionsPagerAdapter.addFragments(new SportsFragment(),"S");
-        mSectionsPagerAdapter.addFragments(new FurnitureFragment(),"Furni");
-        mSectionsPagerAdapter.addFragments(new FashionFragment(),"Fashion");
-        mSectionsPagerAdapter.addFragments(new VehiclesFragment(),"Vehicles");
-
-
-
-
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setCurrentItem(0);
-
-
-        final NavigationTabStrip navigationTabStrip = (NavigationTabStrip) findViewById(R.id.nts);
-        navigationTabStrip.setViewPager(mViewPager);
-
 
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
@@ -132,20 +111,6 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        //setContentView(R.layout.fragment_home);
-//        setUpRecyclerview();
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        /*mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,
-                R.id.nav_tools, R.id.nav_share, R.id.nav_send)
-                .setDrawerLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
-    }*/
-
 
         if (savedInstanceState == null) {
 
@@ -160,22 +125,6 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
 /////////////////
 
 
-
-   /* @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.drawer, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
-    }*/
-
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
@@ -184,6 +133,10 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                         new com.example.rentbuysell.HomeFragment()).commit();
 
                 break;
+            case R.id.nav_buy:
+              Intent s=new Intent(Drawer.this,Buy.class);
+              startActivity(s);
+              break;
             case R.id.nav_sell:
                /* getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new GalleryFragment()).commit();*/
@@ -237,18 +190,54 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
         }
     }
 
-    /*Recycler View showing Data From the data Base*/
-   // private CollectionReference productref = db.collection("Product");
+    public void putnewsfeed() {
+        DocumentReference docref = db.collection("users").document(mAuth.getCurrentUser().getUid());
+        docref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+                        choice1 = document.getString("Choice1");
+                        choice2 = document.getString("Choice2");
+                        putinrecyclerview(choice1,choice2);
 
-    /* private void setUpRecyclerview(){
-         Query query=productref;
-         FirestoreRecyclerOptions<product_part> options=new FirestoreRecyclerOptions.Builder<product_part>().setQuery(query,product_part.class).build();
-         adapter=new productAdapter(options,this);
-         RecyclerView recyclerView=findViewById(R.id.recyclerView);
-         recyclerView.setHasFixedSize(true);
-         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-         recyclerView.setAdapter(adapter);
-*/
+                    } else {
+                        Toast.makeText(Drawer.this, "Getted both choice", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+
+
+                }
+            }
+        });
+        Toast.makeText(Drawer.this, "Choice1" + choice1, Toast.LENGTH_SHORT).show();
+    }
+    public void putinrecyclerview(String ch1,String ch2)
+    {   db = FirebaseFirestore.getInstance();
+        Toast.makeText(Drawer.this, "Choice1" + ch1, Toast.LENGTH_SHORT).show();
+
+        CollectionReference productref = db.collection(ch1);
+        Query query = productref;
+        FirestoreRecyclerOptions<product_part> options = new FirestoreRecyclerOptions.Builder<product_part>().setQuery(query, product_part.class).build();
+        adapter = new productAdapter(options, this);
+        RecyclerView recyclerView = findViewById(R.id.drawer_recyclerview);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+        adapter.startListening();
+        productref=db.collection(ch2);
+        query=productref;
+        FirestoreRecyclerOptions<product_part> options1 = new FirestoreRecyclerOptions.Builder<product_part>().setQuery(query, product_part.class).build();
+        adapter = new productAdapter(options1, this);
+        //RecyclerView recyclerView = findViewById(R.id.drawer_recyclerview);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+        adapter.startListening();
+    }
+
+
 
     @Override
     protected void onStart() {
@@ -319,24 +308,15 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
 
                             if (documentSnapshot != null) {
 
-                                String names,email,pic_url;
-
-
-
                                 navigationView = findViewById(R.id.nav_view);
                                 View headerview = navigationView.getHeaderView(0);
                                 pro_pic = headerview.findViewById(R.id.pic);
                                 name = headerview.findViewById(R.id.name_user);
                                 Email = headerview.findViewById(R.id.email_user);
                                 name.setText(documentSnapshot.getString("Name"));
-                                //Toast.makeText(this, myuser.getNAME(), Toast.LENGTH_SHORT).show();
                                 Email.setText(documentSnapshot.getString("Email"));
-                                //Toast.makeText(this, myuser.getEMAIL(), Toast.LENGTH_SHORT).show();
                                 String url_string = documentSnapshot.getString("Image Url");
-                                //Uri url_uri = Uri.parse(url_string);
-
                                 Glide.with(Drawer.this).load(url_string).into(pro_pic);
-                                // Toast.makeText(Drawer.this,documentSnapshot.getString("Hostel")+documentSnapshot.getString("Name")+documentSnapshot.getString("Email"), Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(Drawer.this, "Document snapshot null", Toast.LENGTH_SHORT).show();
                             }

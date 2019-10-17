@@ -6,13 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".SignUp"
     android:background="@color/colorAccent">
-
+   <ScrollView
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
     <ImageView
         android:id="@+id/regUserPhoto"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:scaleType="centerCrop"
-        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="30dp"
@@ -23,8 +29,7 @@
 
     <EditText
         android:id="@+id/regName"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/regUserPhoto"
+        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -40,8 +45,7 @@
         />
     <EditText
         android:id="@+id/regEmail"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/regName"
+       android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -57,8 +61,7 @@
         />
     <EditText
         android:id="@+id/regMobileNo"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/regEmail"
+        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -76,18 +79,17 @@
         android:id="@+id/Hostel_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/regMobileNo"
+        android:layout_gravity="center"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:entries="@array/Hostel"
         android:background="@drawable/reg_edittext_style" />
 
     <EditText
         android:id="@+id/regRollNo"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/Hostel_list"
+        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -101,10 +103,31 @@
         android:hint="Roll Number"
         android:inputType="number"
         />
+        <Spinner
+            android:id="@+id/sch1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:entries="@array/categoryS"
+            android:background="@drawable/reg_edittext_style" />
+        <Spinner
+            android:id="@+id/sch2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:entries="@array/categoryS"
+            android:background="@drawable/reg_edittext_style" />
     <EditText
        android:id="@+id/regPass"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/regRollNo"
+        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -120,8 +143,7 @@
         />
     <EditText
         android:id="@+id/regPass2"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/regPass"
+        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -137,9 +159,8 @@
         />
     <Button
         android:id="@+id/regBtn"
-        android:layout_width="151dp"
-        android:layout_below="@+id/regPass2"
-        android:layout_centerHorizontal="true"
+        android:layout_width="150dp"
+        android:layout_gravity="center"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
@@ -151,6 +172,9 @@
         android:text="Register"
         android:textColor="#ffffff"
         />
+
+ </LinearLayout>
+   </ScrollView>
 
 
 

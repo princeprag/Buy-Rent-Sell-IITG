@@ -29,8 +29,8 @@ public class AppliancesFragment extends Fragment {
         FirebaseFirestore db= FirebaseFirestore.getInstance();
         View v= inflater.inflate(R.layout.activity_electronics, container, false);
 
-        CollectionReference productref= db.collection("Electronics and Appliances");
-        Query query=productref;
+        CollectionReference productref= db.collection("Product");
+        Query query=productref.orderBy("Myid", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<product_part> options=new FirestoreRecyclerOptions.Builder<product_part>().setQuery(query,product_part.class).build();
         productAdapter adapter=new productAdapter(options,getContext());
         RecyclerView recyclerView= v.findViewById(R.id.recycler_appliances);
@@ -38,7 +38,6 @@ public class AppliancesFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
         adapter.startListening();
-
         return v;
 
 

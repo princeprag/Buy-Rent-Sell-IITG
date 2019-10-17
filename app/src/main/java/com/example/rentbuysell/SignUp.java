@@ -42,7 +42,7 @@ public class SignUp extends AppCompatActivity {
     EditText fullname, Email, mobile_no, iitg_roll_no, pass1, pass2;
     ImageView pro_pic;
     Button register;
-    Spinner hostel;
+    Spinner hostel,ch1,ch2;
     ImageView ImgUserPhoto;
     TextView path;
     static int PReqCode = 1;
@@ -68,6 +68,8 @@ public class SignUp extends AppCompatActivity {
         pass1 = findViewById(R.id.regPass);
         pass2 = findViewById(R.id.regPass2);
         hostel=findViewById(R.id.Hostel_list);
+        ch1=findViewById(R.id.sch1);
+        ch2=findViewById(R.id.sch2);
         register = findViewById(R.id.regBtn);
         mAuth = FirebaseAuth.getInstance();
         pro_pic = findViewById(R.id.regUserPhoto) ;
@@ -146,17 +148,18 @@ public class SignUp extends AppCompatActivity {
         final String RollNo = iitg_roll_no.getText().toString().trim();
         final String Hostel = hostel.getSelectedItem().toString();
         final String MobNo=mobile_no.getText().toString().trim();
-        if (pickedImgUri==null|| (email.isEmpty()) || (name.isEmpty()) || (password.isEmpty()) || !password.equals(password2) || (RollNo.isEmpty()) || (Hostel.isEmpty())|| (MobNo.isEmpty())) {
+        final String choice1=ch1.getSelectedItem().toString();
+        final String choice2=ch2.getSelectedItem().toString();
+        if(choice1=="Select your favourite product category"||choice2=="Select your favourite product category"||choice1.equals(choice2))
+        {   Toast.makeText(SignUp.this, "Please select valid Category and different Category", Toast.LENGTH_SHORT).show();
+            register.setVisibility(View.VISIBLE);
+        }
+        else if (pickedImgUri==null|| (email.isEmpty()) || (name.isEmpty()) || (password.isEmpty()) || !password.equals(password2) || (RollNo.isEmpty()) || (Hostel.isEmpty())|| (MobNo.isEmpty())) {
             Toast.makeText(SignUp.this, "Please Verify all", Toast.LENGTH_SHORT).show();
             register.setVisibility(View.VISIBLE);
         }
         else
-        {CreateUserAccount(email,password);
-           }
-
-
-
-
+        CreateUserAccount(email,password);
     }
     private  void CreateUserAccount(final String email,final String password){
         mAuth.createUserWithEmailAndPassword(email,password)
@@ -231,6 +234,8 @@ public class SignUp extends AppCompatActivity {
         final String RollNo = iitg_roll_no.getText().toString();
         final String Hostel = hostel.getSelectedItem().toString();
         final String MobNo=mobile_no.getText().toString();
+        final String choice1=ch1.getSelectedItem().toString();
+        final String choice2=ch2.getSelectedItem().toString();
         Map<String, Object> data = new HashMap<>();
         data.put("Name",name);
         data.put("Email",email);
@@ -239,6 +244,8 @@ public class SignUp extends AppCompatActivity {
         data.put("Mobile Number",MobNo);
         data.put("Roll Number",RollNo);
         data.put("Image Url",Url);
+        data.put("Choice1",choice1);
+        data.put("Choice2",choice2);
         db.collection("users").document(mAuth.getUid()).set(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
