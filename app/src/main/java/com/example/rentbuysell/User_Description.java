@@ -12,11 +12,15 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 public class User_Description extends AppCompatActivity {
@@ -42,15 +46,53 @@ public class User_Description extends AppCompatActivity {
         final String cat=i.getStringExtra("CATEGORY");
         String parentid=getIntent().getStringExtra("PARENTID");
         Boolean switchState = aSwitch.isChecked();
-        if(switchState==true)
-        {
-          deleteproductpublicfeed(uid,cat);
-          warning.setVisibility(View.VISIBLE);
-          db.collection("users").document(mAuth.getUid()).collection("Product").document(parentid).get();
-        }
-        else{
+        /*aSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(aSwitch.isChecked()){
+                deleteproductpublic(cat,uid);
+                String parentid=getIntent().getStringExtra("PARENTID");
+                String useruid = mAuth.getCurrentUser().getUid();
+                db.collection("users").document(useruid).collection("Product").document(parentid).update("UID","");
+                }
+                else{
+                    String parentid=getIntent().getStringExtra("PARENTID");
+                    String useruid = mAuth.getCurrentUser().getUid();
+                    db.collection("users").document(useruid).collection("Product").document(parentid).get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(User_Description.this, "connected with firebase", Toast.LENGTH_SHORT).show();
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+//                                product_part temp=new product_part();
+                                            String NAME=document.getString("NAME");
+                                            String DESCRIPTION=document.getString("DESCRIPTION");
+                                            String IMAGEURL=document.getString("IMAGEURL");
+                                            String MODE=document.getString("MODE");
+                                            String PRICE=document.getString("PRICE");
+                                            String MOBILENO=document.getString("MOBILENO");
+                                            String UID=document.getString("UID");
+                                            int Myid=Integer.valueOf(document.getString("Myid"));
+                                            String DURATION_OF_RENT=document.getString("DURATION_OF _RENT");
+                                            String PARENTID=document.getString("PARENTID");
+                                            String CATAGORY=document.getString("CATEGORY");
+                                            product_part temp=new product_part(PARENTID,MODE,IMAGEURL,MOBILENO,CATAGORY, NAME, PRICE, DESCRIPTION,UID, DURATION_OF_RENT,Myid);
+                                        }
+                                    }
+                                });
 
-        }
+                             else {
+                        Toast.makeText(User_Description.this, "Error getting documents: ", Toast.LENGTH_SHORT).show();
+                    }
+
+            });
+
+                }
+
+            }
+        });*/
+
 
 
         Toast.makeText(this,cat, Toast.LENGTH_SHORT).show();
@@ -68,7 +110,7 @@ public class User_Description extends AppCompatActivity {
 
 
     }
-    public void deleteproductpublicfeed(String cat,String uid)
+  /*  public void deleteproductpublicfeed(String cat,String uid)
     {
         db.collection(cat).document(uid)
                 .delete()
@@ -76,6 +118,8 @@ public class User_Description extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(User_Description.this, "Succesfully removed data from public feed", Toast.LENGTH_SHORT).show();
+                        warning.setVisibility(View.VISIBLE);
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -84,7 +128,7 @@ public class User_Description extends AppCompatActivity {
                         Toast.makeText(User_Description.this, "Not able to delete data from public feed", Toast.LENGTH_SHORT).show();
                     }
                 });
-    }
+    }*/
     public void deleteproductpublic(String cat,String uid)
     {
         db.collection(cat).document(uid)
