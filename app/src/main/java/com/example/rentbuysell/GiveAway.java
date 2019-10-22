@@ -116,6 +116,10 @@ public class GiveAway extends AppCompatActivity {
 
 
     }
+    public void onBackPressed() {
+        Intent i=new Intent(GiveAway.this,Drawer.class);
+        startActivity(i);
+    }
 
 
 

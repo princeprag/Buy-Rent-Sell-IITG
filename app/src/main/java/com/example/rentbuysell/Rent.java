@@ -128,6 +128,10 @@ public class Rent extends AppCompatActivity {
 
 
     }
+    public void onBackPressed() {
+        Intent i=new Intent(Rent.this,Drawer.class);
+        startActivity(i);
+    }
 
     private void chooseImage() {
         Intent intent = new Intent();
@@ -266,7 +270,8 @@ public class Rent extends AppCompatActivity {
                                 final String n = document.getString("productid");
                                 int m=Integer.valueOf(n);
                                 data.put("Myid",String.valueOf(m+1));
-                                DocumentReference ref= db.collection("Product").document(String.valueOf(m+1));
+                                data.put("Myidint",m+1);
+                                DocumentReference ref= db.collection(cat).document(String.valueOf(m+1));
                                 ref.set(data)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
@@ -364,6 +369,7 @@ public class Rent extends AppCompatActivity {
 
 
     }
+
 
 
 

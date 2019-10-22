@@ -115,7 +115,10 @@ public class Swap extends AppCompatActivity {
                 }
         );
     }
-
+    public void onBackPressed() {
+        Intent i=new Intent(Swap.this,Drawer.class);
+        startActivity(i);
+    }
 
     private void chooseImage() {
         Intent intent = new Intent();

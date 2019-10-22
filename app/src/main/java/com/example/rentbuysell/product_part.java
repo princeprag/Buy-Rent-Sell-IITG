@@ -11,12 +11,13 @@ public class product_part {
     String UID;
     String DURATION_OF_RENT;
     String PARENTID;
+    int Myid1;
 
     public product_part() {
 
     }
 
-    public product_part(String PARENTID,String MODE, String IMAGEURL, String MOBILENO, String CATAGORY, String NAME, String PRICE, String DESCRIPTION,String ID,String Rent_Period) {
+    public product_part(String PARENTID,String MODE, String IMAGEURL, String MOBILENO, String CATAGORY, String NAME, String PRICE, String DESCRIPTION,String ID,String Rent_Period,int Myid1) {
         this.MODE = MODE;
         this.IMAGEURL = IMAGEURL;
         this.MOBILENO = MOBILENO;
@@ -27,6 +28,11 @@ public class product_part {
         this.UID = ID;
         this.DURATION_OF_RENT=Rent_Period;
         this.PARENTID=PARENTID;
+        this.Myid1=Myid1;
+    }
+
+    public int getMyid1() {
+        return Myid1;
     }
 
     public String getMODE() {
@@ -97,6 +103,13 @@ public class product_part {
 
     public void setUID(String UID) {
         this.UID = UID;
+    }
 
+    public void setDURATION_OF_RENT(String DURATION_OF_RENT) {
+        this.DURATION_OF_RENT = DURATION_OF_RENT;
+    }
+
+    public void setPARENTID(String PARENTID) {
+        this.PARENTID = PARENTID;
     }
 }

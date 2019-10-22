@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -42,6 +43,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -65,6 +68,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Integer.valueOf;
+
 public class Drawer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     //private AppBarConfiguration mAppBarConfiguration;
@@ -75,11 +80,12 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser currentuser = mAuth.getCurrentUser();
     private GoogleSignInClient mGoogleSignInClient;
+    private ArrayList<product_part> feed=new ArrayList<product_part>();
     ImageView pro_pic;
     TextView name, Email;
     public  users myuser ;
     static String choice1,choice2;
-    productAdapter adapter;
+    //productAdapter adapter;
 
 
 
@@ -217,25 +223,124 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
     {   db = FirebaseFirestore.getInstance();
         Toast.makeText(Drawer.this, "Choice1" + ch1, Toast.LENGTH_SHORT).show();
 
-        CollectionReference productref = db.collection(ch1);
-        Query query = productref;
-        FirestoreRecyclerOptions<product_part> options = new FirestoreRecyclerOptions.Builder<product_part>().setQuery(query, product_part.class).build();
-        adapter = new productAdapter(options, this);
-        RecyclerView recyclerView = findViewById(R.id.drawer_recyclerview);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
-        adapter.startListening();
-        productref=db.collection(ch2);
-        query=productref;
-        FirestoreRecyclerOptions<product_part> options1 = new FirestoreRecyclerOptions.Builder<product_part>().setQuery(query, product_part.class).build();
-        adapter = new productAdapter(options1, this);
-        //RecyclerView recyclerView = findViewById(R.id.drawer_recyclerview);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
-        adapter.startListening();
-    }
+
+        CollectionReference productref1 = db.collection(ch1);
+        final CollectionReference productref2 = db.collection(ch2);
+        productref1.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(Drawer.this, "connected with firebase", Toast.LENGTH_SHORT).show();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                product_part temp=new product_part();
+                                String NAME=document.getString("NAME");
+                                String DESCRIPTION=document.getString("DESCRIPTION");
+                                String IMAGEURL=document.getString("IMAGEURL");
+                                String MODE=document.getString("MODE");
+                                String PRICE=document.getString("PRICE");
+                                String MOBILENO=document.getString("MOBILENO");
+                                String UID=document.getString("UID");
+                                int Myid=Integer.valueOf(document.getString("Myid"));
+                                String DURATION_OF_RENT=document.getString("DURATION_OF _RENT");
+                                String PARENTID=document.getString("PARENTID");
+                                String CATAGORY=document.getString("CATEGORY");
+                                product_part temp=new product_part(PARENTID,MODE,IMAGEURL,MOBILENO,CATAGORY, NAME, PRICE, DESCRIPTION,UID, DURATION_OF_RENT,Myid);
+                                feed.add(temp);
+
+                            }
+
+                            productref2.get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    //product_part temp;
+                                                    String NAME=document.getString("NAME");
+                                                    String DESCRIPTION=document.getString("DESCRIPTION");
+                                                    String IMAGEURL=document.getString("IMAGEURL");
+                                                    String MODE=document.getString("MODE");
+                                                    String PRICE=document.getString("PRICE");
+                                                    String MOBILENO=document.getString("MOBILENO");
+                                                    String UID=document.getString("UID");
+                                                    int Myid=Integer.valueOf(document.getString("Myid"));
+                                                    String DURATION_OF_RENT=document.getString("DURATION_OF _RENT");
+                                                    String PARENTID=document.getString("PARENTID");
+                                                    String CATAGORY=document.getString("CATEGORY");
+                                                    product_part temp=new product_part(PARENTID,MODE,IMAGEURL,MOBILENO,CATAGORY, NAME, PRICE, DESCRIPTION,UID, DURATION_OF_RENT,Myid);
+                                                    feed.add(temp);
+
+                                                }
+                                                Mergesortdata msd=new Mergesortdata(feed);
+                                                msd.sortGivenArray();
+                                                adapter adapter1;
+                                                adapter1 = new adapter(msd.getSortedArray(), Drawer.this);
+                                                RecyclerView recyclerView = findViewById(R.id.drawer_recyclerview);
+                                                recyclerView.setHasFixedSize(true);
+                                                recyclerView.setLayoutManager(new LinearLayoutManager(Drawer.this));
+                                                recyclerView.setAdapter(adapter1);
+
+                                            } else {
+                                                Toast.makeText(Drawer.this, "Error getting documents: ", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+
+                        } else {
+                            Toast.makeText(Drawer.this, "Error getting documents: ", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+        Toast.makeText(this,feed.size()+"size", Toast.LENGTH_SHORT).show();
+
+
+
+
+
+
+
+
+
+
+
+        //Query query1 = productref.whereEqualTo("CATEGORY",ch1).orderBy("Myid", Query.Direction.DESCENDING);
+        //Query query2 = productref.whereEqualTo("CATEGORY",ch2).orderBy("Myid", Query.Direction.DESCENDING);
+      /*  Task task1=productref1.get();//.whereEqualTo("CATEGORY",ch1).orderBy("Myid", Query.Direction.DESCENDING).get();
+        Task task2=productref2.get();//.whereEqualTo("CATEGORY",ch1).orderBy("Myid", Query.Direction.DESCENDING).get();
+        Task<List<QuerySnapshot>> alltask= Tasks.whenAllComplete(task1,task2)
+                        .addOnSuccessListener(new OnSuccessListener<List<QuerySnapshot>>() {
+                            @Override
+                            public void onSuccess(List<QuerySnapshot> query) {
+                                for(QuerySnapshot queryDocumentSnapshots: query){
+                                    for (QueryDocumentSnapshot queryDocumentSnapshot:queryDocumentSnapshots){
+                                        product_part feed=queryDocumentSnapshot.toObject(product_part.class);
+                                        FirestoreRecyclerOptions<product_part> options = new FirestoreRecyclerOptions.Builder<product_part>().setSnapshotArray().build();
+                                    adapter = new productAdapter(options, Drawer.this);
+                                    RecyclerView recyclerView = findViewById(R.id.drawer_recyclerview);
+                                    recyclerView.setHasFixedSize(true);
+                                    recyclerView.setLayoutManager(new LinearLayoutManager(Drawer.this));
+                                    recyclerView.setAdapter(adapter);
+                                    adapter.startListening();
+                                }
+                            }
+
+                        });
+     }}
+
+      public void setuprecyclerview(product_part feed){
+          FirestoreRecyclerOptions<product_part> options = new FirestoreRecyclerOptions.Builder<product_part>().setQuery(feed, product_part.class).build();
+          adapter = new productAdapter(feed, Drawer.this);
+          RecyclerView recyclerView = findViewById(R.id.drawer_recyclerview);
+          recyclerView.setHasFixedSize(true);
+          recyclerView.setLayoutManager(new LinearLayoutManager(Drawer.this));
+          recyclerView.setAdapter(adapter);
+          adapter.startListening();*/
+
+      }
+
+
 
 
 

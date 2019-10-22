@@ -27,7 +27,7 @@ public class FashionFragment extends Fragment {
         View v= inflater.inflate(R.layout.activity_wearing, container, false);
 
         CollectionReference productref= db.collection("Fashion and Wearings");
-        Query query=productref.orderBy("Myid", Query.Direction.DESCENDING);
+        Query query=productref.orderBy("Myidint", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<product_part> options=new FirestoreRecyclerOptions.Builder<product_part>().setQuery(query,product_part.class).build();
         productAdapter adapter=new productAdapter(options,getContext());
         RecyclerView recyclerView= v.findViewById(R.id.recycler_wearings);
