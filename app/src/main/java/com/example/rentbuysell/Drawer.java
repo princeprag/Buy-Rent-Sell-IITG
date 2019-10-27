@@ -1,7 +1,13 @@
 package com.example.rentbuysell;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
@@ -25,7 +31,10 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -39,12 +48,17 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.squareup.picasso.Picasso;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -81,10 +95,14 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
     private FirebaseUser currentuser = mAuth.getCurrentUser();
     private GoogleSignInClient mGoogleSignInClient;
     private ArrayList<product_part> feed=new ArrayList<product_part>();
+    private String token;
     ImageView pro_pic;
     TextView name, Email;
     public  users myuser ;
     static String choice1,choice2;
+    NotificationChannel mChannel;
+    private static final String CHANNEL_ID="CHANNEL_ID";
+    NotificationManager notificationManager;
     //productAdapter adapter;
 
 
@@ -108,9 +126,26 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
         put_userdata_header(acct);
 
 
+
+        int importance = 0;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            importance = NotificationManager.IMPORTANCE_HIGH;
+        }
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mChannel = new NotificationChannel(Constants.CHANNEL_ID, "Noti", importance);
+            NotificationManager notificationManager=getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(mChannel);
+        }
+
+
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        shownoti();
 
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -193,6 +228,7 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
         } else {
             //super.onBackPressed();
             moveTaskToBack(true);
+
         }
     }
 
@@ -219,6 +255,46 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
         });
         Toast.makeText(Drawer.this, "Choice1" + choice1, Toast.LENGTH_SHORT).show();
     }
+
+
+    private void gettoken(){
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            @Override
+            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                if(task.isSuccessful()){
+                    token = task.getResult().getToken();
+                    Map<String, Object> data = new HashMap<>();
+                    data.put(Constants.KEY_TOKEN,token);
+                    db.collection("users").document(mAuth.getCurrentUser().getUid()).collection("NOT_ID").document(mAuth.getCurrentUser().getUid()).set(data)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(Drawer.this, token.toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(Drawer.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                                }
+                            });
+                }else{
+                    Toast.makeText(Drawer.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+
+
+    }
+
+
+
+
+
+
     public void putinrecyclerview(String ch1,String ch2)
     {   db = FirebaseFirestore.getInstance();
         Toast.makeText(Drawer.this, "Choice1" + ch1, Toast.LENGTH_SHORT).show();
@@ -348,6 +424,9 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
     protected void onStart() {
         super.onStart();
         get_put_userDetails();
+        gettoken();
+
+
 
     }
 //
@@ -376,6 +455,58 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
         it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
     }
+
+
+
+    private void shownoti()
+    {db.collection("Electronics and Appliances").whereEqualTo("CATEGORY","Electronics and Appliances").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        @Override
+        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+            if(e!=null){
+                Toast.makeText(Drawer.this, "failed"+e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+
+                return;
+            }
+
+            for(DocumentChange dc:queryDocumentSnapshots.getDocumentChanges()){
+                if(dc.getType()== DocumentChange.Type.ADDED)
+                {    Log.d("pra",dc.getDocument().getData().toString());
+                   // Toast.makeText(Drawer.this, "true"+ dc.getDocument().getData(), Toast.LENGTH_LONG).show();
+                    showNotification(getApplicationContext(),"HEY","A new User is Added!!!");
+                }
+
+
+
+            }
+
+
+        }
+    });
+
+    }
+
+    public static void showNotification(Context context, String title, String mess) {
+        Intent intent = new Intent(context, Rent.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, Constants.CHANNEL_ID);
+        notificationBuilder.setContentTitle(title);
+        notificationBuilder.setAutoCancel(true);
+        notificationBuilder.setPriority(Notification.PRIORITY_HIGH);
+        //notificationBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+        notificationBuilder.setContentIntent(pendingIntent);
+        notificationBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(mess));
+        notificationBuilder.setContentText(mess);
+        notificationBuilder.setDefaults(Notification.DEFAULT_VIBRATE);
+        notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
+
+
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
+        notificationManagerCompat.notify(1, notificationBuilder.build());
+
+    }
+
+
 
     private void put_userdata_header(GoogleSignInAccount acct) {
         navigationView = findViewById(R.id.nav_view);

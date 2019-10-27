@@ -24,7 +24,7 @@ public class users {
 
     }
 
-   public users(Context cont)
+    public users(Context cont)
     {
         this.context=cont;
         sharedPreferences = context.getSharedPreferences("PREFS",Context.MODE_PRIVATE);
@@ -50,27 +50,34 @@ public class users {
     }*/
 
 
-   public void createSession(String name,String hostel,String RollNumber, String Email, String mobileno, String ImageUrl,String UID )
-   {
-       editor.putString("NAME",name);
-       editor.putString("HOSTEL",hostel);
-       editor.putString("ROLL_NUMBER",RollNumber);
-       editor.putString("EMAIL",Email);
-       editor.putString("MOBILE_NUMBER",mobileno);
-       editor.putString("IMAGE_URL",ImageUrl);
-       editor.putString("UID",UID);
-       editor.putBoolean("STATUS",true);
-       editor.apply();
-   }
+    public void createSession(String name,String hostel,String RollNumber, String Email, String mobileno, String ImageUrl,String UID )
+    {
+        editor.putString("NAME",name);
+        editor.putString("HOSTEL",hostel);
+        editor.putString("ROLL_NUMBER",RollNumber);
+        editor.putString("EMAIL",Email);
+        editor.putString("MOBILE_NUMBER",mobileno);
+        editor.putString("IMAGE_URL",ImageUrl);
+        editor.putString("UID",UID);
+        editor.putBoolean("STATUS",true);
+        editor.apply();
+    }
+
+    public String getNAME() {
+        String NAME = sharedPreferences.getString("NAME", "");
+
+        return NAME;}
+
+
+    public static users getInstance(Context context) {
+        return new users(context);
+    }
 
 
 
 
 /*
-    public String getNAME() {
-       NAME= sharedPreferences.getString("NAME","");
 
-        return NAME;
 
     }
 
@@ -153,20 +160,28 @@ public class users {
         editor.putString("IMAGE_URL",IMAGE_URL).apply();
     }*/
 
-   public void logout(){
-       editor.clear();
-       editor.apply();
-   }
+    public void logout () {
+        editor.clear();
+        editor.commit();
+    }
 
 
+    public void put(String key, String value) {
+        sharedPreferences.edit().putString(key, value).apply();
+
+    }
 
 
-
-
-
-    public boolean checkloginstatus()
+    public String getString(String key)
     {
-        return sharedPreferences.getBoolean("STATUS",false);
+        return sharedPreferences.getString(key,"");
+    }
+
+
+
+    public boolean checkloginstatus ()
+    {
+        return sharedPreferences.getBoolean("STATUS", false);
     }
 
 
