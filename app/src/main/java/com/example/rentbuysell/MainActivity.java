@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
             Map<String, Object> data = new HashMap<>();
             data.put("Name",Name);
             data.put("Email",Email);
-            data.put("ImageUrl",ImageUrl);
+            data.put("Image Url",ImageUrl);
             data.put("Id",personId);
             if (FirebaseAuth.getInstance().getCurrentUser() == null) {
                 Toast.makeText(this, "Firestore returning Null", Toast.LENGTH_SHORT).show();

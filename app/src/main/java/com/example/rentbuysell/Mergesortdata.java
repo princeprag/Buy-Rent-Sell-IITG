@@ -33,13 +33,13 @@ public class Mergesortdata {
     public void merger(int startIndex,int midIndex,int endIndex){
 
         //Below is the mergedarray that will be sorted array Array[i-midIndex] , Array[(midIndex+1)-endIndex]
-        ArrayList<product_part> mergedSortedArray = new ArrayList<product_part>();
+        ArrayList<product_part> mergedSortedArray = new ArrayList<>();
 
         int leftIndex = startIndex;
         int rightIndex = midIndex+1;
 
         while(leftIndex<=midIndex && rightIndex<=endIndex){
-            if(inputArray.get(leftIndex).getMyid1()>=inputArray.get(rightIndex).getMyid1()){
+            if(inputArray.get(leftIndex).getMyidint()>=inputArray.get(rightIndex).getMyidint()){
                 mergedSortedArray.add(inputArray.get(leftIndex));
                 leftIndex++;
             }else{

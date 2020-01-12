@@ -18,14 +18,30 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class description extends AppCompatActivity {
     Button callseller,messageseller;
     TextView reportAdmin;
     private static final int Request_Call=2;
     FirebaseAuth mAuth= FirebaseAuth.getInstance();
+    private FirebaseFirestore db= FirebaseFirestore.getInstance();
+    public  Map<String, String> TIMESTAMP;
+
 
 
     @Override
@@ -42,10 +58,21 @@ public class description extends AppCompatActivity {
                 makephonecall(Mobile_No);
             }
         });
+        messageseller.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=getIntent();
+                String UserId=i.getStringExtra("UID");
+                Toast.makeText(description.this, "Send Message clicked", Toast.LENGTH_SHORT).show();
+                sendmessage(UserId);
+
+            }
+        });
         getdata();
 
 
     }
+
     private void getdata()
     {if(getIntent().hasExtra("Name")&&getIntent().hasExtra("Price")&&getIntent().hasExtra("Shortdesc")&&getIntent().hasExtra("ImageURL")&&getIntent().hasExtra("Mobile_no"))
     {
@@ -103,6 +130,113 @@ public class description extends AppCompatActivity {
                 Toast.makeText(this,"Permission Denied",Toast.LENGTH_SHORT).show();
         }
 
+    }
+    private void sendmessage(final String UserID)
+    {
+        if(mAuth.getUid().equals(UserID))
+            Toast.makeText(this, "You Can't send message to Your self", Toast.LENGTH_SHORT).show();
+        else
+        {Toast.makeText(description.this, UserID, Toast.LENGTH_SHORT).show();
+            DocumentReference docref= db.collection("users").document(UserID);
+            docref.get().addOnCompleteListener(
+                new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
+
+                            if (documentSnapshot != null) {
+                                String username,imageUrl;
+                                username=documentSnapshot.getString("Name");
+                                imageUrl = documentSnapshot.getString("Image Url");
+                                putchatsenderdata(username,imageUrl,UserID);
+
+                            } else {
+                                Toast.makeText(description.this, "Document snapshot null", Toast.LENGTH_SHORT).show();
+                            }
+                        }else{
+
+                            Toast.makeText(description.this, "Task is unsuccessfull because"+task.getException(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            DocumentReference docref1= db.collection("users").document(mAuth.getUid());
+            docref1.get().addOnCompleteListener(
+                    new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot documentSnapshot = task.getResult();
+
+                                if (documentSnapshot != null) {
+                                    String username,imageUrl;
+                                    username=documentSnapshot.getString("Name");
+                                    imageUrl = documentSnapshot.getString("Image Url");
+                                    putchatreceiverdata(username,imageUrl,UserID);
+
+                                } else {
+                                    Toast.makeText(description.this, "Document snapshot null", Toast.LENGTH_SHORT).show();
+                                }
+                            }else{
+
+                                Toast.makeText(description.this, "Task is unsuccessfull because"+task.getException(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+
+
+
+        }
+    }
+    public void putchatsenderdata(String username,String imageUrl,String receiverid)
+    {
+        Toast.makeText(this, "putchatsenderstarted", Toast.LENGTH_SHORT).show();
+        Map<String, Object> data = new HashMap<>();
+        data.put("username",username);
+        data.put("imageUrl",imageUrl);
+        data.put("user_id",receiverid);
+        data.put("Servertime", ServerValue.TIMESTAMP);
+        db.collection("users").document(mAuth.getUid()).collection("Chats").document(receiverid).set(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(description.this,"Successful202",Toast.LENGTH_LONG).show();
+                        Intent i=new Intent(description.this,Chat.class);
+                        startActivity(i);
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(description.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+    }
+    public void putchatreceiverdata(String username,String imageUrl,String receiverid)
+    {   Toast.makeText(this, "putchatreceiverstarted", Toast.LENGTH_SHORT).show();
+        Map<String, Object> data = new HashMap<>();
+        data.put("username",username);
+        data.put("imageUrl",imageUrl);
+        data.put("user_id",mAuth.getUid());
+        data.put("Servertime", ServerValue.TIMESTAMP);
+        db.collection("users").document(receiverid).collection("Chats").document(mAuth.getUid()).set(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(description.this,"Successful",Toast.LENGTH_LONG).show();
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(description.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+                });
     }
 }
 

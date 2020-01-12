@@ -30,7 +30,7 @@ public class AppliancesFragment extends Fragment {
         View v= inflater.inflate(R.layout.activity_electronics, container, false);
 
         CollectionReference productref= db.collection("Electronics and Appliances");
-        Query query=productref.orderBy("Myidint", Query.Direction.DESCENDING);
+        Query query=productref.orderBy("myidint", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<product_part> options=new FirestoreRecyclerOptions.Builder<product_part>().setQuery(query,product_part.class).build();
         productAdapter adapter=new productAdapter(options,getContext());
         RecyclerView recyclerView= v.findViewById(R.id.recycler_appliances);

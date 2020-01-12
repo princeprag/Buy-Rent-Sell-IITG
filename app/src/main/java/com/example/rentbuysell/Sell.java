@@ -41,15 +41,15 @@ public class Sell extends AppCompatActivity {
     Button Choose,Upload;
     TextView txt_path;
     EditText text_name,text_description,text_price,txt_number;
-    private static final String KEY_NAME="NAME";
-    private static final String KEY_DESCRIPTION="DESCRIPTION";
-    private static final String KEY_PRICE="PRICE";
-    private static final String KEY_URL="IMAGEURL";
-    private static final String KEY_MODE="MODE";
-    private static final String KEY_CONTACT="MOBILENO";
-    private static final String KEY_CATEGORY="CATEGORY";
-    private static final String KEY_UID="UID";
-    private static final String KEY_PARENT_ID="PARENTID";
+    private static final String KEY_NAME="name";
+    private static final String KEY_DESCRIPTION="description";
+    private static final String KEY_PRICE="price";
+    private static final String KEY_URL="imageUrl";
+    private static final String KEY_MODE="mode";
+    private static final String KEY_CONTACT="mobileNo";
+    private static final String KEY_CATEGORY="category";
+    private static final String KEY_UID="uid";
+    private static final String KEY_PARENT_ID="parentid";
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private  String uid = mAuth.getCurrentUser().getUid();
 
@@ -74,7 +74,6 @@ public class Sell extends AppCompatActivity {
         setContentView(R.layout.activity_sell);
         Choose=(Button)findViewById(R.id.btn_choose);
         Upload=(Button)findViewById(R.id.btn_upload);
-        //  Submit=(Button)findViewById(R.id.btn_submit);
         text_name=(EditText)findViewById(R.id.edt_name);
         text_description=(EditText)findViewById(R.id.edt_description);
         text_price=(EditText)findViewById(R.id.edt_price);
@@ -107,14 +106,7 @@ public class Sell extends AppCompatActivity {
                 }
         );
 
-      /*  Submit.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Uploadtext(t);
-                    }
-                }
-        );*/
+
 
 
     }
@@ -140,14 +132,7 @@ public class Sell extends AppCompatActivity {
         {
             filePath = data.getData();
             txt_path.setText(filePath.toString());
-           /* try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                imageView.setImageBitmap(bitmap);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }*/
+
         }
     }
 
@@ -238,8 +223,8 @@ public class Sell extends AppCompatActivity {
                             if (document != null) {
                                 final String n = document.getString("productid");
                                 int m=Integer.valueOf(n);
-                                data.put("Myid",String.valueOf(m+1));
-                                data.put("Myidint",m+1);
+                                data.put("myid",String.valueOf(m+1));
+                                data.put("myidint",m+1);
                                 DocumentReference ref= db.collection(cat).document(String.valueOf(m+1));
                                 ref.set(data)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {

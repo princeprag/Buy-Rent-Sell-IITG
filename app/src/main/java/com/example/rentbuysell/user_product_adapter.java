@@ -35,28 +35,30 @@ public class user_product_adapter extends FirestoreRecyclerAdapter<product_part,
 
     @Override
     protected void onBindViewHolder(@NonNull final productHolder productHolder, int i, @NonNull final product_part product_list) {
-        productHolder.Name.setText(product_list.getNAME());
-        productHolder.Shortdesc.setText(product_list.getDESCRIPTION());
+        productHolder.Name.setText(product_list.getName());
+        productHolder.Shortdesc.setText(product_list.getDescription());
         //String s=String.valueOf(product_list.getPrice());
-        productHolder.pPrice.setText(product_list.getPRICE());
-        String imURL=product_list.getIMAGEURL();
+        productHolder.pPrice.setText(product_list.getPrice());
+        String imURL=product_list.getImageUrl();
         Picasso.get().load(imURL).fit().into(productHolder.imageView);
-        productHolder.Mode.setText(product_list.getMODE());
+        productHolder.Mode.setText(product_list.getMode());
         productHolder.listproduct.setOnClickListener(new View.OnClickListener() {
             @Override
 
             public void onClick(View v) {
 
-                 Toast.makeText(mContext,product_list.getCATEGORY(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext,product_list.getCategory(),Toast.LENGTH_SHORT).show();
                 Intent i=new Intent(mContext,User_Description.class);
-                i.putExtra("Name",product_list.getNAME());
-                i.putExtra("Shortdesc",product_list.getDESCRIPTION());
-                i.putExtra("ImageURL",product_list.getIMAGEURL());
-                i.putExtra("Price",product_list.getPRICE());
-                i.putExtra("Mobile_no",product_list.getMOBILENO());
-                i.putExtra("UID",product_list.getUID());
-                i.putExtra("CATEGORY",product_list.getCATEGORY());
-                i.putExtra("PARENTID",product_list.getPARENTID());
+                i.putExtra("Name",product_list.getName());
+                i.putExtra("Shortdesc",product_list.getDescription());
+                i.putExtra("ImageURL",product_list.getImageUrl());
+                i.putExtra("Price",product_list.getPrice());
+                i.putExtra("Mobile_no",product_list.getMobileNo());
+                i.putExtra("UID",product_list.getUid());
+                i.putExtra("CATEGORY",product_list.getCategory());
+                i.putExtra("PARENTID",product_list.getParentid());
+                i.putExtra("UID",product_list.getUid());
+                Toast.makeText(mContext,product_list.getUid(), Toast.LENGTH_SHORT).show();
                 mContext.startActivity(i);
             }
         });

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,13 +36,13 @@ public class adapter extends RecyclerView.Adapter<adapter.adaptervievhoder>{
     @Override
     public void onBindViewHolder(@NonNull adaptervievhoder productHolder, int position) {
         final product_part product_list=feed.get(position);
-        productHolder.Name.setText(product_list.getNAME());
-        productHolder.Shortdesc.setText(product_list.getDESCRIPTION());
+        productHolder.Name.setText(product_list.getName());
+        productHolder.Shortdesc.setText(product_list.getDescription());
         //String s=String.valueOf(product_list.getPrice());
-        productHolder.pPrice.setText(product_list.getPRICE());
-        String imURL=product_list.getIMAGEURL();
+        productHolder.pPrice.setText(product_list.getPrice());
+        String imURL=product_list.getImageUrl();
         Picasso.get().load(imURL).fit().into(productHolder.imageView);
-        productHolder.Mode.setText(product_list.getMODE());
+        productHolder.Mode.setText(product_list.getMode());
 
 
         productHolder.listproduct.setOnClickListener(new View.OnClickListener() {
@@ -50,12 +51,14 @@ public class adapter extends RecyclerView.Adapter<adapter.adaptervievhoder>{
             public void onClick(View v) {
                 // Toast.makeText(mContext,product_list.getname(),Toast.LENGTH_SHORT).show();
                 Intent i=new Intent(mContext,description.class);
-                i.putExtra("Name",product_list.getNAME());
-                i.putExtra("Shortdesc",product_list.getDESCRIPTION());
-                i.putExtra("ImageURL",product_list.getIMAGEURL());
-                i.putExtra("Price",product_list.getPRICE());
-                i.putExtra("Mobile_no",product_list.getMOBILENO());
-                i.putExtra("CATEGORY",product_list.getCATEGORY());
+                i.putExtra("Name",product_list.getName());
+                i.putExtra("Shortdesc",product_list.getDescription());
+                i.putExtra("ImageURL",product_list.getImageUrl());
+                i.putExtra("Price",product_list.getPrice());
+                i.putExtra("Mobile_no",product_list.getMobileNo());
+                i.putExtra("CATEGORY",product_list.getCategory());
+                i.putExtra("UID",product_list.getUid());
+                Toast.makeText(mContext,product_list.getUid(), Toast.LENGTH_SHORT).show();
                 mContext.startActivity(i);
             }
         });

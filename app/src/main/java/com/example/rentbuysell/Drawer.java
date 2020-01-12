@@ -163,9 +163,6 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
     }
 
     private CollectionReference userref = db.collection("users");
-/////////////////
-
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
@@ -202,8 +199,7 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
 
                 break;
 
-
-            case R.id.nav_giveAway:
+                case R.id.nav_giveAway:
                 Intent s5 = new Intent(Drawer.this, GiveAway.class);
                 startActivity(s5);
                 break;
@@ -213,6 +209,10 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                 break;
             case R.id.signOut:
                 signout();
+                break;
+            case R.id.nav_chats:
+                Intent s7 =new Intent(Drawer.this,Chat.class);
+                startActivity(s7);
                 break;
         }
 
@@ -300,7 +300,7 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
         Toast.makeText(Drawer.this, "Choice1" + ch1, Toast.LENGTH_SHORT).show();
 
 
-        CollectionReference productref1 = db.collection(ch1);
+        final CollectionReference productref1 = db.collection(ch1);
         final CollectionReference productref2 = db.collection(ch2);
         productref1.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -310,18 +310,19 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                             Toast.makeText(Drawer.this, "connected with firebase", Toast.LENGTH_SHORT).show();
                             for (QueryDocumentSnapshot document : task.getResult()) {
 //                                product_part temp=new product_part();
-                                String NAME=document.getString("NAME");
-                                String DESCRIPTION=document.getString("DESCRIPTION");
-                                String IMAGEURL=document.getString("IMAGEURL");
-                                String MODE=document.getString("MODE");
-                                String PRICE=document.getString("PRICE");
-                                String MOBILENO=document.getString("MOBILENO");
-                                String UID=document.getString("UID");
-                                int Myid=Integer.valueOf(document.getString("Myid"));
-                                String DURATION_OF_RENT=document.getString("DURATION_OF _RENT");
-                                String PARENTID=document.getString("PARENTID");
-                                String CATAGORY=document.getString("CATEGORY");
-                                product_part temp=new product_part(PARENTID,MODE,IMAGEURL,MOBILENO,CATAGORY, NAME, PRICE, DESCRIPTION,UID, DURATION_OF_RENT,Myid);
+                                String NAME=document.getString("name");
+                                String DESCRIPTION=document.getString("description");
+                                String IMAGEURL=document.getString("imageUrl");
+                                String MODE=document.getString("mode");
+                                String PRICE=document.getString("price");
+                                String MOBILENO=document.getString("mobileNo");
+                                String UID=document.getString("uid");
+                                int Myidint=Integer.valueOf(document.getString("myid"));
+                                String Myid=document.getString("myid");
+                                String DURATION_OF_RENT=document.getString("duration_of_rent");
+                                String PARENTID=document.getString("parentid");
+                                String CATAGORY=document.getString("category");
+                                product_part temp=new product_part(MODE,IMAGEURL,MOBILENO,CATAGORY, NAME, PRICE, DESCRIPTION,UID, DURATION_OF_RENT,PARENTID,Myid,Myidint);
                                 feed.add(temp);
 
                             }
@@ -333,18 +334,19 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                                             if (task.isSuccessful()) {
                                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                                     //product_part temp;
-                                                    String NAME=document.getString("NAME");
-                                                    String DESCRIPTION=document.getString("DESCRIPTION");
-                                                    String IMAGEURL=document.getString("IMAGEURL");
-                                                    String MODE=document.getString("MODE");
-                                                    String PRICE=document.getString("PRICE");
-                                                    String MOBILENO=document.getString("MOBILENO");
-                                                    String UID=document.getString("UID");
-                                                    int Myid=Integer.valueOf(document.getString("Myid"));
-                                                    String DURATION_OF_RENT=document.getString("DURATION_OF _RENT");
-                                                    String PARENTID=document.getString("PARENTID");
-                                                    String CATAGORY=document.getString("CATEGORY");
-                                                    product_part temp=new product_part(PARENTID,MODE,IMAGEURL,MOBILENO,CATAGORY, NAME, PRICE, DESCRIPTION,UID, DURATION_OF_RENT,Myid);
+                                                    String NAME=document.getString("name");
+                                                    String DESCRIPTION=document.getString("description");
+                                                    String IMAGEURL=document.getString("imageUrl");
+                                                    String MODE=document.getString("mode");
+                                                    String PRICE=document.getString("price");
+                                                    String MOBILENO=document.getString("mobileNo");
+                                                    String UID=document.getString("uid");
+                                                    int Myidint=Integer.valueOf(document.getString("myid"));
+                                                    String Myid=document.getString("myid");
+                                                    String DURATION_OF_RENT=document.getString("duration_of_rent");
+                                                    String PARENTID=document.getString("parentid");
+                                                    String CATAGORY=document.getString("category");
+                                                    product_part temp=new product_part(MODE,IMAGEURL,MOBILENO,CATAGORY, NAME, PRICE, DESCRIPTION,UID, DURATION_OF_RENT,PARENTID,Myid,Myidint);
                                                     feed.add(temp);
 
                                                 }
@@ -459,7 +461,7 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
 
 
     private void shownoti()
-    {db.collection("Electronics and Appliances").whereEqualTo("CATEGORY","Electronics and Appliances").addSnapshotListener(new EventListener<QuerySnapshot>() {
+    {db.collection("Electronics and Appliances").whereEqualTo("category","Electronics and Appliances").addSnapshotListener(new EventListener<QuerySnapshot>() {
         @Override
         public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
             if(e!=null){
@@ -470,15 +472,12 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
 
             for(DocumentChange dc:queryDocumentSnapshots.getDocumentChanges()){
                 if(dc.getType()== DocumentChange.Type.ADDED)
-                {    Log.d("pra",dc.getDocument().getData().toString());
+                {
+                    Log.d("pra",dc.getDocument().getData().toString());
                    // Toast.makeText(Drawer.this, "true"+ dc.getDocument().getData(), Toast.LENGTH_LONG).show();
                     showNotification(getApplicationContext(),"HEY","A new User is Added!!!");
                 }
-
-
-
             }
-
 
         }
     });

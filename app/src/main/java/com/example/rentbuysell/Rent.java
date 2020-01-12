@@ -39,16 +39,16 @@ public class Rent extends AppCompatActivity {
     Button Choose,Upload,Submit;
     EditText text_name,text_description,text_price,txt_number,txt_period;
     TextView txt_path;
-    private static final String KEY_NAME="NAME";
-    private static final String KEY_DESCRIPTION="DESCRIPTION";
-    private static final String KEY_PRICE="PRICE";
-    private static final String KEY_URL="IMAGEURL";
-    private static final String KEY_MODE="MODE";
-    private static final String KEY_CONTACT="MOBILENO";
-    private static final String KEY_PERIOD="DURATION_OF_RENT";
-    private static final String KEY_UID="UID";
-    private static final String KEY_CATEGORY="CATEGORY";
-    private static final String KEY_PARENT_ID="PARENTID";
+    private static final String KEY_NAME="name";
+    private static final String KEY_DESCRIPTION="description";
+    private static final String KEY_PRICE="price";
+    private static final String KEY_URL="imageUrl";
+    private static final String KEY_MODE="mode";
+    private static final String KEY_CONTACT="mobileNo";
+    private static final String KEY_PERIOD="duration_of_rent";
+    private static final String KEY_UID="uid";
+    private static final String KEY_CATEGORY="category";
+    private static final String KEY_PARENT_ID="parentid";
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private  String uid = mAuth.getCurrentUser().getUid();
 
@@ -269,8 +269,8 @@ public class Rent extends AppCompatActivity {
                             if (document != null) {
                                 final String n = document.getString("productid");
                                 int m=Integer.valueOf(n);
-                                data.put("Myid",String.valueOf(m+1));
-                                data.put("Myidint",m+1);
+                                data.put("myid",String.valueOf(m+1));
+                                data.put("myidint",m+1);
                                 DocumentReference ref= db.collection(cat).document(String.valueOf(m+1));
                                 ref.set(data)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {

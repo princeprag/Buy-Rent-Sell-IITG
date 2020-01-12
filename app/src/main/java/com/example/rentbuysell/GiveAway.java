@@ -271,27 +271,6 @@ public class GiveAway extends AppCompatActivity {
                 });
 
 
-
-
-
-
-
-
-
-
-
-
-     /*   else{
-
-            Toast.makeText(Rent.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
-        }*/
-
-
-
-
-
-
-
     }
 
 

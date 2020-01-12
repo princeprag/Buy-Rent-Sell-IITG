@@ -26,36 +26,31 @@ public class productAdapter extends FirestoreRecyclerAdapter<product_part,produc
     public productAdapter(@NonNull FirestoreRecyclerOptions<product_part> options, Context mContext) {
         super(options);
         this.mContext = mContext;
-
-}
-
-    //  public productAdapter(@NonNull FirestoreRecyclerOptions<Product_list> options) {
-    //      super(options);
-    //  }
+    }
 
     @Override
     protected void onBindViewHolder(@NonNull final productHolder productHolder, int i, @NonNull final product_part product_list) {
-        productHolder.Name.setText(product_list.getNAME());
-        productHolder.Shortdesc.setText(product_list.getDESCRIPTION());
-        //String s=String.valueOf(product_list.getPrice());
-        productHolder.pPrice.setText(product_list.getPRICE());
-        String imURL=product_list.getIMAGEURL();
+        productHolder.Name.setText(product_list.getName());
+        productHolder.Shortdesc.setText(product_list.getDescription());
+        productHolder.pPrice.setText(product_list.getPrice());
+        String imURL=product_list.getImageUrl();
         Picasso.get().load(imURL).fit().into(productHolder.imageView);
-        productHolder.Mode.setText(product_list.getMODE());
+        productHolder.Mode.setText(product_list.getMode());
 
 
         productHolder.listproduct.setOnClickListener(new View.OnClickListener() {
             @Override
 
             public void onClick(View v) {
-                // Toast.makeText(mContext,product_list.getname(),Toast.LENGTH_SHORT).show();
                 Intent i=new Intent(mContext,description.class);
-                i.putExtra("Name",product_list.getNAME());
-                i.putExtra("Shortdesc",product_list.getDESCRIPTION());
-                i.putExtra("ImageURL",product_list.getIMAGEURL());
-                i.putExtra("Price",product_list.getPRICE());
-                i.putExtra("Mobile_no",product_list.getMOBILENO());
-                i.putExtra("CATEGORY",product_list.getCATEGORY());
+                i.putExtra("Name",product_list.getName());
+                i.putExtra("Shortdesc",product_list.getDescription());
+                i.putExtra("ImageURL",product_list.getImageUrl());
+                i.putExtra("Price",product_list.getPrice());
+                i.putExtra("Mobile_no",product_list.getMobileNo());
+                i.putExtra("CATEGORY",product_list.getCategory());
+                i.putExtra("UID",product_list.getUid());
+                Toast.makeText(mContext,product_list.getUid(), Toast.LENGTH_SHORT).show();
                 mContext.startActivity(i);
             }
         });
@@ -81,8 +76,8 @@ public class productAdapter extends FirestoreRecyclerAdapter<product_part,produc
 
         public productHolder(@NonNull View itemView) {
             super(itemView);
-            Shortdesc=itemView.findViewById(R.id.textViewTitle);
-            Name=itemView.findViewById(R.id.textViewShortDesc);
+            Name=itemView.findViewById(R.id.textViewTitle);
+            Shortdesc=itemView.findViewById(R.id.textViewShortDesc);
             pPrice=itemView.findViewById(R.id.textViewPrice);
             imageView=itemView.findViewById(R.id.imageView);
             listproduct=itemView.findViewById(R.id.list_product);
