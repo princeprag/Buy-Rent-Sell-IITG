@@ -104,12 +104,12 @@ public class SignUp extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Toast.makeText(this, "line 147", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "line 147", Toast.LENGTH_SHORT).show();
 
         if (resultCode == RESULT_OK && requestCode == REQUESCODE && data != null&& data.getData() != null ) {
             pickedImgUri = data.getData();
             pro_pic.setImageURI(pickedImgUri);
-            Toast.makeText(this, "Image Succesfully Choosen", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Image Successfully Chosen", Toast.LENGTH_SHORT).show();
 
         }
 
@@ -246,6 +246,7 @@ public class SignUp extends AppCompatActivity {
         data.put("Image Url",Url);
         data.put("Choice1",choice1);
         data.put("Choice2",choice2);
+        data.put("SignInmode","Normal");
         db.collection("users").document(mAuth.getUid()).set(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

@@ -13,13 +13,14 @@ public class product_part {
     public String parentid;
     public String myid;
     public int myidint;
+    public String public_feed;
 
 
     public product_part() {
 
     }
 
-    public product_part(String mode, String imageUrl, String mobileNo, String category, String name, String price, String description, String uid, String duration_of_rent, String parentid, String myid, int myidint) {
+    public product_part(String mode, String imageUrl, String mobileNo, String category, String name, String price, String description, String uid, String duration_of_rent, String parentid, String myid, int myidint,String public_feed) {
         this.mode = mode;
         this.imageUrl = imageUrl;
         this.mobileNo = mobileNo;
@@ -32,6 +33,7 @@ public class product_part {
         this.parentid = parentid;
         this.myid = myid;
         this.myidint = myidint;
+        this.public_feed=public_feed;
     }
 
     public String getMode() {
@@ -128,5 +130,13 @@ public class product_part {
 
     public void setMyidint(int myidint) {
         this.myidint = myidint;
+    }
+
+    public String getPublic_feed() {
+        return public_feed;
+    }
+
+    public void setPublic_feed(String public_feed) {
+        this.public_feed = public_feed;
     }
 }

@@ -28,12 +28,21 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class AboutUs extends AppCompatActivity {
-    ImageView pankaj,prince;
+    ImageView pankaj,prince,back;
     LinearLayout l1,l2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about_us);
+        setContentView(R.layout.activity_about_us); back=findViewById(R.id.back_btn);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                Intent i=new Intent(AboutUs.this,Drawer.class);
+                startActivity(i);
+            }
+        });
+
         pankaj=findViewById(R.id.mempic1);
         prince=findViewById(R.id.mempic2);
         l1=findViewById(R.id.mem1);
@@ -58,6 +67,13 @@ public class AboutUs extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        Intent i=new Intent(AboutUs.this,Drawer.class);
+        startActivity(i);
+    }
 }
 
 

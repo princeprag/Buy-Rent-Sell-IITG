@@ -4,14 +4,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".User_Description"
-    android:padding="10dp">
+    tools:context=".User_Description">
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bar_layout">
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/toolbar_chat"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/Menustyle"
+            android:background="#395abd">
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="50dp"
+                android:id="@+id/back_btn"
+                android:background="@drawable/ic_launcher_back"
+                />
 
-
-    <ImageView
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="35dp"
+                android:layout_marginStart="0dp"
+                android:textColor="#ffffff"
+                android:text="Product Description"/>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:id="@+id/scrollview"
+        android:layout_below="@+id/bar_layout">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
         android:id="@+id/image_pic"
-        android:layout_width="370dp"
-        android:layout_height="270dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:background="@drawable/noimage" />
 
@@ -72,6 +108,7 @@
         android:textOn="ON"
         android:checked="true"
         android:visibility="visible"
+        android:textColor="#272727"
         />
     <TextView
         android:id="@+id/warning_text"
@@ -81,7 +118,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
-        android:textStyle="bold"
+        android:textStyle="italic"
         android:layout_below="@+id/switch1"
         android:visibility="invisible"
         />
@@ -97,7 +134,10 @@
         android:clickable="true"
         android:background="@drawable/reg_btn_style"
         android:text="  Delete this Product  "
+        android:textColor="#ffffff"
         />
+        </RelativeLayout>
+    </ScrollView>
 
 
 

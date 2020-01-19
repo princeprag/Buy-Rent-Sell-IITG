@@ -7,53 +7,38 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_buy"
-            android:title="BUY"/>
-        <item
-            android:id="@+id/nav_chats"
-
-            android:title="Chats" />
-
-        <item
-            android:id="@+id/nav_sell"
-
-            android:title="SELL" />
+            android:title="Buy"/>
         <item
             android:id="@+id/nav_rent"
 
-            android:title="RENT" />
+            android:title="Rent" />
+        <item
+            android:id="@+id/nav_sell"
+
+            android:title="Sell" />
+        <item
+            android:id="@+id/nav_chats"
+            android:title="Chats" />
         <item
             android:id="@+id/nav_giveAway"
-
             android:title="Give Away" />
 
         <item
-            android:id="@+id/nav_swap"
+            android:id="@+id/nav_myinfo"
+            android:title="My Profile"/>
+        <item
+            android:id="@+id/nav_bug"
+            android:title="Report Bug"/>
+        <item
+            android:id="@+id/nav_aboutUs"
+            android:title="About Us" />
 
-            android:title="Swap" />
+
+        <item
+            android:id="@+id/signOut"
+            android:title="Log Out"/>
 
 
     </group>
 
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_myinfo"
-                android:title="My Profile"/>
-
-            <item
-                android:id="@+id/nav_aboutUs"
-
-                android:title="AboutUs" />
-
-            <item
-                android:id="@+id/nav_send"
-
-                android:title="@string/menu_send" />
-            <item
-                android:id="@+id/signOut"
-
-                android:title="Sign Out"/>
-
-        </menu>
-    </item>
 </menu>

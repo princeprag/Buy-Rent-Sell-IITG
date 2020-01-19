@@ -6,18 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".Buy">
     <com.gigamole.navigationtabstrip.NavigationTabStrip
-
-
-
-
         android:id="@+id/nts"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_gravity="center"
-        android:background="@color/colorPrimary"
+        android:background="#395abd"
         app:nts_titles="@array/cat"
-
-        app:nts_color="#ffd000"
+        app:nts_color="#fff000"
         app:nts_size="15sp"
         app:nts_weight="10dp"
         app:nts_factor="2.5"
@@ -26,8 +21,8 @@
         app:nts_typeface="fonts/typeface.otf"
         app:nts_corners_radius="5dp"
         app:nts_animation_duration="300"
-        app:nts_active_color="#ffffffff"
-        app:nts_inactive_color="#80ffffff"
+        app:nts_active_color="#ffffff"
+        app:nts_inactive_color="#80ffff"
         android:elevation="1dp"/>
 
     <androidx.viewpager.widget.ViewPager

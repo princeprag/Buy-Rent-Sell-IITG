@@ -1,12 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AboutUs">
+    tools:context=".AboutUs"
+    android:background="#ffffff">
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bar_layout">
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/toolbar_chat"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/Menustyle"
+            android:background="#395abd">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="40dp"
+                android:layout_height="50dp"
+                android:id="@+id/back_btn"
+                android:background="@drawable/ic_launcher_back"
+                />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="35dp"
+                android:layout_marginStart="0dp"
+                android:textColor="#ffffff"
+                android:text="About Us"/>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/bar_layout"
+        android:id="@+id/linear1"
+        android:background="@drawable/reg_edittext_style">
 
+        <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/app_logo"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+            android:background="@drawable/userphoto"
+        android:layout_gravity="center" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="1dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/mal_item_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Buy/Rent/Sell IITG"
+            android:textSize="20dp"
+            android:textColor="#FF444444"
+            android:layout_marginLeft="5dp"/>
+
+        <TextView
+            android:id="@+id/mal_item_desc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="4dp"
+            android:textColor="#FF444444"
+            android:textSize="15dp"
+
+            android:text="Coding Club IITG"
+            android:width="63dp" />
+        <TextView
+            android:id="@+id/version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:text="Version : 1.0"
+
+            android:textColor="#FF444444" />
+
+    </LinearLayout>
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="Team"
+        android:layout_below="@id/linear1"
+        android:textSize="20dp"
+       android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:id="@+id/team"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/team"
+        android:id="@+id/linear2"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:weightSum="2">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:id="@+id/mem1">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/mempic1"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="3dp"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textColor="#FF444444"
+                android:textSize="17dp"
+                android:text="Pankaj Dinker"
+                android:layout_gravity="center"
+                android:layout_marginTop="3dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="16dp"
+                android:layout_marginTop="3dp"
+                android:text="Front-End and Back-End" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="16dp"
+                android:layout_marginTop="1dp"
+                android:text="Developer" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:id="@+id/mem2">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/mempic2"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="3dp"
+            />
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textColor="#FF444444"
+                android:textSize="17dp"
+                android:text="Prince Prag"
+                android:layout_gravity="center"
+                android:layout_marginTop="3dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="16dp"
+                android:layout_marginTop="3dp"
+                android:text="Front-End and Back-End" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="16dp"
+                android:layout_marginTop="1dp"
+                android:text="Developer" />
+        </LinearLayout>
+
+    </LinearLayout>
+    <ImageView
+        android:layout_width="110dp"
+        android:layout_height="120dp"
+        android:layout_below="@id/linear2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:id="@+id/coding_club_pic"
+        android:src="@drawable/codingclub"/>
+
+</RelativeLayout>

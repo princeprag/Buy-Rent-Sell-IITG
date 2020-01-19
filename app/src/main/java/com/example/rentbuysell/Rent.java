@@ -61,7 +61,7 @@ public class Rent extends AppCompatActivity {
     StorageReference storageRef= storage.getReference();
     private final int PICK_IMAGE_REQUEST = 71;
     private Uri filePath;
-    ImageView imageView;
+    ImageView imageView,back;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     // ProgressDialog progressDialog=new ProgressDialog(this);
 
@@ -74,6 +74,15 @@ public class Rent extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rent);
+        back=findViewById(R.id.back_btn);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                Intent i=new Intent(Rent.this,Drawer.class);
+                startActivity(i);
+            }
+        });
 
 
 
@@ -201,7 +210,7 @@ public class Rent extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     s= uri.toString();
-                                    Toast.makeText(Rent.this, s, Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(Rent.this, s, Toast.LENGTH_SHORT).show();
                                     Uploadtext(s);
 
 
@@ -229,7 +238,7 @@ public class Rent extends AppCompatActivity {
 
 
         }else{
-            Toast.makeText(this,"Image not selected or Field left Empty!!!!!!!!!",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Image not selected or any field left empty!!!!!!!!!",Toast.LENGTH_LONG).show();
         }
         Log.d("Str",s);
         return s;
@@ -260,6 +269,7 @@ public class Rent extends AppCompatActivity {
         data.put(KEY_CONTACT,number);
         data.put(KEY_PERIOD,period);
         data.put(KEY_UID,uid);
+        data.put("public_feed","true");
         db.collection("productid").document("CsRaWRYVoTQF0mNR1fv6").get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -276,7 +286,7 @@ public class Rent extends AppCompatActivity {
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
-                                                Toast.makeText(Rent.this,"Successful",Toast.LENGTH_LONG).show();
+                                               // Toast.makeText(Rent.this,"Successful",Toast.LENGTH_LONG).show();
 
                                             }
                                         })
@@ -292,7 +302,7 @@ public class Rent extends AppCompatActivity {
 
 
                             } else {
-                                Toast.makeText(Rent.this, "Getted both choice", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(Rent.this, "Getted both choice", Toast.LENGTH_SHORT).show();
                             }
                         } else {
 
@@ -338,12 +348,13 @@ public class Rent extends AppCompatActivity {
         data.put(KEY_CONTACT,number);
         data.put(KEY_PERIOD,period);
         data.put(KEY_UID,id);
+        data.put("public_feed","true");
         Map<String,Object> upid=new HashMap<>();
         upid.put("productid",id);
         db.collection("productid").document("CsRaWRYVoTQF0mNR1fv6").set(upid);
         final DocumentReference userdref= db.collection("users").document(uid).collection("Product").document();
         data.put(KEY_PARENT_ID,userdref.getId());
-        Toast.makeText(Rent.this,userdref.getId()+" Parent id",Toast.LENGTH_LONG).show();
+        //Toast.makeText(Rent.this,userdref.getId()+" Parent id",Toast.LENGTH_LONG).show();
         userdref.set(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

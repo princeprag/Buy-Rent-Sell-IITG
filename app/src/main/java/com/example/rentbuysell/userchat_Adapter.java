@@ -21,10 +21,12 @@ import java.util.List;
 
 public class userchat_Adapter extends FirestoreRecyclerAdapter<chat_users,userchat_Adapter.ViewHolder> {
     private Context mContext;
+    private boolean isonline;
 
-    public userchat_Adapter(@NonNull FirestoreRecyclerOptions<chat_users> options, Context mContext) {
+    public userchat_Adapter(@NonNull FirestoreRecyclerOptions<chat_users> options, Context mContext,boolean isonline) {
         super(options);
         this.mContext = mContext;
+        this.isonline = isonline;
     }
 
 
@@ -32,6 +34,19 @@ public class userchat_Adapter extends FirestoreRecyclerAdapter<chat_users,userch
     protected void onBindViewHolder(@NonNull ViewHolder viewHolder, int i, @NonNull final chat_users chat_users) {
         viewHolder.Username.setText(chat_users.getUsername());
         Glide.with(mContext).load(chat_users.getImageUrl()).into(viewHolder.profilepic);
+//        if(isonline) {
+//            if (chat_users.getStatus().equals("Online")) {
+//                viewHolder.online.setVisibility(View.VISIBLE);
+//                viewHolder.offline.setVisibility(View.GONE);
+//            } else {
+//                viewHolder.offline.setVisibility(View.VISIBLE);
+//                viewHolder.online.setVisibility(View.GONE);
+//            }
+//        }
+//        else { viewHolder.offline.setVisibility(View.GONE);
+//               viewHolder.online.setVisibility(View.GONE);
+//
+//        }
         viewHolder.chatinterface.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,6 +98,8 @@ public class userchat_Adapter extends FirestoreRecyclerAdapter<chat_users,userch
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView Username;
         public ImageView profilepic;
+        public ImageView online;
+        public ImageView offline;
         public RelativeLayout chatinterface;
 
 
@@ -90,6 +107,8 @@ public class userchat_Adapter extends FirestoreRecyclerAdapter<chat_users,userch
             super(itemView);
             Username=itemView.findViewById(R.id.username);
             profilepic=itemView.findViewById(R.id.profile_image);
+            online=itemView.findViewById(R.id.online);
+            offline=itemView.findViewById(R.id.offline);
             chatinterface=itemView.findViewById(R.id.chatinterface);
 
         }

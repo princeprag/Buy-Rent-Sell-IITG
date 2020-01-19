@@ -57,6 +57,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.squareup.picasso.Picasso;
@@ -122,7 +123,6 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-        //put_userdata_header(acct);
         put_userdata_header(acct);
 
 
@@ -176,32 +176,25 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
               startActivity(s);
               break;
             case R.id.nav_sell:
-               /* getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new GalleryFragment()).commit();*/
                 Intent s1 = new Intent(Drawer.this, Sell.class);
                 startActivity(s1);
                 break;
             case R.id.nav_rent:
-                /*getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new SlideshowFragment()).commit();*/
+                finish();
                 Intent s2 = new Intent(Drawer.this, Rent.class);
                 startActivity(s2);
                 break;
-            case R.id.nav_swap:
-                /*getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ToolsFragment()).commit();*/
-                Intent s3 = new Intent(Drawer.this, Swap.class);
+
+            case R.id.nav_aboutUs:
+                finish();
+                Intent s3 = new Intent(Drawer.this, AboutUs.class);
                 startActivity(s3);
                 break;
 
-            case R.id.nav_aboutUs:
-                /*Toast.makeText(this, mAuth.getCurrentUser().getUid().toString(), Toast.LENGTH_SHORT).show();*/
-
-                break;
-
                 case R.id.nav_giveAway:
-                Intent s5 = new Intent(Drawer.this, GiveAway.class);
-                startActivity(s5);
+                    finish();
+                    Intent s5 = new Intent(Drawer.this, GiveAway.class);
+                    startActivity(s5);
                 break;
             case R.id.nav_myinfo:
                 Intent s6=new Intent(Drawer.this,MyData.class);
@@ -226,14 +219,13 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            //super.onBackPressed();
             moveTaskToBack(true);
 
         }
     }
 
     public void putnewsfeed() {
-        DocumentReference docref = db.collection("users").document(mAuth.getCurrentUser().getUid());
+        DocumentReference docref = db.collection("users").document(mAuth.getUid());
         docref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -245,7 +237,7 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                         putinrecyclerview(choice1,choice2);
 
                     } else {
-                        Toast.makeText(Drawer.this, "Getted both choice", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Drawer.this, "Getted both choice", Toast.LENGTH_SHORT).show();
                     }
                 } else {
 
@@ -253,7 +245,7 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                 }
             }
         });
-        Toast.makeText(Drawer.this, "Choice1" + choice1, Toast.LENGTH_SHORT).show();
+       // Toast.makeText(Drawer.this, "Choice1" + choice1, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -269,13 +261,13 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Toast.makeText(Drawer.this, token.toString(), Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(Drawer.this, token.toString(), Toast.LENGTH_SHORT).show();
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(Drawer.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                   // Toast.makeText(Drawer.this, e.getMessage(), Toast.LENGTH_SHORT).show();
 
                                 }
                             });
@@ -297,7 +289,7 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
 
     public void putinrecyclerview(String ch1,String ch2)
     {   db = FirebaseFirestore.getInstance();
-        Toast.makeText(Drawer.this, "Choice1" + ch1, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(Drawer.this, "Choice1" + ch1, Toast.LENGTH_SHORT).show();
 
 
         final CollectionReference productref1 = db.collection(ch1);
@@ -307,9 +299,9 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(Drawer.this, "connected with firebase", Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(Drawer.this, "connected with firebase", Toast.LENGTH_SHORT).show();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-//                                product_part temp=new product_part();
+                                //product_part temp=new product_part();
                                 String NAME=document.getString("name");
                                 String DESCRIPTION=document.getString("description");
                                 String IMAGEURL=document.getString("imageUrl");
@@ -322,7 +314,8 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                                 String DURATION_OF_RENT=document.getString("duration_of_rent");
                                 String PARENTID=document.getString("parentid");
                                 String CATAGORY=document.getString("category");
-                                product_part temp=new product_part(MODE,IMAGEURL,MOBILENO,CATAGORY, NAME, PRICE, DESCRIPTION,UID, DURATION_OF_RENT,PARENTID,Myid,Myidint);
+                                String public_feed=document.getString("public_feed");
+                                product_part temp=new product_part(MODE,IMAGEURL,MOBILENO,CATAGORY, NAME, PRICE, DESCRIPTION,UID, DURATION_OF_RENT,PARENTID,Myid,Myidint,public_feed);
                                 feed.add(temp);
 
                             }
@@ -346,7 +339,8 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                                                     String DURATION_OF_RENT=document.getString("duration_of_rent");
                                                     String PARENTID=document.getString("parentid");
                                                     String CATAGORY=document.getString("category");
-                                                    product_part temp=new product_part(MODE,IMAGEURL,MOBILENO,CATAGORY, NAME, PRICE, DESCRIPTION,UID, DURATION_OF_RENT,PARENTID,Myid,Myidint);
+                                                    String public_feed=document.getString("public_feed");
+                                                    product_part temp=new product_part(MODE,IMAGEURL,MOBILENO,CATAGORY, NAME, PRICE, DESCRIPTION,UID, DURATION_OF_RENT,PARENTID,Myid,Myidint,public_feed);
                                                     feed.add(temp);
 
                                                 }
@@ -371,7 +365,7 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                     }
                 });
 
-        Toast.makeText(this,feed.size()+"size", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this,feed.size()+"size", Toast.LENGTH_SHORT).show();
 
 
 
@@ -439,23 +433,50 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
 //       //  adapter.stopListening();
 //     }
     private void signout() {
-       /* mGoogleSignInClient.signOut()
+        db.collection("users").document(mAuth.getUid()).get().addOnCompleteListener(
+                new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
+
+                            if (documentSnapshot != null) {
+                                String signInmode = documentSnapshot.getString("SignInmode");
+                                if(signInmode.equals("Normal"))
+                                {   Toast.makeText(Drawer.this, "Log Out Successfully", Toast.LENGTH_SHORT).show();
+                                    FirebaseAuth.getInstance().signOut();
+                                    Intent it= new Intent(Drawer.this,MainActivity.class);
+                                    startActivity(it);
+                                    it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);}
+                                else if(signInmode.equals("Google"))
+                                {
+                                    signOut();
+                                }
+                            } else {
+                                Toast.makeText(Drawer.this, "Document snapshot null", Toast.LENGTH_SHORT).show();
+                            }
+                        }else{
+
+                            Toast.makeText(Drawer.this, "Task is unsuccessfully because"+task.getException(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
+    }
+    private void signOut() {
+        mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Intent intent = new Intent(Drawer.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                        Toast.makeText(Drawer.this, "SignOut Succesfully", Toast.LENGTH_LONG).show();
-
+                        Toast.makeText(Drawer.this, "Log Out Successfully", Toast.LENGTH_SHORT).show();
+                        Intent it= new Intent(Drawer.this,MainActivity.class);
+                        startActivity(it);
+                        it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     }
-                });*/
-        myuser.logout();
-        Intent it= new Intent(Drawer.this,MainActivity.class);
-        startActivity(it);
-        it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
+                });
     }
 
 
@@ -466,7 +487,6 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
         public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
             if(e!=null){
                 Toast.makeText(Drawer.this, "failed"+e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-
                 return;
             }
 
@@ -474,7 +494,6 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                 if(dc.getType()== DocumentChange.Type.ADDED)
                 {
                     Log.d("pra",dc.getDocument().getData().toString());
-                   // Toast.makeText(Drawer.this, "true"+ dc.getDocument().getData(), Toast.LENGTH_LONG).show();
                     showNotification(getApplicationContext(),"HEY","A new User is Added!!!");
                 }
             }
@@ -562,7 +581,6 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                     }
                 });
     }
-
 
 
 

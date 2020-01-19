@@ -15,7 +15,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/toolbar_chat"
            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-           app:popupTheme="@style/Menustyle">
+           app:popupTheme="@style/Menustyle"
+           android:background="#395abd">
            <ImageView
                android:layout_width="40dp"
                android:layout_height="50dp"
@@ -38,6 +39,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/iusername"
             android:textSize="20dp"
+            android:layout_marginTop="0dp"
             android:layout_marginLeft="35dp"
             android:layout_marginStart="35dp"
             android:textColor="#ffffff"

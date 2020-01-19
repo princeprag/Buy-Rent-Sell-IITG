@@ -58,6 +58,8 @@ public class user_product_adapter extends FirestoreRecyclerAdapter<product_part,
                 i.putExtra("CATEGORY",product_list.getCategory());
                 i.putExtra("PARENTID",product_list.getParentid());
                 i.putExtra("UID",product_list.getUid());
+                i.putExtra("public_feed",product_list.getPublic_feed());
+                i.putExtra("mode",product_list.getMode());
                 Toast.makeText(mContext,product_list.getUid(), Toast.LENGTH_SHORT).show();
                 mContext.startActivity(i);
             }
@@ -83,8 +85,8 @@ public class user_product_adapter extends FirestoreRecyclerAdapter<product_part,
 
         public productHolder(@NonNull View itemView) {
             super(itemView);
-            Shortdesc=itemView.findViewById(R.id.textViewTitle);
-            Name=itemView.findViewById(R.id.textViewShortDesc);
+            Shortdesc=itemView.findViewById(R.id.textViewShortDesc);
+            Name=itemView.findViewById(R.id.textViewTitle);
             pPrice=itemView.findViewById(R.id.textViewPrice);
             imageView=itemView.findViewById(R.id.imageView);
             listproduct=itemView.findViewById(R.id.list_product);

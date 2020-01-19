@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,18 +30,21 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class description extends AppCompatActivity {
-    Button callseller,messageseller;
+    LinearLayout callseller,messageseller;
     TextView reportAdmin;
     private static final int Request_Call=2;
     FirebaseAuth mAuth= FirebaseAuth.getInstance();
     private FirebaseFirestore db= FirebaseFirestore.getInstance();
     public  Map<String, String> TIMESTAMP;
+    public String Reciverid;
+    ImageView back;
 
 
 
@@ -48,6 +52,18 @@ public class description extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_description);
+        Intent i=getIntent();
+        Reciverid=i.getStringExtra("UID");
+        back=findViewById(R.id.back_btn);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                Intent i=new Intent(description.this,Drawer.class);
+                startActivity(i);
+            }
+        });
+
         callseller=findViewById(R.id.call_seller);
         messageseller=findViewById(R.id.message_seller);
         reportAdmin=findViewById(R.id.ReportA);
@@ -61,10 +77,9 @@ public class description extends AppCompatActivity {
         messageseller.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=getIntent();
-                String UserId=i.getStringExtra("UID");
-                Toast.makeText(description.this, "Send Message clicked", Toast.LENGTH_SHORT).show();
-                sendmessage(UserId);
+
+                //Toast.makeText(description.this, "Send Message clicked", Toast.LENGTH_SHORT).show();
+                sendmessage(Reciverid);
 
             }
         });
@@ -82,7 +97,7 @@ public class description extends AppCompatActivity {
         String price = i.getStringExtra("Price");
         String imageurl=i.getStringExtra("ImageURL");
         String cat=i.getStringExtra("CATEGORY");
-        Toast.makeText(this,cat, Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this,cat, Toast.LENGTH_SHORT).show();
         addData(name,desc,price,imageurl);
     }
 
@@ -97,10 +112,8 @@ public class description extends AppCompatActivity {
         Name.setText(name);
         Desc.setText(desc);
         Price.setText(price);
-        Picasso.get().load(imageurl).fit().into(pic);
-
-
-
+        Glide.with(description.this).load(imageurl).into(pic);
+        //Picasso.get().load(imageurl).fit().into(pic);
     }
     private void makephonecall(String mobile_No){
         if(mobile_No.trim().length()>0) {
@@ -116,7 +129,7 @@ public class description extends AppCompatActivity {
 
         }
         else
-            Toast.makeText(this,"Mobile Number is Not Valid",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Mobile number is not valid",Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -134,9 +147,9 @@ public class description extends AppCompatActivity {
     private void sendmessage(final String UserID)
     {
         if(mAuth.getUid().equals(UserID))
-            Toast.makeText(this, "You Can't send message to Your self", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You can't send message to your self", Toast.LENGTH_SHORT).show();
         else
-        {Toast.makeText(description.this, UserID, Toast.LENGTH_SHORT).show();
+        {   //Toast.makeText(description.this, UserID, Toast.LENGTH_SHORT).show();
             DocumentReference docref= db.collection("users").document(UserID);
             docref.get().addOnCompleteListener(
                 new OnCompleteListener<DocumentSnapshot>() {
@@ -191,7 +204,7 @@ public class description extends AppCompatActivity {
     }
     public void putchatsenderdata(String username,String imageUrl,String receiverid)
     {
-        Toast.makeText(this, "putchatsenderstarted", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "putchatsenderstarted", Toast.LENGTH_SHORT).show();
         Map<String, Object> data = new HashMap<>();
         data.put("username",username);
         data.put("imageUrl",imageUrl);
@@ -201,7 +214,8 @@ public class description extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(description.this,"Successful202",Toast.LENGTH_LONG).show();
+                        //Toast.makeText(description.this,"Successful202",Toast.LENGTH_LONG).show();
+                        finish();
                         Intent i=new Intent(description.this,Chat.class);
                         startActivity(i);
 
@@ -216,13 +230,33 @@ public class description extends AppCompatActivity {
                 });
     }
     public void putchatreceiverdata(String username,String imageUrl,String receiverid)
-    {   Toast.makeText(this, "putchatreceiverstarted", Toast.LENGTH_SHORT).show();
+    {   //Toast.makeText(this, "putchatreceiverstarted", Toast.LENGTH_SHORT).show();
         Map<String, Object> data = new HashMap<>();
         data.put("username",username);
         data.put("imageUrl",imageUrl);
         data.put("user_id",mAuth.getUid());
+        data.put("status"," ");
         data.put("Servertime", ServerValue.TIMESTAMP);
         db.collection("users").document(receiverid).collection("Chats").document(mAuth.getUid()).set(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        //Toast.makeText(description.this,"Successful",Toast.LENGTH_LONG).show();
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(description.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+    }
+    public void status(String status)
+    { Map<String, Object> data = new HashMap<>();
+        data.put("status",status);
+        db.collection("users").document(mAuth.getUid()).collection("Chats").document(Reciverid).set(data, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -237,6 +271,9 @@ public class description extends AppCompatActivity {
 
                     }
                 });
+
     }
+
+
 }
 

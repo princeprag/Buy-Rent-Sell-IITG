@@ -14,6 +14,12 @@ import android.widget.Toast;
 //import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+import com.example.rentbuysell.Notification.Data;
+import com.example.rentbuysell.Notification.Myresponse;
+import com.example.rentbuysell.Notification.Sender;
+import com.example.rentbuysell.Notification.Token;
+import com.example.rentbuysell.Notification.client;
+import com.google.android.gms.common.api.Api;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -24,6 +30,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -31,6 +38,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ServerTimestamp;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,6 +59,9 @@ public class messageInterface extends AppCompatActivity {
     MessageAdapter adapter;
     List <getchats> mchatmessages;
     RecyclerView recyclerView;
+    APIservices apIservices;
+    boolean notify=false;
+
 
     //    private  DatabaseReference databaseReference  = FirebaseDatabase.getInstance().getReference();
     FirebaseUser fuser;
@@ -66,8 +80,7 @@ public class messageInterface extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
-
-
+        apIservices = client.getClient("https:fcm.googleapis.com/").create(APIservices.class);
         profile_pic=findViewById(R.id.iprofile_image);
         username=findViewById(R.id.iusername);
         message=findViewById(R.id.message_text);
@@ -76,6 +89,7 @@ public class messageInterface extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
                 Intent i=new Intent(messageInterface.this,Chat.class);
                 startActivity(i);
             }
@@ -84,12 +98,13 @@ public class messageInterface extends AppCompatActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                notify=true;
                 sendmessage();
                 message.setText("");
             }
         });
 
-        Toast.makeText(this, uid, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, uid, Toast.LENGTH_SHORT).show();
 
          db.collection("users").document(mAuth.getUid()).collection("Chats").document(uid).
                  get().addOnCompleteListener(
@@ -122,6 +137,7 @@ public class messageInterface extends AppCompatActivity {
         final String message_txt=message.getText().toString();
         if(!message_txt.equals(""))
         {
+            getnotidata(message_txt);
         DatabaseReference ref=FirebaseDatabase.getInstance().getReference("chats").child(mAuth.getUid());
         HashMap<String,Object> hashMap=new HashMap<>();
         hashMap.put("receiveR",receiverId);
@@ -134,7 +150,7 @@ public class messageInterface extends AppCompatActivity {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Toast.makeText(messageInterface.this, "Message Written Successfully", Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(messageInterface.this, "Message Written Successfully11111111111111111", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -154,7 +170,8 @@ public class messageInterface extends AppCompatActivity {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Toast.makeText(messageInterface.this, "Message Written Successfully", Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(messageInterface.this, "Message Written Successfully22222222222222", Toast.LENGTH_SHORT).show();
+
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -170,6 +187,109 @@ public class messageInterface extends AppCompatActivity {
 
 
     }
+    public void statuscheck(final String msg)
+    {db.collection("users").document().collection("Chats").document(receiverId).
+            get().addOnCompleteListener(
+            new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot documentSnapshot = task.getResult();
+
+                        if (documentSnapshot != null) {
+                            final String status=documentSnapshot.getString("status");
+                            if(status.equals("Offline"))
+                                getnotidata(msg);
+                            else
+                                Toast.makeText(messageInterface.this,status, Toast.LENGTH_SHORT).show();
+
+
+
+                        } else {
+                            Toast.makeText(messageInterface.this, "Document snapshot null", Toast.LENGTH_SHORT).show();
+                        }
+                    }else{
+
+                        Toast.makeText(messageInterface.this, "Task is unsuccessfull because"+task.getException(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+    }
+
+    private void getnotidata(final String message_txt) {
+        Toast.makeText(this, "190 notidata", Toast.LENGTH_SHORT).show();
+
+        db.collection("users").document(mAuth.getUid()).
+                get().addOnCompleteListener(
+                new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
+
+                            if (documentSnapshot != null) {
+                                 final String myname=documentSnapshot.getString("Name");
+                                 //Toast.makeText(messageInterface.this, myname, Toast.LENGTH_SHORT).show();
+                                 String imageurl = documentSnapshot.getString("ImageUrl");
+                                 if(notify){
+                                  //Toast.makeText(messageInterface.this, "204 notify true", Toast.LENGTH_SHORT).show();
+                                 sendNotifications(myname,message_txt,imageurl,receiverId);}
+                                 notify=false;
+
+                            } else {
+                                Toast.makeText(messageInterface.this, "Document snapshot null", Toast.LENGTH_SHORT).show();
+                            }
+                        }else{
+
+                            Toast.makeText(messageInterface.this, "Task is unsuccessfull because"+task.getException(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void sendNotifications(final String myname, final String message_txt, String imageurl, final String receiver) {
+        Toast.makeText(this, receiver, Toast.LENGTH_SHORT).show();
+        DatabaseReference tokens=FirebaseDatabase.getInstance().getReference("Token");
+        Query query=tokens.orderByKey().equalTo(receiver);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //Toast.makeText(messageInterface.this, "226 query", Toast.LENGTH_SHORT).show();
+                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    Token token = snapshot.getValue(Token.class);
+                    //Toast.makeText(messageInterface.this,token.token, Toast.LENGTH_SHORT).show();
+                    Data data=new Data(mAuth.getUid(),R.mipmap.ic_launcher,myname+": "+message_txt,"New Massage",receiver);
+                    Sender sender=new Sender(data,token.getToken());
+                    apIservices.sendNotification(sender)
+                            .enqueue(new Callback<Myresponse>() {
+                                @Override
+                                public void onResponse(Call<Myresponse> call, Response<Myresponse> response) {
+                                    if(response.code()==200)
+                                    {
+                                        if((response.body().success)!=1)
+                                            Toast.makeText(messageInterface.this, "Notification Failed", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Myresponse> call, Throwable t) {
+
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+
     void readmessage(final String myid,final String userid ,final String ImageUrl)
     { mchatmessages=new ArrayList<>();
      DatabaseReference ref=FirebaseDatabase.getInstance().getReference("chats").child(mAuth.getUid());
@@ -188,7 +308,7 @@ public class messageInterface extends AppCompatActivity {
 
          @Override
          public void onCancelled(@NonNull DatabaseError databaseError) {
-             Toast.makeText(messageInterface.this, "Message cant print", Toast.LENGTH_SHORT).show();
+             Toast.makeText(messageInterface.this, "Message can't print", Toast.LENGTH_SHORT).show();
 
          }
      });
@@ -197,6 +317,7 @@ public class messageInterface extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
+        finish();
         Intent i=new Intent(messageInterface.this,Chat.class);
         startActivity(i);
     }

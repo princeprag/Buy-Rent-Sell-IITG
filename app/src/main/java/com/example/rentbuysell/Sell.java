@@ -62,7 +62,7 @@ public class Sell extends AppCompatActivity {
 
     private final int PICK_IMAGE_REQUEST = 71;
     private Uri filePath;
-    ImageView imageView;
+    ImageView imageView,back;
     TextView welcome;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -83,6 +83,15 @@ public class Sell extends AppCompatActivity {
         welcome=(TextView) findViewById(R.id.welcome);
         Toast.makeText(this, uid, Toast.LENGTH_SHORT).show();
         String url_string;
+        back=findViewById(R.id.back_btn);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                Intent i=new Intent(Sell.this,Drawer.class);
+                startActivity(i);
+            }
+        });
 
 
 
@@ -159,13 +168,13 @@ public class Sell extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
 
-                            Toast.makeText(Sell.this, "Failed " + exception.getMessage(), Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(Sell.this, "Failed " + exception.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                    Toast.makeText(Sell.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(Sell.this, "Uploaded", Toast.LENGTH_SHORT).show();
 
                     ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
@@ -189,7 +198,7 @@ public class Sell extends AppCompatActivity {
                 }
             });}
         else{
-            Toast.makeText(this,"Image not selected or any field left Empty!!!!!!!!!",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Image not selected or any field left empty!!!!!!!!!",Toast.LENGTH_LONG).show();
         }
         Log.d("Str",s);
         return s;
@@ -214,6 +223,7 @@ public class Sell extends AppCompatActivity {
         data.put(KEY_CONTACT,number);
         data.put(KEY_CATEGORY,cat);
         data.put(KEY_UID,uid);
+        data.put("public_feed","tr");
         db.collection("productid").document("CsRaWRYVoTQF0mNR1fv6").get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -246,7 +256,7 @@ public class Sell extends AppCompatActivity {
 
 
                             } else {
-                                Toast.makeText(Sell.this, "Getted both choice", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(Sell.this, "Getted both choice", Toast.LENGTH_SHORT).show();
                             }
                         } else {
 
@@ -274,6 +284,7 @@ public class Sell extends AppCompatActivity {
         data.put(KEY_CONTACT,number);
         data.put(KEY_CATEGORY,cat);
         data.put(KEY_UID,id);
+        data.put("public_feed","tr");
         Map<String,Object> upid=new HashMap<>();
         upid.put("productid",id);
         db.collection("productid").document("CsRaWRYVoTQF0mNR1fv6").set(upid);
@@ -283,7 +294,7 @@ public class Sell extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(Sell.this,"Successful",Toast.LENGTH_LONG).show();
+                       // Toast.makeText(Sell.this,"Successful",Toast.LENGTH_LONG).show();
                         text_name.setText("");
                         text_description.setText("");
                         text_price.setText("");

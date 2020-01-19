@@ -5,22 +5,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MyData">
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:orientation="vertical">-->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bar_layout">
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/toolbar_chat"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/Menustyle"
+            android:background="#395abd">
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="50dp"
+                android:id="@+id/back_btn"
+                android:background="@drawable/ic_launcher_back"
+                />
 
-        <ImageView
-            android:id="@+id/myinfopic"
-            android:layout_marginTop="40dp"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-           android:layout_centerHorizontal="true"
-            android:background="@drawable/noimage"
-            android:scaleType="centerCrop"
-            />
-
-        <TextView
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="35dp"
+                android:layout_marginStart="0dp"
+                android:textColor="#ffffff"
+                android:text="My Profile"/>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/myinfopic"
+        android:layout_width="120dp"
+        android:layout_below="@+id/bar_layout"
+        android:layout_height="120dp"
+        android:src="@drawable/userphoto"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        app:civ_border_width="0.5dp"
+        app:civ_border_color="#FF0000"/>
+    <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -55,6 +80,8 @@
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp"/>
+        android:padding="4dp"/>
+
+
   </RelativeLayout>
-<!--    </LinearLayout>-->
+

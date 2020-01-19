@@ -34,7 +34,7 @@ public class MyData extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private user_product_adapter adapter;
-    ImageView myinfopic;
+    ImageView myinfopic,back;
     TextView myinfoname,myinfohostel,myinforollno;
     private description info;
     String upuid;
@@ -49,6 +49,15 @@ public class MyData extends AppCompatActivity {
         myinforollno=findViewById(R.id.myinforollno);
         put_userdata_header();
         setUpRecyclerview();
+        back=findViewById(R.id.back_btn);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                Intent i=new Intent(MyData.this,Drawer.class);
+                startActivity(i);
+            }
+        });
 
     }
 
