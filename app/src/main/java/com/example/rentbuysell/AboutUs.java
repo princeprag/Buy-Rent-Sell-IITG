@@ -12,10 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -26,43 +28,36 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class AboutUs extends AppCompatActivity {
-    Button signout;
-    private GoogleSignInClient mGoogleSignInClient;
+    ImageView pankaj,prince;
+    LinearLayout l1,l2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_us);
-        signout=findViewById(R.id.signOut);
-        signout.setOnClickListener(new View.OnClickListener() {
+        pankaj=findViewById(R.id.mempic1);
+        prince=findViewById(R.id.mempic2);
+        l1=findViewById(R.id.mem1);
+        l2=findViewById(R.id.mem2);
+        String p1="https://firebasestorage.googleapis.com/v0/b/rentbuysell-4d576.appspot.com/o/pankaj.jpg?alt=media&token=ec622a25-02c5-484d-b737-96d7c62a4c36";
+        String p2="https://firebasestorage.googleapis.com/v0/b/rentbuysell-4d576.appspot.com/o/prince.jpg?alt=media&token=b0ee8289-df58-42ee-b168-9d367b44c499";
+        Glide.with(AboutUs.this).load(p1).into(pankaj);
+        Glide.with(AboutUs.this).load(p2).into(prince);
+        l1.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
 
-                switch (view.getId()) {
-                    // ...
-                    case R.id.signOut:
-                        signOut();
-                        break;
-                    // ...
-                }
             }
         });
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        l2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+
     }
-    private void signOut() {
-        mGoogleSignInClient.signOut()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-//                        Intent i=
-                        Toast.makeText(AboutUs.this, "SignOut Succesfully", Toast.LENGTH_LONG).show();
-                        finish();
-                    }
-                });
-    }
+
 }
 
 
