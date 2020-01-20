@@ -54,16 +54,13 @@ public class Chat extends AppCompatActivity {
     private void setUpRecyclerview() {
 
         RecyclerView recyclerView=findViewById(R.id.user_chat_recyclerview);
-        Query query=db.collection("users").document(mAuth.getUid()).collection("Chats");
+        Query query=db.collection("users").document(mAuth.getUid()).collection("Chats").orderBy("Servertime", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<chat_users> options;
         options=new FirestoreRecyclerOptions.Builder<chat_users>().setQuery(query, chat_users.class).build();
         cadapter=new userchat_Adapter(options,this,true);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(cadapter);
-
-
-
     }
 
     @Override

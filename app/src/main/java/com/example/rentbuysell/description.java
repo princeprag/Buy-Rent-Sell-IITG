@@ -209,7 +209,8 @@ public class description extends AppCompatActivity {
         data.put("username",username);
         data.put("imageUrl",imageUrl);
         data.put("user_id",receiverid);
-        data.put("Servertime", ServerValue.TIMESTAMP);
+        String time=String.valueOf(System.currentTimeMillis());
+        data.put("Servertime",time);
         db.collection("users").document(mAuth.getUid()).collection("Chats").document(receiverid).set(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -236,7 +237,8 @@ public class description extends AppCompatActivity {
         data.put("imageUrl",imageUrl);
         data.put("user_id",mAuth.getUid());
         data.put("status"," ");
-        data.put("Servertime", ServerValue.TIMESTAMP);
+        String time=String.valueOf(System.currentTimeMillis());
+        data.put("Servertime",time);
         db.collection("users").document(receiverid).collection("Chats").document(mAuth.getUid()).set(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
