@@ -218,8 +218,6 @@ public class messageInterface extends AppCompatActivity {
     }
 
     private void getnotidata(final String message_txt) {
-        Toast.makeText(this, "190 notidata", Toast.LENGTH_SHORT).show();
-
         db.collection("users").document(mAuth.getUid()).
                 get().addOnCompleteListener(
                 new OnCompleteListener<DocumentSnapshot>() {
@@ -230,7 +228,6 @@ public class messageInterface extends AppCompatActivity {
 
                             if (documentSnapshot != null) {
                                  final String myname=documentSnapshot.getString("Name");
-                                 //Toast.makeText(messageInterface.this, myname, Toast.LENGTH_SHORT).show();
                                  String imageurl = documentSnapshot.getString("ImageUrl");
                                  if(notify){
                                   //Toast.makeText(messageInterface.this, "204 notify true", Toast.LENGTH_SHORT).show();
@@ -249,16 +246,13 @@ public class messageInterface extends AppCompatActivity {
     }
 
     private void sendNotifications(final String myname, final String message_txt, String imageurl, final String receiver) {
-        Toast.makeText(this, receiver, Toast.LENGTH_SHORT).show();
         DatabaseReference tokens=FirebaseDatabase.getInstance().getReference("Token");
         Query query=tokens.orderByKey().equalTo(receiver);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //Toast.makeText(messageInterface.this, "226 query", Toast.LENGTH_SHORT).show();
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     Token token = snapshot.getValue(Token.class);
-                    //Toast.makeText(messageInterface.this,token.token, Toast.LENGTH_SHORT).show();
                     Data data=new Data(mAuth.getUid(),R.mipmap.ic_launcher,myname+": "+message_txt,"New Massage",receiver);
                     Sender sender=new Sender(data,token.getToken());
                     apIservices.sendNotification(sender)
@@ -308,7 +302,7 @@ public class messageInterface extends AppCompatActivity {
 
          @Override
          public void onCancelled(@NonNull DatabaseError databaseError) {
-             Toast.makeText(messageInterface.this, "Message can't print", Toast.LENGTH_SHORT).show();
+             Toast.makeText(messageInterface.this, "Not able to print messages", Toast.LENGTH_SHORT).show();
 
          }
      });

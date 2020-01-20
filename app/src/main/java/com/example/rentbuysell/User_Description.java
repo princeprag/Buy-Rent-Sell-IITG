@@ -12,6 +12,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -249,7 +250,7 @@ public class User_Description extends AppCompatActivity {
         data.put(KEY_MODE, "ON RENT");
         data.put(KEY_CONTACT, number);
         data.put(KEY_PERIOD, period);
-        data.put(KEY_UID, parentid);
+        data.put(KEY_UID, mAuth.getUid());
         data.put("myid", uid);
         data.put("myidint",myidint);
         data.put("public_feed", "true");
@@ -375,6 +376,6 @@ public class User_Description extends AppCompatActivity {
         Name.setText(name);
         Desc.setText(desc);
         Price.setText(price);
-        Picasso.get().load(imageurl).fit().into(pic);
+        Glide.with(User_Description.this).load(imageurl).into(pic);
     }
 }
