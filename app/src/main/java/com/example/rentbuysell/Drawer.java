@@ -145,7 +145,7 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        shownoti();
+        //shownoti();
 
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
