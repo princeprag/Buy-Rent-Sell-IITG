@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +14,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 //import android.widget.Toolbar;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.rentbuysell.Notification.Data;
 import com.example.rentbuysell.Notification.Myresponse;
@@ -36,19 +43,20 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ServerTimestamp;
+import com.google.gson.Gson;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class messageInterface extends AppCompatActivity {
     CircleImageView profile_pic;
@@ -59,9 +67,9 @@ public class messageInterface extends AppCompatActivity {
     MessageAdapter adapter;
     List <getchats> mchatmessages;
     RecyclerView recyclerView;
-    APIservices apIservices;
-    boolean notify=false;
-
+    //APIservices apIservices;
+    private boolean notify=false;
+    private RequestQueue requestQueue;
 
     //    private  DatabaseReference databaseReference  = FirebaseDatabase.getInstance().getReference();
     FirebaseUser fuser;
@@ -73,6 +81,7 @@ public class messageInterface extends AppCompatActivity {
         setContentView(R.layout.activity_message_interface);
         Intent i=getIntent();
         receiverId=i.getStringExtra("UserId");
+        requestQueue =Volley.newRequestQueue(getApplicationContext());
 
 
         recyclerView=findViewById(R.id.message_recyclerview);
@@ -80,7 +89,7 @@ public class messageInterface extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
-        apIservices = client.getClient("https:fcm.googleapis.com/").create(APIservices.class);
+        //apIservices = client.getClient("https:fcm.googleapis.com/").create(APIservices.class);
         profile_pic=findViewById(R.id.iprofile_image);
         username=findViewById(R.id.iusername);
         message=findViewById(R.id.message_text);
@@ -124,7 +133,7 @@ public class messageInterface extends AppCompatActivity {
                              }
                          }else{
 
-                             Toast.makeText(messageInterface.this, "Task is unsuccessfull because"+task.getException(), Toast.LENGTH_SHORT).show();
+                             Toast.makeText(messageInterface.this, "Task is unsuccessful because"+task.getException(), Toast.LENGTH_SHORT).show();
                          }
                      }
                  });
@@ -210,7 +219,7 @@ public class messageInterface extends AppCompatActivity {
                         }
                     }else{
 
-                        Toast.makeText(messageInterface.this, "Task is unsuccessfull because"+task.getException(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(messageInterface.this, "Task is unsuccessful because"+task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -239,7 +248,7 @@ public class messageInterface extends AppCompatActivity {
                             }
                         }else{
 
-                            Toast.makeText(messageInterface.this, "Task is unsuccessfull because"+task.getException(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(messageInterface.this, "Task is unsuccessful because"+task.getException(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -255,23 +264,55 @@ public class messageInterface extends AppCompatActivity {
                     Token token = snapshot.getValue(Token.class);
                     Data data=new Data(mAuth.getUid(),R.mipmap.ic_launcher,myname+": "+message_txt,"New Massage",receiver);
                     Sender sender=new Sender(data,token.getToken());
-                    apIservices.sendNotification(sender)
-                            .enqueue(new Callback<Myresponse>() {
-                                @Override
-                                public void onResponse(Call<Myresponse> call, Response<Myresponse> response) {
-                                    if(response.code()==200)
-                                    {
-                                        if((response.body().success)!=1)
-                                            Toast.makeText(messageInterface.this, "Notification Failed", Toast.LENGTH_SHORT).show();
+//                    apIservices.sendNotification(sender)
+//                            .enqueue(new Callback<Myresponse>() {
+//                                @Override
+//                                public void onResponse(Call<Myresponse> call, Response<Myresponse> response) {
+//                                    if(response.code()==200)
+//                                    {
+//                                        if((response.body().success)!=1)
+//                                            Toast.makeText(messageInterface.this, "Notification Failed", Toast.LENGTH_SHORT).show();
+//
+//                                    }
+//                                }
+//
+//                                @Override
+//                                public void onFailure(Call<Myresponse> call, Throwable t) {
+//
+//                                }
+//                            });
+                    try {
+                        JSONObject senderJsonObj=new JSONObject(new Gson().toJson(sender));
+                        JsonObjectRequest jsonObjectRequest=new JsonObjectRequest("https://fcm.googleapis.com/fcm/send", senderJsonObj,
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        Log.d("Json_Response","Response"+response.toString());
+                                        //Toast.makeText(messageInterface.this, "Response"+response.toString(), Toast.LENGTH_SHORT).show();
 
                                     }
-                                }
+                                }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Json_Response","Response"+error.toString());
+                               // Toast.makeText(messageInterface.this, "Response"+error.toString(), Toast.LENGTH_SHORT).show();
 
-                                @Override
-                                public void onFailure(Call<Myresponse> call, Throwable t) {
 
-                                }
-                            });
+
+                            }
+                        }){
+                            @Override
+                            public Map<String, String> getHeaders() throws AuthFailureError {
+                                Map<String ,String > headers=new HashMap<>();
+                                headers.put("Content-Type","application/json");
+                                headers.put("Authorization","key=AAAAaNwEVdo:APA91bGJAEDteYgvTowqwqLqz_VnxA6ILBPNkvUiq9mt301Jb4cCH_voKpn-A9tGCvZZyw6BYwCR91Y2RnXGDBX6aWO1Gb865R_2stVWPHh75X0VONOmngKPHeYscC2tls-Y8WtyITql");
+                                return headers;
+                            }
+                        };
+                        requestQueue.add(jsonObjectRequest);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 

@@ -342,6 +342,7 @@ public class User_Description extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(User_Description.this, "Successfully deleted Data", Toast.LENGTH_SHORT).show();
+                        finish();
                         Intent i= new Intent(User_Description.this,MyData.class);
                         startActivity(i);
                     }

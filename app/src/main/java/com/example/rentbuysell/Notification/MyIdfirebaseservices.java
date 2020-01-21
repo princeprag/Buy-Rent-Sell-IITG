@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -57,6 +58,8 @@ public class MyIdfirebaseservices extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
+        SharedPreferences sp=getSharedPreferences("SP_USER",MODE_PRIVATE);
+        String savedCurrent=sp.getString("Current_USERID","None");
         String sented= remoteMessage.getData().get("sented");
         //Toast.makeText(this,sented, Toast.LENGTH_SHORT).show();
         FirebaseUser fuser=FirebaseAuth.getInstance().getCurrentUser();
@@ -68,9 +71,6 @@ public class MyIdfirebaseservices extends FirebaseMessagingService {
              sendNotification(remoteMessage);
          }
 
-
-
-          //  Toast.makeText(this, "Inside onMessage received", Toast.LENGTH_SHORT).show();
         }
 
     }
