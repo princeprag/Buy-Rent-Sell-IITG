@@ -71,6 +71,7 @@ public class messageInterface extends AppCompatActivity {
     private boolean notify=false;
     private RequestQueue requestQueue;
 
+
     //    private  DatabaseReference databaseReference  = FirebaseDatabase.getInstance().getReference();
     FirebaseUser fuser;
     FirebaseAuth mAuth= FirebaseAuth.getInstance();
@@ -112,6 +113,7 @@ public class messageInterface extends AppCompatActivity {
                 message.setText("");
             }
         });
+       // statuscheck();
 
         //Toast.makeText(this, uid, Toast.LENGTH_SHORT).show();
 
@@ -196,7 +198,7 @@ public class messageInterface extends AppCompatActivity {
 
 
     }
-    public void statuscheck(final String msg)
+    public void statuscheck()
     {db.collection("users").document().collection("Chats").document(receiverId).
             get().addOnCompleteListener(
             new OnCompleteListener<DocumentSnapshot>() {
@@ -207,8 +209,9 @@ public class messageInterface extends AppCompatActivity {
 
                         if (documentSnapshot != null) {
                             final String status=documentSnapshot.getString("status");
-                            if(status.equals("Offline"))
-                                getnotidata(msg);
+                            if(status.equals("online"))
+                                Toast.makeText(messageInterface.this,status, Toast.LENGTH_SHORT).show();
+
                             else
                                 Toast.makeText(messageInterface.this,status, Toast.LENGTH_SHORT).show();
 
@@ -355,5 +358,29 @@ public class messageInterface extends AppCompatActivity {
         finish();
         Intent i=new Intent(messageInterface.this,Chat.class);
         startActivity(i);
+    }
+
+    @Override
+    protected void onStart() {
+        updateStatus("online");
+        super.onStart();
+    }
+
+    @Override
+    protected void onPause() {
+        String time=String.valueOf(System.currentTimeMillis());
+        updateStatus(time);
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        updateStatus("online");
+        super.onResume();
+    }
+
+    private void updateStatus(String status) {
+        Toast.makeText(this, status, Toast.LENGTH_SHORT).show();
+        db.collection("users").document().collection("Chats").document(mAuth.getUid()).update("status",status);
     }
 }

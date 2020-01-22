@@ -18,7 +18,7 @@
            app:popupTheme="@style/Menustyle"
            android:background="#395abd">
            <ImageView
-               android:layout_width="40dp"
+               android:layout_width="60dp"
                android:layout_height="50dp"
                android:id="@+id/back_btn"
                android:background="@drawable/ic_launcher_back"
@@ -32,20 +32,38 @@
                android:src="@drawable/noimage"
                app:civ_border_width="1dp"
                app:civ_border_color="#FF000000"/>
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:gravity="center"
+         >
 
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/iusername"
             android:textSize="20dp"
+            android:layout_marginStart="1dp"
             android:layout_marginTop="0dp"
-            android:layout_marginLeft="35dp"
-            android:layout_marginStart="35dp"
             android:textColor="#ffffff"
             android:textStyle="bold"
             android:hint="Pankaj Kumar"/>
-        </androidx.appcompat.widget.Toolbar>
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:id="@+id/status"
+              android:textSize="16dp"
+              android:layout_marginStart="1dp"
+              android:layout_marginTop="0dp"
+              android:textColor="#ffffff"
+              android:textStyle="italic"
+              android:hint="status"
+              />
+
+      </LinearLayout>
+       </androidx.appcompat.widget.Toolbar>
        </com.google.android.material.appbar.AppBarLayout>
       <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

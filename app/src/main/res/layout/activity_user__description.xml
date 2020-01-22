@@ -17,7 +17,7 @@
             app:popupTheme="@style/Menustyle"
             android:background="#395abd">
             <ImageView
-                android:layout_width="40dp"
+                android:layout_width="60dp"
                 android:layout_height="50dp"
                 android:id="@+id/back_btn"
                 android:background="@drawable/ic_launcher_back"

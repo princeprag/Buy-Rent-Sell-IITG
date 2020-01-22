@@ -211,6 +211,7 @@ public class description extends AppCompatActivity {
         data.put("user_id",receiverid);
         String time=String.valueOf(System.currentTimeMillis());
         data.put("Servertime",time);
+        //data.put("status","");
         db.collection("users").document(mAuth.getUid()).collection("Chats").document(receiverid).set(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -239,6 +240,7 @@ public class description extends AppCompatActivity {
         data.put("status"," ");
         String time=String.valueOf(System.currentTimeMillis());
         data.put("Servertime",time);
+        //data.put("status","online");
         db.collection("users").document(receiverid).collection("Chats").document(mAuth.getUid()).set(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
