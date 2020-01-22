@@ -3,6 +3,7 @@ package com.example.rentbuysell;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,6 +32,8 @@ import java.util.UUID;
 public class GiveAway extends AppCompatActivity {
 
     Button Choose,Upload,SeeList;
+    ProgressDialog pd3;
+    ImageView imv;
     EditText text_name,text_description,text_price,txt_number,txt_period;
     TextView txt_path;
     private static final String KEY_NAME="NAME/BRAND:";
@@ -73,6 +76,8 @@ public class GiveAway extends AppCompatActivity {
         //txt_period=(EditText)findViewById(R.id.edt_rent);
         txt_path=(TextView) findViewById(R.id.filepath);
         SeeList=(Button)findViewById(R.id.btn_seelist);
+        imv=(ImageView)findViewById(R.id.regitem3Photo);
+        pd3=new ProgressDialog(this);
 
 
 
@@ -84,9 +89,9 @@ public class GiveAway extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        /*progressDialog.setMessage("Uploading.....");
-                        progressDialog.setCancelable(false);
-                        progressDialog.show();*/
+                        pd3.setMessage("Uploading.....");
+                        pd3.setCancelable(false);
+                        pd3.show();
                         t = UploadButtonClicked();
 
 
@@ -143,8 +148,8 @@ public class GiveAway extends AppCompatActivity {
                 && data != null && data.getData() != null )
         {
             filePath = data.getData();
-            txt_path.setText(filePath.toString());
-            Toast.makeText(GiveAway.this, "Image successfully Choosen!!!!", Toast.LENGTH_SHORT).show();
+            imv.setImageURI(filePath);
+            //Toast.makeText(GiveAway.this, "Image successfully Choosen!!!!", Toast.LENGTH_SHORT).show();
            /* try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 imageView.setImageBitmap(bitmap);
@@ -183,6 +188,7 @@ public class GiveAway extends AppCompatActivity {
                         public void onFailure(@NonNull Exception exception) {
 
                             Toast.makeText(GiveAway.this, "Failed " + exception.getMessage(), Toast.LENGTH_SHORT).show();
+                            pd3.dismiss();
                         }
                     })
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -207,6 +213,7 @@ public class GiveAway extends AppCompatActivity {
                                 public void onFailure(@NonNull Exception exception) {
                                     Toast.makeText(GiveAway.this, "Error is"+exception.toString(), Toast.LENGTH_SHORT).show();
                                     Log.d("pra",exception.toString());
+                                    pd3.dismiss();
 
                                 }
                             });
@@ -252,12 +259,12 @@ public class GiveAway extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(GiveAway.this,"Successful",Toast.LENGTH_LONG).show();
-
+                        pd3.dismiss();
                         text_name.setText("");
                         text_description.setText("");
                         txt_path.setText("");
                         txt_number.setText("");
-
+                        imv.setImageResource(R.drawable.splashscreen);
                         //   progressDialog.dismiss();
 
                     }
@@ -266,6 +273,7 @@ public class GiveAway extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(GiveAway.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        pd3.dismiss();
 
                     }
                 });

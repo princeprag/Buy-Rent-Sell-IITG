@@ -36,7 +36,9 @@ import java.util.UUID;
 public class Rent extends AppCompatActivity {
 
 
-    Button Choose,Upload,Submit;
+    Button Choose,Upload;
+    ProgressDialog pd2;
+    ImageView prod_img;
     EditText text_name,text_description,text_price,txt_number,txt_period;
     TextView txt_path;
     private static final String KEY_NAME="name";
@@ -63,7 +65,7 @@ public class Rent extends AppCompatActivity {
     private Uri filePath;
     ImageView imageView,back;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    // ProgressDialog progressDialog=new ProgressDialog(this);
+
 
 
 
@@ -96,7 +98,9 @@ public class Rent extends AppCompatActivity {
         category=(Spinner)findViewById(R.id.category);
         txt_number=(EditText)findViewById(R.id.edt_number);
         txt_period=(EditText)findViewById(R.id.edt_rent);
+        prod_img=(ImageView)findViewById(R.id.regitem2Photo);
         txt_path=(TextView) findViewById(R.id.filepath);
+        pd2= new ProgressDialog(this);
 
 
 
@@ -108,9 +112,9 @@ public class Rent extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        /*progressDialog.setMessage("Uploading.....");
-                        progressDialog.setCancelable(false);
-                        progressDialog.show();*/
+                        pd2.setMessage("Uploading.....");
+                        pd2.setCancelable(false);
+                        pd2.show();
                         t = UploadButtonClicked();
 
 
@@ -156,7 +160,9 @@ public class Rent extends AppCompatActivity {
                 && data != null && data.getData() != null )
         {
             filePath = data.getData();
-            txt_path.setText(filePath.toString());
+            prod_img.setImageURI(filePath);
+
+           // txt_path.setText(filePath.toString());
             Toast.makeText(Rent.this, "Image successfully Choosen!!!!", Toast.LENGTH_SHORT).show();
            /* try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
@@ -178,10 +184,10 @@ public class Rent extends AppCompatActivity {
 
         String name = text_name.getText().toString();
         String description = text_description.getText().toString();
-        String price= text_price.getText().toString();
-        String cat= category.getSelectedItem().toString();
-        String number=txt_number.getText().toString();
-        String period=txt_period.getText().toString();
+        String price = text_price.getText().toString();
+        String cat = category.getSelectedItem().toString();
+        String number = txt_number.getText().toString();
+        String period = txt_period.getText().toString();
 
 
 
@@ -202,6 +208,7 @@ public class Rent extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+
                             Toast.makeText(Rent.this, "Uploaded", Toast.LENGTH_SHORT).show();
 
 
@@ -220,6 +227,7 @@ public class Rent extends AppCompatActivity {
                                 public void onFailure(@NonNull Exception exception) {
                                     Toast.makeText(Rent.this, "Error is"+exception.toString(), Toast.LENGTH_SHORT).show();
                                     Log.d("pra",exception.toString());
+                                    pd2.dismiss();
 
                                 }
                             });
@@ -294,6 +302,7 @@ public class Rent extends AppCompatActivity {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
                                                 Toast.makeText(Rent.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                pd2.dismiss();
 
                                             }
                                         });
@@ -301,7 +310,8 @@ public class Rent extends AppCompatActivity {
                                 putuserdata(s1,id);
 
 
-                            } else {
+                            } else
+                                {
                                 //Toast.makeText(Rent.this, "Getted both choice", Toast.LENGTH_SHORT).show();
                             }
                         } else {
@@ -366,7 +376,8 @@ public class Rent extends AppCompatActivity {
                         text_price.setText("");
                         txt_number.setText("");
                         txt_period.setText("");
-                        txt_path.setText("");
+                        prod_img.setImageResource(R.drawable.splashscreen);
+                        pd2.dismiss();
 
                     }
                 })
@@ -374,7 +385,7 @@ public class Rent extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(Rent.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-
+                        pd2.dismiss();
                     }
                 });
 

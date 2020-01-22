@@ -1,8 +1,10 @@
 package com.example.rentbuysell;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -39,6 +41,8 @@ import java.util.UUID;
 public class Sell extends AppCompatActivity {
 
     Button Choose,Upload;
+    ProgressDialog pd1;
+    ImageView prodimg;
     TextView txt_path;
     EditText text_name,text_description,text_price,txt_number;
     private static final String KEY_NAME="name";
@@ -79,7 +83,9 @@ public class Sell extends AppCompatActivity {
         text_price=(EditText)findViewById(R.id.edt_price);
         category=(Spinner)findViewById(R.id.category);
         txt_number=(EditText)findViewById(R.id.edt_number);
-        txt_path=(TextView) findViewById(R.id.filepath);
+        prodimg=(ImageView)findViewById(R.id.regitemPhoto);
+        pd1= new ProgressDialog(this);
+//        txt_path=(TextView) findViewById(R.id.filepath);
         welcome=(TextView) findViewById(R.id.welcome);
         Toast.makeText(this, uid, Toast.LENGTH_SHORT).show();
         String url_string;
@@ -99,6 +105,9 @@ public class Sell extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        pd1.setMessage("Uploading...");
+                        pd1.show();
+                        pd1.setCancelable(false);
                         t = UploadButtonClicked();
 
 
@@ -140,7 +149,8 @@ public class Sell extends AppCompatActivity {
                 && data != null && data.getData() != null )
         {
             filePath = data.getData();
-            txt_path.setText(filePath.toString());
+            prodimg.setImageURI(filePath);
+           // txt_path.setText(filePath.toString());
 
         }
     }
@@ -169,6 +179,7 @@ public class Sell extends AppCompatActivity {
                         public void onFailure(@NonNull Exception exception) {
 
                            // Toast.makeText(Sell.this, "Failed " + exception.getMessage(), Toast.LENGTH_SHORT).show();
+                            pd1.dismiss();
                         }
                     }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -189,6 +200,7 @@ public class Sell extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
                             Toast.makeText(Sell.this, "Error is"+exception.toString(), Toast.LENGTH_SHORT).show();
+                            pd1.dismiss();
                             Log.d("pra",exception.toString());
 
                         }
@@ -241,6 +253,7 @@ public class Sell extends AppCompatActivity {
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 Toast.makeText(Sell.this,"Successful",Toast.LENGTH_LONG).show();
+                                                pd1.dismiss();
 
                                             }
                                         })
@@ -248,6 +261,7 @@ public class Sell extends AppCompatActivity {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
                                                 Toast.makeText(Sell.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                pd1.dismiss();
 
                                             }
                                         });
@@ -299,7 +313,8 @@ public class Sell extends AppCompatActivity {
                         text_description.setText("");
                         text_price.setText("");
                         txt_number.setText("");
-                        txt_path.setText("");
+//                        txt_path.setText("");
+                        prodimg.setImageResource(R.drawable.splashscreen);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

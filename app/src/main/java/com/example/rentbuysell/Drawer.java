@@ -192,7 +192,7 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                 break;
 
                 case R.id.nav_giveAway:
-                    finish();
+                    //finish();
                     Intent s5 = new Intent(Drawer.this, GiveAway.class);
                     startActivity(s5);
                 break;
