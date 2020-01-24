@@ -150,14 +150,38 @@ public class SignUp extends AppCompatActivity {
         final String MobNo=mobile_no.getText().toString().trim();
         final String choice1=ch1.getSelectedItem().toString();
         final String choice2=ch2.getSelectedItem().toString();
-        if(choice1=="Select your favourite product category"||choice2=="Select your favourite product category"||choice1.equals(choice2))
+        if(pickedImgUri==null)
+        {
+            Toast.makeText(this, "Please select a image by clicking on the image icon", Toast.LENGTH_SHORT).show();
+            register.setVisibility(View.VISIBLE);
+        }
+        else if((name.isEmpty()))
+        {Toast.makeText(this, "Name is empty", Toast.LENGTH_SHORT).show();
+            register.setVisibility(View.VISIBLE);}
+        else if((email.isEmpty()))
+        {Toast.makeText(this, "Email address is empty", Toast.LENGTH_SHORT).show();
+            register.setVisibility(View.VISIBLE);}
+        else if((MobNo.isEmpty()))
+        {Toast.makeText(this, "Mobile number is empty", Toast.LENGTH_SHORT).show();
+            register.setVisibility(View.VISIBLE);}
+        else if((RollNo.isEmpty()))
+        {Toast.makeText(this, "Roll number is empty", Toast.LENGTH_SHORT).show();
+            register.setVisibility(View.VISIBLE);}
+        else if((password.isEmpty()))
+        {Toast.makeText(this, "Password is empty", Toast.LENGTH_SHORT).show();
+            register.setVisibility(View.VISIBLE);}
+        else if(choice1=="Select your favourite product category"||choice2=="Select your favourite product category"||choice1.equals(choice2))
         {   Toast.makeText(SignUp.this, "Please select valid Category and different Category", Toast.LENGTH_SHORT).show();
             register.setVisibility(View.VISIBLE);
         }
-        else if (pickedImgUri==null|| (email.isEmpty()) || (name.isEmpty()) || (password.isEmpty()) || !password.equals(password2) || (RollNo.isEmpty()) || (Hostel.isEmpty())|| (MobNo.isEmpty())) {
-            Toast.makeText(SignUp.this, "Please Verify all", Toast.LENGTH_SHORT).show();
-            register.setVisibility(View.VISIBLE);
-        }
+        else if(!password.equals(password2))
+        {Toast.makeText(this, "Passwords are not same", Toast.LENGTH_SHORT).show();
+            register.setVisibility(View.VISIBLE);}
+
+//        else if (pickedImgUri==null|| (email.isEmpty()) || (name.isEmpty()) || (password.isEmpty()) || !password.equals(password2) || (RollNo.isEmpty()) || (Hostel.isEmpty())|| (MobNo.isEmpty())) {
+//            Toast.makeText(SignUp.this, "Please Verify all", Toast.LENGTH_SHORT).show();
+//            register.setVisibility(View.VISIBLE);
+//        }
         else
         CreateUserAccount(email,password);
     }
@@ -167,7 +191,7 @@ public class SignUp extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                           Toast.makeText(SignUp.this,"Acoount Created Succefully",Toast.LENGTH_SHORT).show();
+                           Toast.makeText(SignUp.this,"Account Created Successfully",Toast.LENGTH_SHORT).show();
                             imageUrl();
                             FirebaseUser user = mAuth.getCurrentUser();
                         }
@@ -196,13 +220,13 @@ public class SignUp extends AppCompatActivity {
                 }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(SignUp.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(SignUp.this, "Uploaded", Toast.LENGTH_SHORT).show();
 
                 ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
                         Url= uri.toString();
-                        Toast.makeText(SignUp.this, "Url Created succeffully", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(SignUp.this, "Url Created succeffully", Toast.LENGTH_SHORT).show();
                         updateUserInfo(Url);
 
 
@@ -211,7 +235,7 @@ public class SignUp extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        Toast.makeText(SignUp.this, "Error is"+exception.toString(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(SignUp.this, "Error is"+exception.toString(), Toast.LENGTH_SHORT).show();
                         Log.d("pra",exception.toString());
 
                     }
@@ -251,7 +275,8 @@ public class SignUp extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(SignUp.this,"Successful",Toast.LENGTH_LONG).show();
+                       // Toast.makeText(SignUp.this,"Successful",Toast.LENGTH_LONG).show();
+                        finish();
                         Intent intent= new Intent(SignUp.this,Drawer.class);
                         startActivity(intent);
 

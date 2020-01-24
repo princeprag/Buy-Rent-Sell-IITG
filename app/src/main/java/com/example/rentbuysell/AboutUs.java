@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +29,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class AboutUs extends AppCompatActivity {
-    ImageView pankaj,prince,back;
+    ImageView pankaj,prince,back,coding_club_logo;
     LinearLayout l1,l2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class AboutUs extends AppCompatActivity {
         prince=findViewById(R.id.mempic2);
         l1=findViewById(R.id.mem1);
         l2=findViewById(R.id.mem2);
+        coding_club_logo=findViewById(R.id.coding_club_pic);
         String p1="https://firebasestorage.googleapis.com/v0/b/rentbuysell-4d576.appspot.com/o/pankaj.jpg?alt=media&token=ec622a25-02c5-484d-b737-96d7c62a4c36";
         String p2="https://firebasestorage.googleapis.com/v0/b/rentbuysell-4d576.appspot.com/o/prince.jpg?alt=media&token=b0ee8289-df58-42ee-b168-9d367b44c499";
         Glide.with(AboutUs.this).load(p1).into(pankaj);
@@ -54,12 +56,32 @@ public class AboutUs extends AppCompatActivity {
         l1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
+                Intent i = new Intent("android.intent.action.VIEW", Uri.parse("https://www.linkedin.com/in/pankaj-kumar-a512b8166/"));
+                startActivity(i);
+
+
 
             }
         });
         l2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
+                Intent i = new Intent("android.intent.action.VIEW", Uri.parse("https://www.linkedin.com/in/prince-prag-374329175/"));
+                startActivity(i);
+
+
+            }
+        });
+        coding_club_logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                Intent i = new Intent("android.intent.action.VIEW", Uri.parse("https://www.facebook.com/codingclubiitg/"));
+                startActivity(i);
+
+
 
             }
         });

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".description">
+    tools:context=".description"
+    android:background="#ffffff">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -69,9 +70,9 @@
     <ImageView
         android:id="@+id/rupeeimage"
         android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="12dp"
+        android:layout_height="18dp"
+        android:layout_marginLeft="13dp"
+        android:layout_marginTop="9dp"
         android:layout_below="@+id/text_name"
         android:background="@drawable/rupeen"
         />
@@ -120,7 +121,8 @@
             android:layout_width="80dp"
             android:layout_height="60dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/call_f" />
+            android:src="@drawable/call_f"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/textView2"
@@ -149,6 +151,7 @@
             android:layout_height="60dp"
             android:layout_gravity="center_vertical"
             android:src="@drawable/messag"
+            android:visibility="gone"
             />
 
         <TextView
@@ -166,7 +169,7 @@
 
     <TextView
         android:id="@+id/ReportA"
-        android:layout_below="@+id/call_seller"
+        android:layout_below="@+id/see_seller"
         android:layout_marginTop="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -174,8 +177,23 @@
         android:text="Report to Admin"
         android:textSize="17dp"
         android:textStyle="italic"
+        android:textColor="#395adb"
         />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/see_seller"
+                android:layout_below="@+id/text_desc"
+                android:layout_centerHorizontal="true"
+                android:text="See Seller Data"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/reg_edittext_style"
+
+
+
+                />
         </RelativeLayout>
+
     </ScrollView>
 
 

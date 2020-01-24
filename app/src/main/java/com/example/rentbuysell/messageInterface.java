@@ -242,7 +242,6 @@ public class messageInterface extends AppCompatActivity {
                                  final String myname=documentSnapshot.getString("Name");
                                  String imageurl = documentSnapshot.getString("ImageUrl");
                                  if(notify){
-                                  //Toast.makeText(messageInterface.this, "204 notify true", Toast.LENGTH_SHORT).show();
                                  sendNotifications(myname,message_txt,imageurl,receiverId);}
                                  notify=false;
 
@@ -380,7 +379,7 @@ public class messageInterface extends AppCompatActivity {
     }
 
     private void updateStatus(String status) {
-        Toast.makeText(this, status, Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, status, Toast.LENGTH_SHORT).show();
         db.collection("users").document().collection("Chats").document(mAuth.getUid()).update("status",status);
     }
 }

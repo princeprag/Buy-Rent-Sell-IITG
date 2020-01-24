@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".user_profile">
+<com.google.android.material.appbar.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/bar_layout">
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar_chat"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/Menustyle"
+        android:background="#395abd">
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:id="@+id/back_btn"
+            android:background="@drawable/ic_launcher_back"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="35dp"
+            android:layout_marginStart="0dp"
+            android:textColor="#ffffff"
+            android:text="Seller"/>
+    </androidx.appcompat.widget.Toolbar>
+</com.google.android.material.appbar.AppBarLayout>
+<de.hdodenhof.circleimageview.CircleImageView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/myinfopic"
+    android:layout_width="140dp"
+    android:layout_below="@+id/bar_layout"
+    android:layout_height="140dp"
+    android:src="@drawable/userphoto"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="30dp"
+    app:civ_border_width="0.5dp"
+    app:civ_border_color="#FF0000"/>
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="16dp"
+    android:textSize="22dp"
+    android:textStyle="bold"
+    android:id="@+id/myinfoname"
+    android:layout_below="@+id/myinfopic"
+    android:text="Pankaj Kumar"/>
+<TextView
+    android:id="@+id/myinforollno"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="20dp"
+    android:text="180123031"
+    android:layout_below="@+id/myinfoname"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="12dp"/>
+<TextView
+    android:id="@+id/myinfohostel"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:text="Dihing"
+    android:textSize="20dp"
+    android:layout_below="@+id/myinforollno"
+    android:layout_marginTop="12dp"/>
+    <LinearLayout
+        android:id="@+id/call_seller"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_below="@+id/myinfohostel"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:textSize="20dp"
+            android:layout_margin="5dp"
+            android:text="   Call the seller    " />
+
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:src="@drawable/call_f" />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/message_seller"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_below="@+id/myinfohostel"
+        android:orientation="vertical"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp">
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:textSize="20dp"
+            android:layout_margin="5dp"
+            android:text="Message the seller" />
+
+
+        <ImageView
+            android:id="@+id/img1"
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:src="@drawable/messag"
+            />
+    </LinearLayout>
+</RelativeLayout>
+

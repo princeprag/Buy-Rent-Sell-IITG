@@ -1,7 +1,5 @@
 package com.example.rentbuysell;
 
-
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -13,7 +11,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,81 +22,47 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
-import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class description extends AppCompatActivity {
-    LinearLayout callseller,messageseller;
-    TextView reportAdmin;
+public class user_profile extends AppCompatActivity {
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private user_product_adapter adapter;
     private static final int Request_Call=2;
-    FirebaseAuth mAuth= FirebaseAuth.getInstance();
-    private FirebaseFirestore db= FirebaseFirestore.getInstance();
-    public  Map<String, String> TIMESTAMP;
-    public String Reciverid,mode;
-    ImageView back;
-    Button see_seller;
-
+    ImageView myinfopic,back;
+    LinearLayout callseller,messageseller;
+    TextView myinfoname,myinfohostel,myinforollno;
+    private description info;
+    String Reciverid;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_description);
+        setContentView(R.layout.activity_user_profile);
+        myinfopic=findViewById(R.id.myinfopic);
+        myinfoname=findViewById(R.id.myinfoname);
+        myinfohostel=findViewById(R.id.myinfohostel);
+        myinforollno=findViewById(R.id.myinforollno);
         Intent i=getIntent();
-        Reciverid=i.getStringExtra("UID");
-        mode=i.getStringExtra("Mode");
-        if(mode!=null) {
-            if (!((mode.equals("ON SALE") || mode.equals("ON RENT")))) {
-               ImageView rupeeimage=findViewById(R.id.rupeeimage);
-               rupeeimage.setVisibility(View.GONE);
-                back=findViewById(R.id.back_btn);
-                back.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        finish();
-                        Intent i=new Intent(description.this,ListGiveAwayItems.class);
-                        startActivity(i);
-                    }
-                });
-            }
-        }
-        see_seller=findViewById(R.id.see_seller);
-        see_seller.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                Intent i=new Intent(description.this,user_profile.class);
-                i.putExtra("receiver_id",Reciverid);
-                String Mobile_No=getIntent().getStringExtra("Mobile_no");
-                i.putExtra("Mobile_no",Mobile_No);
-                startActivity(i);
-
-            }
-        });
+        Reciverid=i.getStringExtra("receiver_id");
         back=findViewById(R.id.back_btn);
+        put_userdata_header();
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
-                Intent i=new Intent(description.this,Drawer.class);
+                Intent i=new Intent(user_profile.this,Drawer.class);
                 startActivity(i);
             }
         });
-
-
-
-
         callseller=findViewById(R.id.call_seller);
         messageseller=findViewById(R.id.message_seller);
-        reportAdmin=findViewById(R.id.ReportA);
         callseller.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,48 +73,43 @@ public class description extends AppCompatActivity {
         messageseller.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //Toast.makeText(description.this, "Send Message clicked", Toast.LENGTH_SHORT).show();
                 sendmessage(Reciverid);
 
             }
         });
-        getdata();
-
-
     }
 
-    private void getdata()
-    {if(getIntent().hasExtra("Name")&&getIntent().hasExtra("Price")&&getIntent().hasExtra("Shortdesc")&&getIntent().hasExtra("ImageURL")&&getIntent().hasExtra("Mobile_no"))
-    {
-        Intent i = getIntent();
-        String name = i.getStringExtra("Name");
-        String desc = i.getStringExtra("Shortdesc");
-        String price = i.getStringExtra("Price");
-        String imageurl=i.getStringExtra("ImageURL");
-        String cat=i.getStringExtra("CATEGORY");
-       // Toast.makeText(this,cat, Toast.LENGTH_SHORT).show();
-        addData(name,desc,price,imageurl);
-    }
+    private void put_userdata_header() {
+        DocumentReference docref= db.collection("users").document(Reciverid);
+        docref.get().addOnCompleteListener(
+                new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
 
-    }
-    private void addData(String name,String desc,String price,String imageurl){
-        TextView Name,Desc,Price;
-        ImageView pic;
-        Name=findViewById(R.id.text_name);
-        Desc=findViewById(R.id.text_desc);
-        Price=findViewById(R.id.Price);
-        pic=findViewById(R.id.image_pic);
-        Name.setText(name);
-        Desc.setText(desc);
-        Price.setText(price);
-        Glide.with(description.this).load(imageurl).into(pic);
-        //Picasso.get().load(imageurl).fit().into(pic);
+                            if (documentSnapshot != null) {
+
+                                String names,email,pic_url;
+                                myinfoname.setText(documentSnapshot.getString("Name"));
+                                myinfohostel.setText(documentSnapshot.getString("Hostel"));
+                                String url_string = documentSnapshot.getString("Image Url");
+                                Glide.with(user_profile.this).load(url_string).into(myinfopic);
+                                myinforollno.setText(documentSnapshot.getString("Roll Number"));
+                            } else {
+                                Toast.makeText(user_profile.this, "Document snapshot null", Toast.LENGTH_SHORT).show();
+                            }
+                        }else{
+
+                            Toast.makeText(user_profile.this, "Task is unsuccessful because"+task.getException(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
     private void makephonecall(String mobile_No){
         if(mobile_No.trim().length()>0) {
-            if(ContextCompat.checkSelfPermission(description.this, Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(description.this,new String[]{Manifest.permission.CALL_PHONE},Request_Call);
+            if(ContextCompat.checkSelfPermission(user_profile.this, Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(user_profile.this,new String[]{Manifest.permission.CALL_PHONE},Request_Call);
             }
             else
             {
@@ -185,27 +143,27 @@ public class description extends AppCompatActivity {
         {   //Toast.makeText(description.this, UserID, Toast.LENGTH_SHORT).show();
             DocumentReference docref= db.collection("users").document(UserID);
             docref.get().addOnCompleteListener(
-                new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot documentSnapshot = task.getResult();
+                    new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot documentSnapshot = task.getResult();
 
-                            if (documentSnapshot != null) {
-                                String username,imageUrl;
-                                username=documentSnapshot.getString("Name");
-                                imageUrl = documentSnapshot.getString("Image Url");
-                                putchatsenderdata(username,imageUrl,UserID);
+                                if (documentSnapshot != null) {
+                                    String username,imageUrl;
+                                    username=documentSnapshot.getString("Name");
+                                    imageUrl = documentSnapshot.getString("Image Url");
+                                    putchatsenderdata(username,imageUrl,UserID);
 
-                            } else {
-                                Toast.makeText(description.this, "Document snapshot null", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(user_profile.this, "Document snapshot null", Toast.LENGTH_SHORT).show();
+                                }
+                            }else{
+
+                                Toast.makeText(user_profile.this, "Task is unsuccessfull because"+task.getException(), Toast.LENGTH_SHORT).show();
                             }
-                        }else{
-
-                            Toast.makeText(description.this, "Task is unsuccessfull because"+task.getException(), Toast.LENGTH_SHORT).show();
                         }
-                    }
-                });
+                    });
             DocumentReference docref1= db.collection("users").document(mAuth.getUid());
             docref1.get().addOnCompleteListener(
                     new OnCompleteListener<DocumentSnapshot>() {
@@ -221,11 +179,11 @@ public class description extends AppCompatActivity {
                                     putchatreceiverdata(username,imageUrl,UserID);
 
                                 } else {
-                                    Toast.makeText(description.this, "Document snapshot null", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(user_profile.this, "Document snapshot null", Toast.LENGTH_SHORT).show();
                                 }
                             }else{
 
-                                Toast.makeText(description.this, "Task is unsuccessfull because"+task.getException(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(user_profile.this, "Task is unsuccessfull because"+task.getException(), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -237,7 +195,7 @@ public class description extends AppCompatActivity {
     }
     public void putchatsenderdata(String username,String imageUrl,String receiverid)
     {
-       // Toast.makeText(this, "putchatsenderstarted", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "putchatsenderstarted", Toast.LENGTH_SHORT).show();
         Map<String, Object> data = new HashMap<>();
         data.put("username",username);
         data.put("imageUrl",imageUrl);
@@ -251,7 +209,7 @@ public class description extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
                         //Toast.makeText(description.this,"Successful202",Toast.LENGTH_LONG).show();
                         finish();
-                        Intent i=new Intent(description.this,Chat.class);
+                        Intent i=new Intent(user_profile.this,Chat.class);
                         startActivity(i);
 
                     }
@@ -259,7 +217,7 @@ public class description extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(description.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(user_profile.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -285,32 +243,9 @@ public class description extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(description.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(user_profile.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
                 });
     }
-    public void status(String status)
-    { Map<String, Object> data = new HashMap<>();
-        data.put("status",status);
-        db.collection("users").document(mAuth.getUid()).collection("Chats").document(Reciverid).set(data, SetOptions.merge())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(description.this,"Successful",Toast.LENGTH_LONG).show();
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(description.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-
-    }
-
-
 }
-

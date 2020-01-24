@@ -101,6 +101,7 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
     TextView name, Email;
     public  users myuser ;
     static String choice1,choice2;
+    String reportbugurl="https://goo.gl/forms/BLPlCF1FlTRonoXU2";
     NotificationChannel mChannel;
     private static final String CHANNEL_ID="CHANNEL_ID";
     NotificationManager notificationManager;
@@ -207,6 +208,14 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                 Intent s7 =new Intent(Drawer.this,Chat.class);
                 startActivity(s7);
                 break;
+            case R.id.nav_bug:
+                       Intent viewIntent =
+                        new Intent("android.intent.action.VIEW",
+                                Uri.parse("https://forms.gle/Ur2QyL6fUbvYCszd9"));
+                startActivity(viewIntent);
+                finish();
+                break;
+
         }
 
         drawer.closeDrawer(GravityCompat.START);
@@ -576,7 +585,7 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                             }
                         }else{
 
-                            Toast.makeText(Drawer.this, "Task is unsuccessfull because"+task.getException(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Drawer.this, "Task is unsuccessful because "+task.getException(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

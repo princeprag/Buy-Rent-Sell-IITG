@@ -36,6 +36,14 @@ public class productAdapter extends FirestoreRecyclerAdapter<product_part,produc
         String imURL=product_list.getImageUrl();
         Picasso.get().load(imURL).fit().into(productHolder.imageView);
         productHolder.Mode.setText(product_list.getMode());
+        if(product_list.getMode()!=null) {
+            if (!((product_list.getMode()).equals("ON SALE") || (product_list.getMode()).equals("ON RENT"))) {
+                productHolder.pPrice.setVisibility(View.GONE);
+                productHolder.rupeeimage.setVisibility(View.GONE);
+                productHolder.Mode.setVisibility(View.GONE);
+
+            }
+        }
 
 
         productHolder.listproduct.setOnClickListener(new View.OnClickListener() {
@@ -50,7 +58,8 @@ public class productAdapter extends FirestoreRecyclerAdapter<product_part,produc
                 i.putExtra("Mobile_no",product_list.getMobileNo());
                 i.putExtra("CATEGORY",product_list.getCategory());
                 i.putExtra("UID",product_list.getUid());
-                Toast.makeText(mContext,product_list.getUid(), Toast.LENGTH_SHORT).show();
+                i.putExtra("Mode",product_list.getMode());
+               // Toast.makeText(mContext,product_list.getUid(), Toast.LENGTH_SHORT).show();
                 mContext.startActivity(i);
             }
         });
@@ -69,7 +78,7 @@ public class productAdapter extends FirestoreRecyclerAdapter<product_part,produc
     public  class productHolder extends RecyclerView.ViewHolder {
         TextView Shortdesc;
         TextView Name;
-        ImageView imageView;
+        ImageView imageView,rupeeimage;
         TextView pPrice;
         TextView Mode;
         RelativeLayout listproduct;
@@ -81,6 +90,7 @@ public class productAdapter extends FirestoreRecyclerAdapter<product_part,produc
             pPrice=itemView.findViewById(R.id.textViewPrice);
             imageView=itemView.findViewById(R.id.imageView);
             listproduct=itemView.findViewById(R.id.list_product);
+            rupeeimage=itemView.findViewById(R.id.rupeeimage);
             Mode=itemView.findViewById(R.id.mode);
 
         }

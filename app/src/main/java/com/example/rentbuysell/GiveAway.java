@@ -33,16 +33,19 @@ public class GiveAway extends AppCompatActivity {
 
     Button Choose,Upload,SeeList;
     ProgressDialog pd3;
-    ImageView imv;
+    ImageView imv,back;
     EditText text_name,text_description,text_price,txt_number,txt_period;
     TextView txt_path;
-    private static final String KEY_NAME="NAME/BRAND:";
-    private static final String KEY_DESCRIPTION="DESCRIPTION:";
 
-    private static final String KEY_URL="URL TO IMAGE:";
-    private static final String KEY_MODE="MODE:";
-    private static final String KEY_CONTACT="CONTACT NO:";
-    private static final String KEY_UID="UID";
+
+    private static final String KEY_NAME="name";
+    private static final String KEY_DESCRIPTION="description";
+    private static final String KEY_URL="imageUrl";
+    private static final String KEY_MODE="mode";
+    private static final String KEY_CONTACT="mobileNo";
+    private static final String KEY_UID="uid";
+    private static final String KEY_CATEGORY="category";
+    private static final String KEY_PARENT_ID="parentid";
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private  String uid = mAuth.getCurrentUser().getUid();
 
@@ -78,12 +81,15 @@ public class GiveAway extends AppCompatActivity {
         SeeList=(Button)findViewById(R.id.btn_seelist);
         imv=(ImageView)findViewById(R.id.regitem3Photo);
         pd3=new ProgressDialog(this);
-
-
-
-
-        String url_string;
-
+        back=findViewById(R.id.back_btn);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                Intent i=new Intent(GiveAway.this,Drawer.class);
+                startActivity(i);
+            }
+        });
 
         Upload.setOnClickListener(
                 new View.OnClickListener() {
@@ -110,7 +116,7 @@ public class GiveAway extends AppCompatActivity {
         SeeList.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(View v) { finish();
                         Intent i1 = new Intent(GiveAway.this,ListGiveAwayItems.class);
                         startActivity(i1);
 
@@ -251,10 +257,9 @@ public class GiveAway extends AppCompatActivity {
         data.put(KEY_MODE,"GIVE AWAY");
         data.put(KEY_CONTACT,number);
         data.put(KEY_UID,uid);
-
-
-
-        db.collection(cat).document().set(data)
+        String time=String.valueOf(System.currentTimeMillis());
+        data.put("Servertime",time);
+        db.collection("Giveaway").document().set(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

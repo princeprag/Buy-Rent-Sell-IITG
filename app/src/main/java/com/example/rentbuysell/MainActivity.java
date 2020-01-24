@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } catch (ApiException e) {
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
-            Toast.makeText(this,e.getMessage(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,e.getMessage(), Toast.LENGTH_SHORT).show();
 
         }
     }
@@ -179,19 +179,18 @@ public class MainActivity extends AppCompatActivity {
             if(e.equals(""))
                 Toast.makeText(this, "Email should not be empty", Toast.LENGTH_SHORT).show();
             else if(p.equals(""))
-                Toast.makeText(this, "Password is empty", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Password should not be empty", Toast.LENGTH_SHORT).show();
             else {
                 mAuth.signInWithEmailAndPassword(e, p)
                         .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(MainActivity.this, "Welcome Back", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MainActivity.this, "WELCOME", Toast.LENGTH_SHORT).show();
                                     onSuccessfulAuthentication();
                                     FirebaseUser user = mAuth.getCurrentUser();
                                 } else {
-                                    Toast.makeText(MainActivity.this, task.getException().getMessage(),
-                                            Toast.LENGTH_SHORT).show();
+                                   // Toast.makeText(MainActivity.this, task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                                 }
 
                             }

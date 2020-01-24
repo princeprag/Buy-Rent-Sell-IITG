@@ -36,22 +36,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-    <TextView
-        android:id="@+id/welcome"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:ems="10"
-        android:text="Welcome User"
-        android:textSize="20sp"
-        android:visibility="visible" />
+
 
 
 
@@ -59,12 +44,28 @@
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/welcome">
+        android:layout_below="@+id/bar_layout">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <TextView
+                android:id="@+id/welcome"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:ems="10"
+                android:text="Welcome User"
+                android:textSize="20sp"
+                android:visibility="visible" />
 
 
             <TextView
@@ -80,7 +81,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:ems="10"
                 android:text="Please upload a relevent image of the product!!"
-                android:textSize="20sp" />
+                />
 
 
             <Button
@@ -123,7 +124,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:ems="10"
                 android:text="Please Select a Category!!"
-                android:textSize="20sp" />
+                />
 
 
             <Spinner
@@ -132,7 +133,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="30dp"
@@ -155,7 +156,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:ems="10"
                 android:text="Name of Product/Brand"
-                android:textSize="20sp" />
+                />
 
             <EditText
                 android:id="@+id/edt_name"
@@ -163,14 +164,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="30dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/reg_edittext_style"
                 android:ems="10"
-                android:hint="your product name here" />
+                android:hint="Your product name here" />
 
             <TextView
                 android:id="@+id/txt_description"
@@ -186,7 +187,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:ems="10"
                 android:text="Description"
-                android:textSize="20sp" />
+               />
 
             <EditText
                 android:id="@+id/edt_description"
@@ -194,7 +195,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="30dp"
@@ -216,8 +217,7 @@
                 android:layout_marginBottom="8dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:ems="10"
-                android:text="Rent Period"
-                android:textSize="20sp" />
+                android:text="Rent Period" />
 
             <EditText
                 android:id="@+id/edt_rent"
@@ -225,7 +225,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="30dp"
@@ -246,8 +246,7 @@
                 android:layout_marginBottom="8dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:ems="10"
-                android:text="Expected Price"
-                android:textSize="20sp" />
+                android:text="Expected Price" />
 
             <EditText
                 android:id="@+id/edt_price"
@@ -262,7 +261,7 @@
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/reg_edittext_style"
                 android:ems="10"
-                android:hint="your price here"
+                android:hint="Your Product price here per day"
                 android:inputType="number"
                 android:numeric="signed" />
 
@@ -281,8 +280,7 @@
                 android:layout_marginBottom="8dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:ems="10"
-                android:text="Contact Number"
-                android:textSize="20sp" />
+                android:text="Contact Number" />
 
             <EditText
                 android:id="@+id/edt_number"
@@ -297,7 +295,7 @@
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/reg_edittext_style"
                 android:ems="10"
-                android:hint="your contact no here"
+                android:hint="Your contact no here"
                 android:numeric="signed" />
 
 

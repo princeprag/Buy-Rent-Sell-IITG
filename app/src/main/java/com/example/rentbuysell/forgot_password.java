@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,6 +23,7 @@ public class forgot_password extends AppCompatActivity {
     private Button Reset;
     private FirebaseAuth mAuth;
     private FirebaseFirestore firestore;
+    ImageView back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,15 @@ public class forgot_password extends AppCompatActivity {
         setContentView(R.layout.activity_forgot_password);
         email= (EditText) findViewById(R.id.email_txt);
         Reset=(Button) findViewById(R.id.reset);
+        back=findViewById(R.id.back_btn);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                Intent i=new Intent(forgot_password.this,MainActivity.class);
+                startActivity(i);
+            }
+        });
         mAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
