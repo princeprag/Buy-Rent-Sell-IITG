@@ -30,7 +30,7 @@ public class SplashScreen extends AppCompatActivity {
 
               boolean b=  myuser.checkloginstatus();
               String s= Boolean.toString(b);
-                Toast.makeText(SplashScreen.this,s, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(SplashScreen.this,s, Toast.LENGTH_SHORT).show();
 
                 if(myuser.checkloginstatus()){
                     startActivity(new Intent(SplashScreen.this, Drawer.class));
