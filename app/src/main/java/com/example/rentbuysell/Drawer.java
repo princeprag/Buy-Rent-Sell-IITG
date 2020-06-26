@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
+import com.example.rentbuysell.Notification.Token;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.gigamole.navigationtabstrip.NavigationTabStrip;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -47,6 +48,8 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
@@ -95,6 +98,7 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
     private FirebaseUser currentuser;
+   // private String ch1,ch2;
     private GoogleSignInClient mGoogleSignInClient;
     private ArrayList<product_part> feed=new ArrayList<product_part>();
     private String token;
@@ -102,6 +106,7 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
     TextView name, Email;
     public  users myuser ;
     static String choice1,choice2;
+    static String ch1,ch2;
     String reportbugurl="https://goo.gl/forms/BLPlCF1FlTRonoXU2";
     NotificationChannel mChannel;
     private static final String CHANNEL_ID="CHANNEL_ID";
@@ -255,6 +260,7 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                         choice2 = document.getString("Choice2");
                         putinrecyclerview(choice1,choice2);
 
+
                     } else {
                         //Toast.makeText(Drawer.this, "Getted both choice", Toast.LENGTH_SHORT).show();
                     }
@@ -291,6 +297,42 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
 
                                 }
                             });
+
+                    DocumentReference ref=db.collection("users").document((mAuth.getCurrentUser().getUid()));
+                    ref.get().addOnCompleteListener(
+                            new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task)
+                                {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot documentSnapshot = task.getResult();
+                                        Toast.makeText(getApplicationContext(), "Task is successfull", Toast.LENGTH_SHORT).show();
+
+                                        if (documentSnapshot != null) {
+                                            ch1=documentSnapshot.getString("Choice1");
+                                            ch2=documentSnapshot.getString("Choice2");
+                                            DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("products");
+                                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Token");
+                                            Token tokenn = new Token(token);
+                                            reference1.child(ch2).child(mAuth.getUid()).setValue(tokenn);
+                                            reference1.child(ch1).child(mAuth.getUid()).setValue(tokenn);
+                                            reference.child(mAuth.getUid()).setValue(tokenn);
+
+
+
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), "Document snapshot null", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }else{
+
+                                        Toast.makeText(getApplicationContext(), "Task is unsuccessful because"+task.getException(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+
+
+
+
                 }else{
                     Toast.makeText(Drawer.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }

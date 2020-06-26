@@ -270,7 +270,8 @@ public class messageInterface extends AppCompatActivity {
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
 
                     Token token = snapshot.getValue(Token.class); // getting the token corresponding to the id of the receiver
-                    Data data   =  new Data(mAuth.getUid(),R.mipmap.ic_launcher,myname+": "+message_txt,"New Message",receiver_id);
+
+                    Data data   =  new Data(mAuth.getUid(),R.mipmap.ic_launcher,myname+": "+message_txt,"New Message",receiver_id,"aaa","aaa","aaa","aaa","aaa","aaa","aaa","aaa");
                     Sender sender= new Sender(data,token.getToken());
 //                    apIservices.sendNotification(sender)
 //                            .enqueue(new Callback<Myresponse>() {

@@ -104,17 +104,15 @@ public class MyIdfirebaseservices extends FirebaseMessagingService {
         SharedPreferences sp=getSharedPreferences("SP_USER",MODE_PRIVATE);
         String savedCurrent=sp.getString("Current_USERID","None");
         String sented= remoteMessage.getData().get("sented"); // sented is for chat NOTIFICATION
-        String sented2= remoteMessage.getData().get("sented2"); // sented2 is for A prod added notification
+        //String sented2= remoteMessage.getData().get("sented2"); // sented2 is for A prod added notification
+        Log.d("size",remoteMessage.getData().toString());
 
         if(sented!=null)
             Log.d("sented"," sented not null");
         else
             Log.d("sented","sented null");
 
-        if(sented2!=null)
-            Log.d("sented2"," sented2 not null");
-        else
-            Log.d("sented2","sented2 null");
+
 
 //        Toast.makeText(this,sented, Toast.LENGTH_SHORT).show();
         FirebaseUser fuser=FirebaseAuth.getInstance().getCurrentUser();
@@ -128,7 +126,7 @@ public class MyIdfirebaseservices extends FirebaseMessagingService {
          }
 
         }
-        else if(sented2!= null && fuser!=null && sented.equals("Message for all")) {
+        else if(sented!= null && fuser!=null && sented.equals("Message for all")) {
             if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
                 sendOreoNotification2(remoteMessage, description.class);
             }

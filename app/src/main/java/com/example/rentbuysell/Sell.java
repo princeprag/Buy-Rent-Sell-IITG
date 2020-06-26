@@ -429,13 +429,13 @@ public class Sell extends AppCompatActivity {
                     Toast.makeText(Sell.this, "inside", Toast.LENGTH_SHORT).show();
                     Token token = snapshot.getValue(Token.class); // getting the token corresponding to the id of the receiver
 
-                    Data2 data2  =  new Data2(mAuth.getUid(), R.mipmap.ic_launcher,categ+":A new product is added by"+myname,"A new product is added","Message for all",pd_nm, pd_id, pd_des, pd_pr, my_mb, pd_imgrl, categ, md);
+                    Data data  =  new Data(mAuth.getUid(),R.mipmap.ic_launcher,categ+":A new product is added by"+myname,"A new product is added","Message for all", pd_nm, pd_id, pd_des, pd_pr, my_mb, pd_imgrl, categ, md);
 
-                    Toast.makeText(Sell.this,mAuth.getUid()+categ+":A new product is added by"+myname, Toast.LENGTH_SHORT).show();
-                    Toast.makeText(Sell.this,"A new product is added"+"Message for all", Toast.LENGTH_SHORT).show();
-
-                    Toast.makeText(Sell.this,pd_nm+ pd_id+ pd_des, Toast.LENGTH_SHORT).show();
-                    Toast.makeText(Sell.this,pd_pr+ my_mb+pd_imgrl+categ+ md , Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(Sell.this,mAuth.getUid()+categ+":A new product is added by"+myname, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(Sell.this,"A new product is added"+"Message for all", Toast.LENGTH_SHORT).show();
+//
+//                    Toast.makeText(Sell.this,pd_nm+ pd_id+ pd_des, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(Sell.this,pd_pr+ my_mb+pd_imgrl+categ+ md , Toast.LENGTH_SHORT).show();
 
                //     Toast.makeText(Sell.this,mAuth.getUid()+categ+":A new product is added by"+myname+"A new product is added"+"Message for all"+pd_nm+ pd_id+ pd_des+ pd_pr+ my_mb+pd_imgrl+categ+ md , Toast.LENGTH_SHORT).show();
 
@@ -446,7 +446,7 @@ public class Sell extends AppCompatActivity {
 
 
 
-                    Sender2 sender2= new Sender2(data2,token.getToken());
+                    Sender sender= new Sender(data,token.getToken());
 //                    apIservices.sendNotification(sender)
 //                            .enqueue(new Callback<Myresponse>() {
 //                                @Override
@@ -465,7 +465,7 @@ public class Sell extends AppCompatActivity {
 //                                }
 //                            });
                     try {
-                        JSONObject senderJsonObj=new JSONObject(new Gson().toJson(sender2));
+                        JSONObject senderJsonObj=new JSONObject(new Gson().toJson(sender));
                         JsonObjectRequest jsonObjectRequest=new JsonObjectRequest("https://fcm.googleapis.com/fcm/send", senderJsonObj,
                                 new Response.Listener<JSONObject>() {
                                     @Override
