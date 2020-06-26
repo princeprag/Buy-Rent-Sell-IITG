@@ -82,6 +82,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static java.lang.Integer.valueOf;
 
@@ -92,8 +93,8 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
     private NavigationView navigationView;
     private Toolbar toolbar;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private FirebaseUser currentuser = mAuth.getCurrentUser();
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentuser;
     private GoogleSignInClient mGoogleSignInClient;
     private ArrayList<product_part> feed=new ArrayList<product_part>();
     private String token;
@@ -115,6 +116,11 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
         toolbar = findViewById(R.id.toolbar);
+        mAuth = FirebaseAuth.getInstance();
+        currentuser= mAuth.getCurrentUser();
+
+
+
         putnewsfeed();
 
 
@@ -233,7 +239,11 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
         }
     }
 
+
+    ////////////////////////////////////////functions
     public void putnewsfeed() {
+
+
         DocumentReference docref = db.collection("users").document(mAuth.getUid());
         docref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -258,6 +268,7 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
     }
 
 
+     // some token work here
     private void gettoken(){
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
             @Override
@@ -353,6 +364,7 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
                                                     feed.add(temp);
 
                                                 }
+
                                                 Mergesortdata msd=new Mergesortdata(feed);
                                                 msd.sortGivenArray();
                                                 adapter adapter1;
@@ -490,48 +502,48 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
 
 
 
-    private void shownoti()
-    {db.collection("Electronics and Appliances").whereEqualTo("category","Electronics and Appliances").addSnapshotListener(new EventListener<QuerySnapshot>() {
-        @Override
-        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-            if(e!=null){
-                Toast.makeText(Drawer.this, "failed"+e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                return;
-            }
+//    private void shownoti()
+//    {db.collection("Electronics and Appliances").whereEqualTo("category","Electronics and Appliances").addSnapshotListener(new EventListener<QuerySnapshot>() {
+//        @Override
+//        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+//            if(e!=null){
+//                Toast.makeText(Drawer.this, "failed"+e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//
+//            for(DocumentChange dc:queryDocumentSnapshots.getDocumentChanges()){
+//                if(dc.getType()== DocumentChange.Type.ADDED)
+//                {
+//                    Log.d("pra",dc.getDocument().getData().toString());
+//                    showNotification(getApplicationContext(),"HEY","A new User is Added!!!");
+//                }
+//            }
+//
+//        }
+//    });
+//
+//    }
 
-            for(DocumentChange dc:queryDocumentSnapshots.getDocumentChanges()){
-                if(dc.getType()== DocumentChange.Type.ADDED)
-                {
-                    Log.d("pra",dc.getDocument().getData().toString());
-                    showNotification(getApplicationContext(),"HEY","A new User is Added!!!");
-                }
-            }
-
-        }
-    });
-
-    }
-
-    public static void showNotification(Context context, String title, String mess) {
-        Intent intent = new Intent(context, Rent.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, Constants.CHANNEL_ID);
-        notificationBuilder.setContentTitle(title);
-        notificationBuilder.setAutoCancel(true);
-        notificationBuilder.setPriority(Notification.PRIORITY_HIGH);
-        //notificationBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-        notificationBuilder.setContentIntent(pendingIntent);
-        notificationBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(mess));
-        notificationBuilder.setContentText(mess);
-        notificationBuilder.setDefaults(Notification.DEFAULT_VIBRATE);
-        notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
-
-
-        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
-        notificationManagerCompat.notify(1, notificationBuilder.build());
-
-    }
+//    public static void showNotification(Context context, String title, String mess) {
+//        Intent intent = new Intent(context, Rent.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(context, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, Constants.CHANNEL_ID);
+//        notificationBuilder.setContentTitle(title);
+//        notificationBuilder.setAutoCancel(true);
+//        notificationBuilder.setPriority(Notification.PRIORITY_HIGH);
+//        //notificationBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+//        notificationBuilder.setContentIntent(pendingIntent);
+//        notificationBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(mess));
+//        notificationBuilder.setContentText(mess);
+//        notificationBuilder.setDefaults(Notification.DEFAULT_VIBRATE);
+//        notificationBuilder.setSmallIcon(R.mipmap.ic_launcher);
+//
+//
+//        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
+//        notificationManagerCompat.notify(1, notificationBuilder.build());
+//
+//    }
 
 
 

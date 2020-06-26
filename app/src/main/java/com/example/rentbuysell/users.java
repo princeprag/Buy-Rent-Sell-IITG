@@ -29,6 +29,8 @@ public class users {
         this.context=cont;
         sharedPreferences = context.getSharedPreferences("PREFS",Context.MODE_PRIVATE);
         editor= sharedPreferences.edit();
+        editor.apply();
+
     }
 
     public  void removeUser(){

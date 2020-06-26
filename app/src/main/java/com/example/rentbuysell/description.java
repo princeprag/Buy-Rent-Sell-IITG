@@ -54,7 +54,7 @@ public class description extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_description);
         Intent i=getIntent();
-        Reciverid=i.getStringExtra("UID");
+        Reciverid=i.getStringExtra("UID");          // we need the id of the seller Reciverid,, Mode, Mobile No
         mode=i.getStringExtra("Mode");
         if(mode!=null) {
             if (!((mode.equals("ON SALE") || mode.equals("ON RENT")))) {

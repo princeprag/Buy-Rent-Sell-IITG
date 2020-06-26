@@ -50,8 +50,8 @@ public class userchat_Adapter extends FirestoreRecyclerAdapter<chat_users,userch
         viewHolder.chatinterface.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(mContext,messageInterface.class);
-                i.putExtra("UserId",chat_users.getUser_id());
+                Intent i=new Intent(mContext,messageInterface.class);   // Intent to messageInterface.class
+                i.putExtra("UID",chat_users.getUser_id());
                 i.putExtra("UseName",chat_users.getUsername());
                 i.putExtra("ImageUrl",chat_users.getImageUrl());
                 mContext.startActivity(i);

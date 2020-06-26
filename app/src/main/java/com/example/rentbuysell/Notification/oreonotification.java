@@ -26,7 +26,7 @@ public class oreonotification extends ContextWrapper {
     @TargetApi(Build.VERSION_CODES.Q)
     private void createChannel() {
         NotificationChannel channel=new NotificationChannel(CHANNEL_ID,CHANNEL_NAME,NotificationManager.IMPORTANCE_DEFAULT);
-        channel.enableLights(false);
+        channel.enableLights(true);
         channel.enableVibration(true);
         channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
         getManager().createNotificationChannel(channel);

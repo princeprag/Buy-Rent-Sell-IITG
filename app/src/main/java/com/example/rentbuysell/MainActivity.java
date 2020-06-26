@@ -3,8 +3,10 @@ package com.example.rentbuysell;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     EditText email,password;
     TextView forgot_pass;
     private users myuser;
+    ProgressDialog pd;
     Button login;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         forgot_pass=(TextView)findViewById(R.id.forgot);
         login=(Button)findViewById(R.id.log_in);
         loginnwGmail= (GoogleSignInButton)findViewById(R.id.gmail_btn);
+        pd=new ProgressDialog(this);
         //loginnwGmail=(Button)findViewById(R.id.gmail_btn);
         myuser= new users(this);
         loginnwGmail.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +83,12 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                normallogin();
+
+
+                    pd.setMessage("Logging You in....");
+                    pd.show();
+
+                    normallogin();
             }
         });
         sign_up=findViewById(R.id.signup);
@@ -177,20 +186,22 @@ public class MainActivity extends AppCompatActivity {
             String e = email.getText().toString();
             String p = password.getText().toString();
             if(e.equals(""))
-                Toast.makeText(this, "Email should not be empty", Toast.LENGTH_SHORT).show();
+                {pd.dismiss(); Toast.makeText(this, "Email should not be empty", Toast.LENGTH_SHORT).show();  }
             else if(p.equals(""))
-                Toast.makeText(this, "Password should not be empty", Toast.LENGTH_SHORT).show();
+                {pd.dismiss(); Toast.makeText(this, "Password should not be empty", Toast.LENGTH_SHORT).show(); }
             else {
                 mAuth.signInWithEmailAndPassword(e, p)
                         .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
+                                    pd.dismiss();
                                     Toast.makeText(MainActivity.this, "WELCOME", Toast.LENGTH_SHORT).show();
                                     onSuccessfulAuthentication();
                                     FirebaseUser user = mAuth.getCurrentUser();
                                 } else {
-                                   // Toast.makeText(MainActivity.this, task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                                    pd.dismiss();
+                                    Toast.makeText(MainActivity.this, task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                                 }
 
                             }

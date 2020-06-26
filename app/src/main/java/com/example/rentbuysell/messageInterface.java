@@ -81,7 +81,7 @@ public class messageInterface extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_interface);
         Intent i=getIntent();
-        receiverId=i.getStringExtra("UserId");
+        receiverId=i.getStringExtra("UID");
         requestQueue =Volley.newRequestQueue(getApplicationContext());
 
 
@@ -104,7 +104,7 @@ public class messageInterface extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        String uid=i.getStringExtra("UserId");
+        String uid=i.getStringExtra("UID");
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +116,7 @@ public class messageInterface extends AppCompatActivity {
        // statuscheck();
 
         //Toast.makeText(this, uid, Toast.LENGTH_SHORT).show();
-
+        // fetching username and pic on the top
          db.collection("users").document(mAuth.getUid()).collection("Chats").document(uid).
                  get().addOnCompleteListener(
                  new OnCompleteListener<DocumentSnapshot>() {
@@ -148,8 +148,7 @@ public class messageInterface extends AppCompatActivity {
         final String message_txt=message.getText().toString();
         if(!message_txt.equals(""))
         {
-            getnotidata(message_txt);
-        DatabaseReference ref=FirebaseDatabase.getInstance().getReference("chats").child(mAuth.getUid());
+            DatabaseReference ref=FirebaseDatabase.getInstance().getReference("chats").child(mAuth.getUid());
         HashMap<String,Object> hashMap=new HashMap<>();
         hashMap.put("receiveR",receiverId);
         hashMap.put("message",message_txt);
@@ -192,12 +191,16 @@ public class messageInterface extends AppCompatActivity {
 
                         }
                     });
+
+            getnotidata(message_txt);
         }
         else
             Toast.makeText(this, "You can't send empty Message", Toast.LENGTH_SHORT).show();
 
 
     }
+
+
     public void statuscheck()
     {db.collection("users").document().collection("Chats").document(receiverId).
             get().addOnCompleteListener(
@@ -241,8 +244,10 @@ public class messageInterface extends AppCompatActivity {
                             if (documentSnapshot != null) {
                                  final String myname=documentSnapshot.getString("Name");
                                  String imageurl = documentSnapshot.getString("ImageUrl");
-                                 if(notify){
-                                 sendNotifications(myname,message_txt,imageurl,receiverId);}
+                                 if(notify)
+                                 {
+                                 sendNotifications(myname,message_txt,imageurl,receiverId); // calling function here
+                                 }
                                  notify=false;
 
                             } else {
@@ -256,16 +261,17 @@ public class messageInterface extends AppCompatActivity {
                 });
     }
 
-    private void sendNotifications(final String myname, final String message_txt, String imageurl, final String receiver) {
+    private void sendNotifications(final String myname, final String message_txt, String imageurl, final String receiver_id) {
         DatabaseReference tokens=FirebaseDatabase.getInstance().getReference("Token");
-        Query query=tokens.orderByKey().equalTo(receiver);
+        Query query=tokens.orderByKey().equalTo(receiver_id);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    Token token = snapshot.getValue(Token.class);
-                    Data data=new Data(mAuth.getUid(),R.mipmap.ic_launcher,myname+": "+message_txt,"New Massage",receiver);
-                    Sender sender=new Sender(data,token.getToken());
+
+                    Token token = snapshot.getValue(Token.class); // getting the token corresponding to the id of the receiver
+                    Data data   =  new Data(mAuth.getUid(),R.mipmap.ic_launcher,myname+": "+message_txt,"New Message",receiver_id);
+                    Sender sender= new Sender(data,token.getToken());
 //                    apIservices.sendNotification(sender)
 //                            .enqueue(new Callback<Myresponse>() {
 //                                @Override
@@ -336,8 +342,12 @@ public class messageInterface extends AppCompatActivity {
              mchatmessages.clear();
              for(DataSnapshot snapshot:dataSnapshot.getChildren()){
                  getchats mchats=snapshot.getValue(getchats.class);
-                 if((mchats.getReceiveR().equals(myid) && mchats.getSendeR().equals(userid)) || (mchats.getReceiveR().equals(userid) && mchats.getSendeR().equals(myid)))
-                 mchatmessages.add(mchats);
+                 // the fetching and adjusting work is done by this class
+                 Log.w("crash",mchats.getReceiveR());
+                 Log.w("crash1",userid);
+
+                 if ((mchats.getReceiveR().equals(myid) && mchats.getSendeR().equals(userid)) || (mchats.getReceiveR().equals(userid) && mchats.getSendeR().equals(myid)))
+                     mchatmessages.add(mchats);
                  adapter=new MessageAdapter(messageInterface.this,mchatmessages,ImageUrl);
                  recyclerView.setAdapter(adapter);
              }
