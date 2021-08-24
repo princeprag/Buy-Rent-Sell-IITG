@@ -6,6 +6,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 
+import com.example.rentbuysell.Fragment.*;
+import com.example.rentbuysell.adapter.ViewPagerAdapter;
 import com.gigamole.navigationtabstrip.NavigationTabStrip;
 
 public class Buy extends AppCompatActivity {

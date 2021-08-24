@@ -1,4 +1,4 @@
-package com.example.rentbuysell;
+package com.example.rentbuysell.Fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +10,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rentbuysell.R;
+import com.example.rentbuysell.adapter.productAdapter;
+import com.example.rentbuysell.model.product_part;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;

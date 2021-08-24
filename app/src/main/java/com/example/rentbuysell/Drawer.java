@@ -1,19 +1,17 @@
 package com.example.rentbuysell;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
+import com.example.rentbuysell.Fragment.HomeFragment;
 import com.example.rentbuysell.Notification.Token;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.gigamole.navigationtabstrip.NavigationTabStrip;
+import com.example.rentbuysell.adapter.feedAdapter;
+import com.example.rentbuysell.model.product_part;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -22,28 +20,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,19 +34,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import com.squareup.picasso.Picasso;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -71,21 +48,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerTabStrip;
-import androidx.viewpager.widget.ViewPager;
 
-import android.view.Menu;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static java.lang.Integer.valueOf;
 
@@ -180,7 +150,7 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
         switch (menuItem.getItemId()) {
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new com.example.rentbuysell.HomeFragment()).commit();
+                        new HomeFragment()).commit();
 
                 break;
             case R.id.nav_buy:
@@ -409,12 +379,12 @@ public class Drawer extends AppCompatActivity implements NavigationView.OnNaviga
 
                                                 Mergesortdata msd=new Mergesortdata(feed);
                                                 msd.sortGivenArray();
-                                                adapter adapter1;
-                                                adapter1 = new adapter(msd.getSortedArray(), Drawer.this);
+                                                feedAdapter feedAdapter1;
+                                                feedAdapter1 = new feedAdapter(msd.getSortedArray(), Drawer.this);
                                                 RecyclerView recyclerView = findViewById(R.id.drawer_recyclerview);
                                                 recyclerView.setHasFixedSize(true);
                                                 recyclerView.setLayoutManager(new LinearLayoutManager(Drawer.this));
-                                                recyclerView.setAdapter(adapter1);
+                                                recyclerView.setAdapter(feedAdapter1);
 
                                             } else {
                                                 Toast.makeText(Drawer.this, "Error getting documents: ", Toast.LENGTH_SHORT).show();

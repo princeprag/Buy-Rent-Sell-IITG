@@ -1,4 +1,4 @@
-package com.example.rentbuysell;
+package com.example.rentbuysell.Fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,29 +10,30 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rentbuysell.R;
+import com.example.rentbuysell.adapter.productAdapter;
+import com.example.rentbuysell.model.product_part;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-public class SportsFragment extends Fragment {
+public class BooksFragment extends Fragment {
     View xyz;
     FirestoreRecyclerOptions<product_part> prod;
-    public  productAdapter adapter;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FirebaseFirestore db= FirebaseFirestore.getInstance();
-        View v= inflater.inflate(R.layout.activity_sports, container, false);
+        View v= inflater.inflate(R.layout.activity_books, container, false);
 
-
-        CollectionReference productref= db.collection("Sports and Accesories");
+        CollectionReference productref= db.collection("Books and Stationary");
         Query query=productref.orderBy("myidint", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<product_part> options=new FirestoreRecyclerOptions.Builder<product_part>().setQuery(query,product_part.class).build();
-        adapter=new productAdapter(options,getContext());
-        RecyclerView recyclerView= v.findViewById(R.id.recycler_sports);
+        productAdapter adapter=new productAdapter(options,getContext());
+        RecyclerView recyclerView= v.findViewById(R.id.recycler_books);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
@@ -57,17 +58,4 @@ public class SportsFragment extends Fragment {
 
 
     }
-
-    /*@Override
-    public void onStart() {
-        super.onStart();
-
-    }
-
-
-    @Override
-    public void onStop() {
-        super.onStop();
-          adapter.stopListening();
-    }*/
 }

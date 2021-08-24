@@ -27,9 +27,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.rentbuysell.Notification.Data;
-import com.example.rentbuysell.Notification.Data2;
 import com.example.rentbuysell.Notification.Sender;
-import com.example.rentbuysell.Notification.Sender2;
 import com.example.rentbuysell.Notification.Token;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -177,7 +175,12 @@ public class Sell extends AppCompatActivity {
 
     //UUID.randomUUID().toString()
 
-    public String UploadButtonClicked() {       // on clicking the upload button uploads the image to storage and gets the image url in string format
+    /**
+     * on clicking the upload button uploads the image to storage and gets the image url in string format
+     * @return imageurl
+     */
+
+    public String UploadButtonClicked() {
 
         String name = text_name.getText().toString();
         String description = text_description.getText().toString();
@@ -234,9 +237,12 @@ public class Sell extends AppCompatActivity {
         return s;
     }
 
-
-    public void Uploadtext(final String s1) {    // using the image url stores everything in the database
-
+    /**
+     * using the image url stores everything in the database
+     * @param s1
+     */
+    public void Uploadtext(final String s1)
+    {
         String name = text_name.getText().toString();
         String description = text_description.getText().toString();
         String price = text_price.getText().toString();
@@ -297,10 +303,13 @@ public class Sell extends AppCompatActivity {
                         }
                     }
                 });
-
-
     }
 
+    /**
+     * The product is uploaded to the list of products put by the user and is visible in My Profile Section
+     * @param s1
+     * @param id
+     */
     public void putuserdtata(String s1, String id) {
         final String name = text_name.getText().toString();
         final String description = text_description.getText().toString();

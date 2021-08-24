@@ -1,23 +1,22 @@
-package com.example.rentbuysell;
+package com.example.rentbuysell.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.rentbuysell.R;
+import com.example.rentbuysell.description;
+import com.example.rentbuysell.model.product_part;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.squareup.picasso.Picasso;
-
-import java.util.List;
 
 public class productAdapter extends FirestoreRecyclerAdapter<product_part,productAdapter.productHolder> {
     private Context mContext;
@@ -50,7 +49,7 @@ public class productAdapter extends FirestoreRecyclerAdapter<product_part,produc
             @Override
 
             public void onClick(View v) {
-                Intent i=new Intent(mContext,description.class);
+                Intent i=new Intent(mContext, description.class);
                 i.putExtra("Name",product_list.getName());
                 i.putExtra("Shortdesc",product_list.getDescription());
                 i.putExtra("ImageURL",product_list.getImageUrl());

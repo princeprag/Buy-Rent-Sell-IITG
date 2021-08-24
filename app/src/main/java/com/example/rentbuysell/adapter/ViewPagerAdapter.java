@@ -1,4 +1,4 @@
-package com.example.rentbuysell;
+package com.example.rentbuysell.adapter;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;

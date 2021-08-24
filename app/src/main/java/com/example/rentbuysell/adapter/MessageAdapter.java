@@ -1,17 +1,18 @@
-package com.example.rentbuysell;
+package com.example.rentbuysell.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.rentbuysell.R;
+import com.example.rentbuysell.model.getchats;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;

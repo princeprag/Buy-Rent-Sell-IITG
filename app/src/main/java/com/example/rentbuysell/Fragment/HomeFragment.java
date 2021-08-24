@@ -1,4 +1,4 @@
-package com.example.rentbuysell;
+package com.example.rentbuysell.Fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import com.example.rentbuysell.R;
 
 public class HomeFragment extends Fragment {
     @Nullable

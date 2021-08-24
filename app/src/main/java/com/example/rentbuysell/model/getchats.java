@@ -1,4 +1,4 @@
-package com.example.rentbuysell;
+package com.example.rentbuysell.model;
 
 public class getchats {
     public String message;
