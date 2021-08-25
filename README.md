@@ -12,13 +12,14 @@ The main features of this App are-
 3. In-App Chat Feature
 4. Temporarily hiding of Product(for Rent Items)
 5. A specialised section for “Give Away”
-<p>
-  <img align="left" src="https://github.com/princeprag/resources/blob/main/RBS1.png" width="230" height="500" title="Login Page">
-  <img align="left" src="https://github.com/princeprag/resources/blob/main/RBS2.png" width="230" height="500" title="Personalised Feed">
-  <img align="left" src="https://github.com/princeprag/resources/blob/main/RBS3.png" width="230" height="500" title="Buy Page">
-  <img align="left" src="https://github.com/princeprag/resources/blob/main/RBS4.png" width="240" height="500" title="Messaging Interface">
-</p>
-
 <h2>
-Get it on <a href="https://play.google.com/store/apps/details?id=com.codingnew.rentbuysell">Google Play</a>:)
+Get it on <a href="https://play.google.com/store/apps/details?id=com.codingnew.rentbuysell">Google Play</a>
 </h2>
+<div>
+  <img align="left" src="https://github.com/princeprag/resources/blob/main/RBS1.png" width="210" height="500" title="Login Page">
+  <img align="left" src="https://github.com/princeprag/resources/blob/main/RBS2.png" width="210" height="500" title="Personalised Feed">
+  <img align="left" src="https://github.com/princeprag/resources/blob/main/RBS3.png" width="220" height="500" title="Buy Page">
+  <img align="left" src="https://github.com/princeprag/resources/blob/main/RBS4.png" width="220" height="500" title="Messaging Interface">
+</div>
+
+
